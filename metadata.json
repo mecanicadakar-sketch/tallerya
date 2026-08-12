@@ -1,0 +1,8 @@
+{
+  "name": "TallerYa",
+  "description": "Encontrá tu taller mecánico más cercano en Paraguay. Mecánica general, inyección electrónica y diagnóstico automotriz.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
