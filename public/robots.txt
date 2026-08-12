@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Mapa del sitio para acelerar el rastreo e indexación de páginas e imágenes
+Sitemap: https://talleryapy.vercel.app/sitemap.xml
