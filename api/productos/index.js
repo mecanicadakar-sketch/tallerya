@@ -1,5 +1,6 @@
 import { getSql, ensureSchema } from '../_db.js';
 import { isAuthorized } from '../_auth.js';
+import { getClientIp, checkRateLimit, sanitizeText } from '../_security.js';
 
 function rowToProducto(r) {
   const imagenes = Array.isArray(r.imagenes) ? r.imagenes : [];
@@ -47,26 +48,52 @@ export default async function handler(req, res) {
       return;
     }
 
-    const rows = authed
-      ? await sql`SELECT * FROM productos ORDER BY created_at DESC`
-      : await sql`SELECT * FROM productos WHERE estado = 'aprobado' ORDER BY created_at DESC`;
+    // Admin request for all products (includes pending and rejected)
+    if (req.query.all && authed) {
+      const rows = await sql`SELECT * FROM productos ORDER BY created_at DESC`;
+      res.status(200).json(rows.map(rowToProducto));
+      return;
+    }
+
+    // Public catalog ALWAYS sees only approved products
+    const rows = await sql`SELECT * FROM productos WHERE estado = 'aprobado' ORDER BY created_at DESC`;
     res.status(200).json(rows.map(rowToProducto));
     return;
   }
 
   if (req.method === 'POST') {
+    const ip = getClientIp(req);
+    // Rate limit public product creation (max 8 per 10 minutes per IP)
+    const rateStatus = checkRateLimit('product_submit', ip, 8, 10 * 60 * 1000);
+    if (!rateStatus.allowed) {
+      res.status(429).json({ error: 'Has publicado varios productos recientemente. Por favor esperá unos minutos.' });
+      return;
+    }
+
     const b = req.body || {};
-    if (!b.nombre || !b.whatsapp) {
+    const nombre = sanitizeText(b.nombre, 120);
+    const whatsapp = sanitizeText(b.whatsapp, 50);
+
+    if (!nombre || !whatsapp) {
       res.status(400).json({ error: 'Faltan campos obligatorios (nombre y WhatsApp).' });
       return;
     }
+
     const id = 'p' + Date.now() + Math.random().toString(36).slice(2, 7);
-    const imagenesArr = Array.isArray(b.imagenes) ? b.imagenes.filter(Boolean).slice(0, 3) : [];
-    const imagenesJson = JSON.stringify(imagenesArr);
-    const primeraImagen = imagenesArr[0] || b.imagen || '';
+    const imagenesArr = Array.isArray(b.imagenes) ? b.imagenes.filter(Boolean).slice(0, 5) : [];
+    const cleanImagenes = imagenesArr.map(img => sanitizeText(img, 1500000));
+    const imagenesJson = JSON.stringify(cleanImagenes);
+    const primeraImagen = cleanImagenes[0] || sanitizeText(b.imagen, 1500000) || '';
+
+    const descripcion = sanitizeText(b.descripcion, 2000);
+    const precio = sanitizeText(b.precio, 50);
+    const categoria = sanitizeText(b.categoria, 80);
+    const contacto = sanitizeText(b.contacto, 100);
+    const telefonoPago = sanitizeText(b.telefonoPago, 50);
+
     const inserted = await sql`
       INSERT INTO productos (id, nombre, descripcion, precio, categoria, imagen, imagenes, contacto, whatsapp, estado, destacado, destacado_solicitado, telefono_pago)
-      VALUES (${id}, ${b.nombre}, ${b.descripcion || ''}, ${b.precio || ''}, ${b.categoria || ''}, ${primeraImagen}, ${imagenesJson}::jsonb, ${b.contacto || ''}, ${b.whatsapp}, 'pendiente', false, ${Boolean(b.destacadoSolicitado)}, ${b.telefonoPago || ''})
+      VALUES (${id}, ${nombre}, ${descripcion}, ${precio}, ${categoria}, ${primeraImagen}, ${imagenesJson}::jsonb, ${contacto}, ${whatsapp}, 'pendiente', false, ${Boolean(b.destacadoSolicitado)}, ${telefonoPago})
       RETURNING folio
     `;
     const codigo = 'TY-P-' + String(inserted[0].folio).padStart(6, '0');
@@ -76,3 +103,4 @@ export default async function handler(req, res) {
 
   res.status(405).json({ error: 'Method not allowed' });
 }
+

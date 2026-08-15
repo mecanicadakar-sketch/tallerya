@@ -1,4 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
+import { getClientIp, checkRateLimit, sanitizeText } from './_security.js';
 
 const GUIA_PRACTICA = `
 GUÍA DE REFERENCIA DE AUXILIO MECÁNICO DE EMERGENCIA (PARAGUAY):
@@ -73,8 +74,17 @@ export default async function handler(req, res) {
     return;
   }
 
+  const ip = getClientIp(req);
+  // Rate limit AI requests: max 20 requests per minute per IP
+  const rateStatus = checkRateLimit('ai_assistant', ip, 20, 60 * 1000);
+  if (!rateStatus.allowed) {
+    res.status(429).json({ error: 'Has alcanzado el límite de consultas al asistente de IA por minuto. Por favor esperá unos instantes.' });
+    return;
+  }
+
   const body = req.body || {};
-  const mensaje = (body.mensaje || body.prompt || '').toString().trim();
+  const rawMsg = (body.mensaje || body.prompt || '').toString();
+  const mensaje = sanitizeText(rawMsg, 800);
   const historial = Array.isArray(body.historial) ? body.historial : [];
 
   if (!mensaje) {
@@ -111,7 +121,7 @@ export default async function handler(req, res) {
       const messages = historial
         .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
         .slice(-8)
-        .map(m => ({ role: m.role, content: m.content.slice(0, 800) }));
+        .map(m => ({ role: m.role, content: sanitizeText(m.content, 500) }));
       messages.push({ role: 'user', content: mensaje });
 
       const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -142,4 +152,5 @@ export default async function handler(req, res) {
   const localResp = getLocalDiagnosis(mensaje);
   return res.status(200).json({ ok: true, respuesta: localResp, text: localResp });
 }
+
 

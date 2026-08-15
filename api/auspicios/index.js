@@ -1,5 +1,6 @@
 import { getSql, ensureSchema } from '../_db.js';
 import { isAuthorized } from '../_auth.js';
+import { sanitizeText } from '../_security.js';
 
 function rowToAuspicio(r) {
   return {
@@ -16,7 +17,7 @@ function rowToAuspicio(r) {
     email: r.email,
     imagen: r.imagen,
     link: r.link,
-    ubicacion: r.lat != null && r.lng != null ? { lat: r.lat, lng: r.lng } : null,
+    ubicacion: r.lat != null && r.lng != null ? { lat: Number(r.lat), lng: Number(r.lng) } : null,
     destacado: r.destacado,
     destacadoSolicitado: r.destacado_solicitado,
     telefonoPago: r.telefono_pago,
@@ -48,18 +49,41 @@ export default async function handler(req, res) {
       return;
     }
     const b = req.body || {};
-    if (!b.nombre) {
+    const nombre = sanitizeText(b.nombre, 120);
+    if (!nombre) {
       res.status(400).json({ error: 'Falta el nombre del auspicio.' });
       return;
     }
     const id = 's' + Date.now() + Math.random().toString(36).slice(2, 7);
-    const servicios = JSON.stringify(b.servicios || []);
-    const lat = b.ubicacion ? b.ubicacion.lat : null;
-    const lng = b.ubicacion ? b.ubicacion.lng : null;
+    const rawServicios = Array.isArray(b.servicios) ? b.servicios : [];
+    const cleanServicios = rawServicios.map(s => sanitizeText(s, 60)).filter(Boolean);
+    const servicios = JSON.stringify(cleanServicios);
+
+    let lat = null;
+    let lng = null;
+    if (b.ubicacion && typeof b.ubicacion.lat === 'number' && typeof b.ubicacion.lng === 'number') {
+      if (b.ubicacion.lat >= -90 && b.ubicacion.lat <= 90 && b.ubicacion.lng >= -180 && b.ubicacion.lng <= 180) {
+        lat = b.ubicacion.lat;
+        lng = b.ubicacion.lng;
+      }
+    }
+
+    const destacadoVal = b.destacado !== undefined ? Boolean(b.destacado) : Boolean(b.destacadoSolicitado);
+    const categoria = sanitizeText(b.categoria, 80);
+    const horario = sanitizeText(b.horario, 120);
+    const descripcion = sanitizeText(b.descripcion, 2000);
+    const direccion = sanitizeText(b.direccion, 200);
+    const ciudad = sanitizeText(b.ciudad, 100);
+    const telefono = sanitizeText(b.telefono, 50);
+    const whatsapp = sanitizeText(b.whatsapp, 50);
+    const email = sanitizeText(b.email, 120);
+    const imagen = sanitizeText(b.imagen, 1500000);
+    const link = sanitizeText(b.link, 300);
+    const telefonoPago = sanitizeText(b.telefonoPago, 50);
 
     const inserted = await sql`
       INSERT INTO auspicios (id, nombre, categoria, horario, descripcion, servicios, direccion, ciudad, telefono, whatsapp, email, imagen, link, lat, lng, destacado, destacado_solicitado, telefono_pago)
-      VALUES (${id}, ${b.nombre}, ${b.categoria || ''}, ${b.horario || ''}, ${b.descripcion || ''}, ${servicios}::jsonb, ${b.direccion || ''}, ${b.ciudad || ''}, ${b.telefono || ''}, ${b.whatsapp || ''}, ${b.email || ''}, ${b.imagen || ''}, ${b.link || ''}, ${lat}, ${lng}, false, ${Boolean(b.destacadoSolicitado)}, ${b.telefonoPago || ''})
+      VALUES (${id}, ${nombre}, ${categoria}, ${horario}, ${descripcion}, ${servicios}::jsonb, ${direccion}, ${ciudad}, ${telefono}, ${whatsapp}, ${email}, ${imagen}, ${link}, ${lat}, ${lng}, ${destacadoVal}, ${Boolean(b.destacadoSolicitado)}, ${telefonoPago})
       RETURNING folio
     `;
     const codigo = 'TY-A-' + String(inserted[0].folio).padStart(6, '0');
@@ -69,3 +93,4 @@ export default async function handler(req, res) {
 
   res.status(405).json({ error: 'Method not allowed' });
 }
+

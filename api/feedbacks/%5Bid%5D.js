@@ -13,17 +13,27 @@ export default async function handler(req, res) {
   }
   const { id } = req.query;
 
+  if (req.method === 'PATCH') {
+    if (!isAuthorized(req)) {
+      res.status(401).json({ error: 'No autorizado' });
+      return;
+    }
+    const b = req.body || {};
+    if (b.estado) {
+      await sql`UPDATE feedbacks SET estado = ${b.estado} WHERE id = ${id}`;
+      res.status(200).json({ ok: true });
+      return;
+    }
+    res.status(400).json({ error: 'Nada para actualizar' });
+    return;
+  }
+
   if (req.method === 'DELETE') {
     if (!isAuthorized(req)) {
       res.status(401).json({ error: 'No autorizado' });
       return;
     }
-    const numericId = parseInt(id, 10);
-    if (isNaN(numericId)) {
-      await sql`DELETE FROM categorias WHERE id = ${id} OR nombre = ${id}`;
-    } else {
-      await sql`DELETE FROM categorias WHERE id = ${numericId} OR id = ${id}`;
-    }
+    await sql`DELETE FROM feedbacks WHERE id = ${id}`;
     res.status(200).json({ ok: true });
     return;
   }

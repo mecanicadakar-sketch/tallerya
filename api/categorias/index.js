@@ -1,5 +1,6 @@
 import { getSql, ensureSchema } from '../_db.js';
 import { isAuthorized } from '../_auth.js';
+import { sanitizeText } from '../_security.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -23,7 +24,7 @@ export default async function handler(req, res) {
       res.status(401).json({ error: 'No autorizado' });
       return;
     }
-    const nombre = (req.body && req.body.nombre || '').trim();
+    const nombre = sanitizeText(req.body && req.body.nombre, 80);
     if (!nombre) {
       res.status(400).json({ error: 'Falta el nombre de la categoría.' });
       return;
@@ -43,3 +44,4 @@ export default async function handler(req, res) {
 
   res.status(405).json({ error: 'Method not allowed' });
 }
+
