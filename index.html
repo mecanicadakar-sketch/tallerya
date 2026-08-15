@@ -66,24 +66,45 @@
   .header-inner{
     max-width:1180px;margin:0 auto;
     display:flex;align-items:center;justify-content:space-between;
-    padding:14px 24px;
+    padding:10px 20px;
+    gap:16px;
   }
-  .brand{display:flex;align-items:center;gap:11px;font-size:26px;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
+  .brand{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:700;color:var(--ink);letter-spacing:-.01em;flex-shrink:0;}
   .brand-icon{
     width:42px;height:42px;border-radius:10px;overflow:hidden;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
   }
   .brand-icon img{width:100%;height:100%;object-fit:contain;display:block;}
-  nav.mainnav{display:flex;align-items:center;gap:6px;}
-  .nav-btn{
-    padding:10px 16px;border-radius:10px;font-weight:600;font-size:14.5px;
-    background:transparent;color:var(--ink);transition:.15s;white-space:nowrap;
+  nav.mainnav{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:5px;
   }
-  .nav-btn:hover{background:var(--bg);}
-  .nav-btn.primary{background:var(--blue);color:#fff;}
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:6px;
+  }
+  .nav-btn{
+    padding:6px 12px;border-radius:8px;font-weight:600;font-size:13.5px;
+    background:transparent;color:var(--ink);transition:.15s;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:5px;border:1px solid transparent;
+    line-height:1.2;
+  }
+  .nav-btn:hover{background:var(--bg);border-color:var(--line);}
+  .nav-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
   .nav-btn.primary:hover{background:var(--blue-dark);}
-  .nav-btn.active{background:var(--blue);color:#fff;}
+  .nav-btn.btn-postular-blue{
+    background:#2563EB;color:#fff !important;border-color:#2563EB;
+    font-weight:700;box-shadow:0 2px 8px rgba(37,99,235,.2);
+  }
+  .nav-btn.btn-postular-blue:hover{
+    background:#1D4ED8;border-color:#1D4ED8;
+  }
+  .nav-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
   .burger{display:none;background:none;padding:8px;}
   .burger svg{width:24px;height:24px;}
 
@@ -91,12 +112,20 @@
     nav.mainnav{
       position:fixed;top:65px;left:0;right:0;
       background:#fff;border-bottom:1px solid var(--line);
-      flex-direction:column;align-items:stretch;padding:10px 16px 16px;
+      flex-direction:column;align-items:stretch;padding:12px 16px 18px;
       display:none;gap:8px;
       box-shadow:0 12px 24px -12px rgba(16,27,51,.15);
+      max-height:calc(100vh - 70px);
+      overflow-y:auto;
     }
     nav.mainnav.open{display:flex;}
-    .nav-btn{width:100%;text-align:left;}
+    .nav-row{
+      flex-direction:column;
+      align-items:stretch;
+      width:100%;
+      gap:8px;
+    }
+    .nav-btn{width:100%;text-align:left;justify-content:flex-start;padding:10px 14px;font-size:14.5px;}
     .burger{display:flex;}
   }
 
@@ -363,10 +392,33 @@
   .admin-wrap{max-width:1100px;margin:0 auto;padding:44px 24px 80px;}
   .admin-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:12px;}
   .admin-topbar h1{margin:0;font-size:26px;}
-  .admin-links{display:flex;gap:10px;}
-  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin:26px 0 22px;}
-  .tab{padding:12px 4px;margin-right:22px;font-weight:600;color:var(--gray);border-bottom:2px solid transparent;font-size:14.5px;}
-  .tab.active{color:var(--blue);border-color:var(--blue);}
+  .admin-links{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .admin-nav-btn{
+    padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;
+    background:#F1F5F9;color:var(--ink);border:1.5px solid var(--line);
+    cursor:pointer;transition:all .18s ease;display:inline-flex;align-items:center;gap:6px;
+    user-select:none;
+  }
+  .admin-nav-btn:hover{background:#E2E8F0;border-color:#CBD5E1;}
+  .admin-nav-btn.active{
+    background:var(--blue) !important;color:#ffffff !important;border-color:var(--blue) !important;
+    font-weight:700;box-shadow:0 3px 10px rgba(23,73,184,.3);
+  }
+  .admin-nav-btn.btn-salir{background:#FEF3F2;color:#D92D20;border-color:#FEE4E2;}
+  .admin-nav-btn.btn-salir:hover{background:#FEE4E2;border-color:#FECDCA;}
+
+  .tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin:22px 0;padding-bottom:12px;flex-wrap:wrap;}
+  .tab{
+    padding:8px 18px;border-radius:10px;font-weight:600;color:var(--gray);
+    background:#F1F5F9;border:1px solid var(--line);font-size:13.5px;
+    cursor:pointer;transition:all .18s ease;user-select:none;
+  }
+  .tab:hover{background:#E2E8F0;color:var(--ink);}
+  .tab.active{
+    color:#ffffff !important;background:var(--blue) !important;border-color:var(--blue) !important;
+    font-weight:700;box-shadow:0 3px 10px rgba(23,73,184,.25);
+  }
+
   .admin-row{
     background:#fff;border:1px solid var(--line);border-radius:12px;
     padding:18px 20px;display:flex;justify-content:space-between;align-items:center;
@@ -406,17 +458,18 @@
   .admin-row .info .meta{font-size:13px;color:var(--gray);display:flex;gap:6px;align-items:center;margin-top:3px;}
   .admin-row .meta svg{width:13px;height:13px;}
   .admin-actions{display:flex;gap:8px;flex-wrap:wrap;}
-  .abtn{padding:9px 14px;border-radius:8px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;}
+  .abtn{padding:9px 14px;border-radius:8px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:all .18s ease;}
   .abtn svg{width:13px;height:13px;}
-  .abtn.approve{background:#ECFDF3;color:#067647;}
+  .abtn.approve{background:#ECFDF3;color:#067647;border:1px solid #ABEFC6;}
   .abtn.approve:hover{background:#D4F7DE;}
-  .abtn.reject{background:#FFF4E5;color:var(--orange-dark);}
+  .abtn.reject{background:#FFF4E5;color:var(--orange-dark);border:1px solid #FFE8C7;}
   .abtn.reject:hover{background:#FFE8C7;}
-  .abtn.feature{background:#FFF9E9;color:#A15C00;}
-  .abtn.feature.on{background:var(--orange);color:#fff;}
-  .abtn.edit{background:var(--bg);color:var(--ink);}
+  .abtn.feature{background:#FFF9E9;color:#8B4513;border:1.5px solid #FDE68A;}
+  .abtn.feature:hover{background:#FEF0C7;}
+  .abtn.feature.on{background:#E27A1E !important;color:#ffffff !important;border:1.5px solid #B45309 !important;box-shadow:0 3px 8px rgba(226,122,30,.4);}
+  .abtn.edit{background:var(--bg);color:var(--ink);border:1px solid var(--line);}
   .abtn.edit:hover{background:var(--line);}
-  .abtn.delete{background:#FEF3F2;color:#D92D20;}
+  .abtn.delete{background:#FEF3F2;color:#D92D20;border:1px solid #FEE4E2;}
   .abtn.delete:hover{background:#FEE4E2;}
 
   .modal-bg{
@@ -550,9 +603,10 @@
   }
   .ai-aux-nav-btn{
     background:linear-gradient(135deg,#1E3A8A,#1D4ED8);color:#fff !important;
-    font-weight:700 !important;border-radius:8px;padding:8px 14px;
-    display:inline-flex;align-items:center;gap:6px;
-    box-shadow:0 4px 12px rgba(29,78,216,.3);
+    font-weight:700 !important;border-radius:8px;padding:6px 12px;
+    display:inline-flex;align-items:center;gap:5px;
+    box-shadow:0 3px 10px rgba(29,78,216,.25);
+    font-size:13.5px;
   }
   .ai-aux-nav-btn:hover{
     background:linear-gradient(135deg,#1D4ED8,#2563EB);
@@ -779,10 +833,209 @@
     border-color: var(--blue);
   }
 
+  /* ---------- MITALLER CLOUD MODAL & AUTH ---------- */
+  .mitaller-modal-bg {
+    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.72);
+    display: none; align-items: center; justify-content: center;
+    z-index: 200; padding: 16px; backdrop-filter: blur(4px);
+  }
+  .mitaller-modal-bg.show { display: flex; }
+  .mitaller-card {
+    background: #ffffff; width: 100%; max-width: 460px;
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    display: flex; flex-direction: column;
+    animation: modalPop 0.22s ease-out forwards;
+  }
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.96) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .mitaller-header {
+    background: #0F172A; padding: 20px 22px; color: #ffffff;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mitaller-brand {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .mitaller-icon-box {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: #2563EB; color: #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 10px rgba(37,99,235,0.4);
+  }
+  .mitaller-title {
+    margin: 0; font-size: 18px; font-weight: 800; color: #ffffff; line-height: 1.2;
+  }
+  .mitaller-sub {
+    margin: 2px 0 0; font-size: 12.5px; color: #94A3B8;
+  }
+  .mitaller-close-btn {
+    background: transparent; border: none; color: #94A3B8;
+    font-size: 24px; cursor: pointer; padding: 4px; line-height: 1;
+    border-radius: 8px; transition: .15s;
+  }
+  .mitaller-close-btn:hover { color: #ffffff; background: rgba(255,255,255,0.1); }
+  .mitaller-tabs {
+    display: flex; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0;
+  }
+  .mitaller-tab {
+    flex: 1; text-align: center; padding: 13px 10px;
+    font-size: 13.5px; font-weight: 600; color: #64748B;
+    cursor: pointer; transition: all .18s; user-select: none;
+    border-bottom: 2.5px solid transparent; margin-bottom: -1.5px;
+  }
+  .mitaller-tab:hover { color: #1E293B; background: #F1F5F9; }
+  .mitaller-tab.active {
+    color: #2563EB; font-weight: 700; border-bottom-color: #2563EB;
+    background: #ffffff;
+  }
+  .mitaller-body {
+    padding: 22px 24px; max-height: 70vh; overflow-y: auto;
+  }
+  .mitaller-label-row {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+  }
+  .mitaller-label {
+    font-size: 11px; font-weight: 800; color: #475569;
+    letter-spacing: 0.6px; text-transform: uppercase; margin: 0;
+  }
+  .mitaller-forgot {
+    font-size: 12px; color: #2563EB; font-weight: 600; text-decoration: none; cursor: pointer;
+  }
+  .mitaller-forgot:hover { text-decoration: underline; }
+  .mitaller-input-wrap {
+    position: relative; display: flex; align-items: center; margin-bottom: 14px;
+  }
+  .mitaller-input-icon {
+    position: absolute; left: 13px; color: #94A3B8; pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mitaller-input {
+    width: 100%; padding: 11px 14px 11px 40px; border: 1.5px solid #CBD5E1;
+    border-radius: 9px; font-size: 14px; color: #1E293B; background: #FFFFFF;
+    box-sizing: border-box; transition: all .18s;
+  }
+  .mitaller-input:focus {
+    border-color: #2563EB; outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  }
+  .mitaller-eye-btn {
+    position: absolute; right: 10px; background: transparent; border: none;
+    color: #94A3B8; cursor: pointer; padding: 4px; display: flex; align-items: center;
+  }
+  .mitaller-eye-btn:hover { color: #475569; }
+  .mitaller-btn-primary {
+    width: 100%; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    color: #ffffff; border: none; padding: 12px 18px; border-radius: 9px;
+    font-size: 14.5px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.35); transition: all .18s; margin-top: 4px;
+  }
+  .mitaller-btn-primary:hover {
+    background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+    transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37,99,235,0.45);
+  }
+  .mitaller-btn-primary:disabled {
+    opacity: 0.65; cursor: not-allowed; transform: none;
+  }
+  .mitaller-divider {
+    display: flex; align-items: center; margin: 16px 0; color: #94A3B8;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+  }
+  .mitaller-divider::before, .mitaller-divider::after {
+    content: ""; flex: 1; height: 1px; background: #E2E8F0;
+  }
+  .mitaller-divider span { padding: 0 10px; }
+  .mitaller-btn-google {
+    width: 100%; background: #ffffff; color: #1E293B; border: 1.5px solid #CBD5E1;
+    padding: 10px 16px; border-radius: 9px; font-size: 13.5px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    gap: 10px; transition: all .18s;
+  }
+  .mitaller-btn-google:hover {
+    background: #F8FAFC; border-color: #94A3B8;
+  }
+  .mitaller-footer {
+    padding: 12px 20px; background: #F8FAFC; border-top: 1px solid #E2E8F0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: #64748B;
+  }
+  .mitaller-footer-guest {
+    color: #2563EB; font-weight: 700; cursor: pointer; text-decoration: none;
+  }
+  .mitaller-footer-guest:hover { text-decoration: underline; }
+
+  /* ---------- FEEDBACK / VALORACIÓN / QUEJAS ---------- */
+  .feedback-type-pills {
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .feedback-pill {
+    padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
+    border: 1.5px solid #E2E8F0; background: #F8FAFC; color: #475569;
+    cursor: pointer; transition: all .18s; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .feedback-pill:hover { background: #E2E8F0; color: #1E293B; }
+  .feedback-pill.active {
+    border-color: #2563EB; background: #EFF6FF; color: #1D4ED8; font-weight: 700;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.18);
+  }
+  .feedback-badge {
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 4px; text-transform: capitalize;
+  }
+  .feedback-badge.valoracion { background: #FEF3C7; color: #92400E; }
+  .feedback-badge.sugerencia { background: #E0F2FE; color: #0369A1; }
+  .feedback-badge.queja { background: #FEE2E2; color: #B91C1C; }
+  .feedback-badge.consulta { background: #F3E8FF; color: #6B21A8; }
+  
+  .feedback-status-badge {
+    font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px;
+  }
+  .feedback-status-badge.pendiente { background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A; }
+  .feedback-status-badge.aprobado { background: #ECFDF3; color: #067647; border: 1px solid #ABEFC6; }
+  .feedback-status-badge.resuelto { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+  .feedback-status-badge.rechazado { background: #FEF2F2; color: #B91C1C; border: 1px solid #FECACA; }
+
+  .review-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+    margin-top: 18px;
+  }
+  .review-card {
+    background: #ffffff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform .18s, box-shadow .18s;
+  }
+  .review-card:hover {
+    transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  /* ---------- TALLER SESSION BANNER (VIEW-POSTULAR) ---------- */
+  .taller-session-bar {
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    color: #ffffff; border-radius: 14px; padding: 14px 18px; margin-bottom: 22px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .taller-session-info {
+    display: flex; align-items: center; gap: 10px; font-size: 14px;
+  }
+  .taller-session-actions {
+    display: flex; gap: 8px; align-items: center;
+  }
+  .taller-session-btn {
+    padding: 6px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 700;
+    cursor: pointer; border: none; transition: .15s;
+  }
+  .taller-session-btn.primary { background: #2563EB; color: #ffffff; }
+  .taller-session-btn.primary:hover { background: #1D4ED8; }
+  .taller-session-btn.logout { background: rgba(255,255,255,0.12); color: #E2E8F0; }
+  .taller-session-btn.logout:hover { background: rgba(239,68,68,0.3); color: #FCA5A5; }
+
   @media (max-width:760px){
     .hero{padding:56px 20px 70px;}
     section.block{padding:40px 20px;}
     .admin-row{flex-direction:column;align-items:flex-start;}
+    .review-grid{grid-template-columns: 1fr;}
   }
 </style>
 </head>
@@ -801,11 +1054,16 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
     </button>
     <nav class="mainnav" id="mainnav">
-      <button type="button" class="nav-btn primary" id="nav-home" onclick="go('home')">Buscar talleres</button>
-      <button type="button" class="nav-btn ai-aux-nav-btn" id="nav-auxilio-ia" onclick="abrirAsistente()"><span class="ai-sparkle">🤖</span> Auxilio Mecánico IA</button>
-      <button type="button" class="nav-btn" id="nav-postular" onclick="go('postular')">Postular mi taller</button>
-      <button type="button" class="nav-btn" id="nav-productos" onclick="go('productos')">Ventas y Ofertas</button>
-      <button type="button" class="nav-btn" id="nav-admin" onclick="go('admin')">Administrador</button>
+      <div class="nav-row nav-row-1">
+        <button type="button" class="nav-btn primary" id="nav-home" onclick="go('home')">Buscar talleres</button>
+        <button type="button" class="nav-btn ai-aux-nav-btn" id="nav-auxilio-ia" onclick="abrirAsistente()"><span class="ai-sparkle">🤖</span> Auxilio Mecánico IA</button>
+        <button type="button" class="nav-btn btn-postular-blue" id="nav-postular" onclick="clickNavPostular()">Postular mi taller</button>
+      </div>
+      <div class="nav-row nav-row-2">
+        <button type="button" class="nav-btn" id="nav-productos" onclick="go('productos')">Ventas y Ofertas</button>
+        <button type="button" class="nav-btn" id="nav-opiniones" onclick="clickNavOpiniones()"><span style="color:#F59E0B;">⭐</span> Opiniones</button>
+        <button type="button" class="nav-btn" id="nav-admin" onclick="go('admin')">Administrador</button>
+      </div>
     </nav>
   </div>
 </header>
@@ -828,9 +1086,10 @@
         <button onclick="renderListado()">Buscar</button>
       </div>
       <div class="hero-stats">
+        <div class="hero-stat"><b id="stat-visitas">0</b><span>Visitas a la web</span></div>
         <div class="hero-stat"><b id="stat-talleres">0</b><span>Talleres activos</span></div>
         <div class="hero-stat"><b id="stat-ciudades">0</b><span>Zonas cubiertas</span></div>
-        <div class="hero-stat"><b>100%</b><span>Contacto directo por WhatsApp</span></div>
+        <div class="hero-stat"><b>100%</b><span>Contacto directo</span></div>
       </div>
     </div>
   </section>
@@ -877,7 +1136,7 @@
 
   <div class="section-divider" id="divider-after-destacados"></div>
 
-  <section class="block">
+  <section class="block" id="listado-section">
     <div class="block-head">
       <div>
         <h2 id="listadoTitle">Talleres encontrados</h2>
@@ -905,14 +1164,55 @@
         <h2>Nuestros auspiciantes</h2>
         <p>Lubricantes, repuestos y accesorios recomendados.</p>
       </div>
+      <a href="https://wa.me/595975635770?text=Hola%20TallerYa%2C%20quiero%20ser%20auspiciante%20en%20la%20plataforma%20%F0%9F%91%8B" target="_blank" rel="noopener" class="submit-btn" style="width:auto;padding:10px 18px;font-size:13px;white-space:nowrap;background:linear-gradient(135deg, #10B981, #059669);text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+        📢 ¿Querés ser auspiciante? Contactanos
+      </a>
     </div>
+
+    <!-- Cartel / Banner informativo para anunciantes -->
+    <div class="auspiciante-banner-card" style="background:linear-gradient(135deg, #0F172A, #1E293B);color:#fff;border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 14px rgba(0,0,0,0.12);">
+      <div style="max-width:680px;">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.2);color:#FBBF24;padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:800;margin-bottom:8px;border:1px solid rgba(245,158,11,0.3);">
+          ⭐ ESPACIO PUBLICITARIO DESTACADO
+        </div>
+        <h3 style="margin:0 0 6px;font-size:18px;color:#fff;font-weight:800;">¿Tenés una marca, lubricentro o casa de repuestos?</h3>
+        <p style="margin:0;font-size:13.5px;color:#94A3B8;line-height:1.5;">
+          Auspiciá en TallerYa y llegá a miles de conductores y talleres en todo el país. Contactate con nosotros para coordinar tu anuncio destacado.
+        </p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <a href="https://wa.me/595975635770?text=Hola%20TallerYa%2C%20quiero%20ser%20auspiciante%20en%20la%20plataforma%20%F0%9F%91%8B" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 20px;border-radius:10px;text-decoration:none;box-shadow:0 3px 10px rgba(37,211,102,0.35);">
+          💬 WhatsApp: +595 975 635770
+        </a>
+        <a href="tel:+595975635770" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);color:#fff;font-weight:600;font-size:13.5px;padding:12px 18px;border-radius:10px;text-decoration:none;border:1px solid rgba(255,255,255,0.2);">
+          📞 Llamar directo
+        </a>
+      </div>
+    </div>
+
     <div class="sponsor-strip" id="sponsorStrip"></div>
+  </section>
+
+  <div class="section-divider" id="divider-before-feedbacks"></div>
+
+  <section class="block" id="feedbacks-section">
+    <div class="block-head">
+      <div>
+        <h2>⭐ Valoraciones, Opiniones o Quejas</h2>
+        <p>Experiencias de la comunidad, opiniones y sugerencias sobre talleres y servicios.</p>
+      </div>
+      <button class="submit-btn" style="width:auto;padding:10px 20px;font-size:13.5px;white-space:nowrap;" onclick="abrirModalFeedback()">
+        + Dejar Valoración, Opinión o Queja
+      </button>
+    </div>
+    <div id="homeFeedbacksList" class="review-grid"></div>
   </section>
 </div>
 
 <!-- ======================= POSTULAR ======================= -->
 <div class="view" id="view-postular">
   <div class="page-wrap">
+    <div id="tallerSessionBanner"></div>
     <div class="join-hero">
       <span class="join-tag">🎉 Gratis para empezar</span>
       <h1>Sumate a TallerYa</h1>
@@ -936,16 +1236,36 @@
         </div>
       </div>
     </div>
-    <div class="page-head">
-      <h2 style="font-size:22px;margin:0 0 8px;color:var(--ink);">Completá tus datos</h2>
-      <p>Un administrador verificará la información antes de publicarlo en TallerYa.</p>
+    <!-- PUBLICACIÓN / OFERTA DE APP PARA MECÁNICOS -->
+    <div style="background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 100%); color: #ffffff; border-radius: 16px; padding: 22px 24px; margin-bottom: 28px; box-shadow: 0 10px 25px -5px rgba(29,78,216,0.25); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+      <div style="flex: 1; min-width: 270px;">
+        <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.2); color: #ffffff; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; margin-bottom: 10px; backdrop-filter: blur(4px);">
+          ⚡ EXCLUSIVO PARA MECÁNICOS DE PARAGUAY
+        </div>
+        <h3 style="margin: 0 0 8px; font-size: 21px; font-weight: 800; line-height: 1.2; color: #ffffff;">
+          🛠️ ¿Buscás un sistema para organizar tu Taller Mecánico?
+        </h3>
+        <p style="margin: 0; font-size: 14px; color: #E0E7FF; line-height: 1.5;">
+          Probá la App de Gestión de Talleres 100% Gratis. Llevá el control de clientes, órdenes de trabajo, repuestos y presupuestos desde tu celular.
+        </p>
+      </div>
+      <a href="https://mitallerpy.vercel.app/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; background: #2563EB; color: #ffffff; padding: 13px 22px; border-radius: 12px; font-size: 14.5px; font-weight: 800; text-decoration: none; box-shadow: 0 4px 14px rgba(37,99,235,0.4); border: 1.5px solid rgba(255,255,255,0.3); white-space: nowrap;">
+        <span>📱 Probar App de Taller Gratis</span>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
     </div>
-    <div class="banner-ok" id="postularOk">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      ¡Listo! Tu taller fue enviado y está pendiente de aprobación.
-    </div>
-    <div class="form-card">
+
+    <div id="postularFormCard" class="form-card">
+      <div class="page-head">
+        <h2 style="font-size:22px;margin:0 0 8px;color:var(--ink);">Completá los datos de tu taller</h2>
+        <p>Completá la información. Un administrador verificará la solicitud antes de publicar.</p>
+      </div>
+      <div class="banner-ok" id="postularOk">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        ¡Listo! Tu taller fue enviado y está pendiente de aprobación.
+      </div>
       <form id="postularForm" onsubmit="submitPostular(event)">
+
         <div class="field">
           <label>Nombre del taller *</label>
           <input type="text" id="f-nombre" required placeholder="Ej: Mecánica Central">
@@ -989,7 +1309,7 @@
           </div>
         </div>
         <div class="field">
-          <label>Email</label>
+          <label>Email de contacto</label>
           <input type="email" id="f-email" placeholder="contacto@taller.com">
         </div>
         <div class="field">
@@ -1061,16 +1381,86 @@
 
 <!-- ======================= ADMIN LOGIN ======================= -->
 <div class="view" id="view-adminlogin">
-  <div class="admin-login">
-    <div class="lock">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+  <div class="admin-login" style="max-width: 460px; margin: 40px auto; padding: 34px 30px; background: #ffffff; border-radius: 20px; box-shadow: var(--shadow-lg); text-align: center; border: 1px solid #E2E8F0;">
+    <div class="lock" style="width: 58px; height: 58px; background: #EFF6FF; color: #1D4ED8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 2px solid #DBEAFE;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
     </div>
-    <h2>Acceso administrador</h2>
-    <p>Ingresá tu usuario y PIN para gestionar los talleres y auspicios.</p>
-    <input type="text" id="adminUser" placeholder="Usuario" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('adminPass').focus()">
-    <input type="password" id="adminPass" placeholder="PIN" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryLogin()">
-    <div class="err" id="loginErr">Usuario o PIN incorrecto. Probá de nuevo.</div>
-    <button class="submit-btn" onclick="tryLogin()">Ingresar</button>
+    <h2 style="font-size:22px;margin:0 0 8px;color:var(--ink);font-weight:800;">Acceso Administrador Seguro</h2>
+    
+    <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:12px 14px;margin:12px 0 16px;text-align:left;font-size:12.5px;color:#166534;line-height:1.45;">
+      <div style="display:flex;align-items:center;gap:6px;font-weight:700;margin-bottom:3px;color:#15803D;">
+        <span>🛡️</span> Protección Anti-Fuerza Bruta Activa
+      </div>
+      • Límite estricto de <b>3 intentos</b> por dirección IP.<br>
+      • Bloqueo automático temporal por <b>15 minutos</b> en caso de 3 fallos.<br>
+      • Autenticación cifrada en tiempo constante.
+    </div>
+
+    <div id="adminSecurityAlert" style="display:none;margin-bottom:14px;padding:10px 12px;border-radius:10px;font-size:13px;text-align:left;line-height:1.4;"></div>
+
+    <form onsubmit="tryLogin(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="field" style="text-align:left;width:100%;box-sizing:border-box;">
+        <label style="font-size:13px;font-weight:700;margin-bottom:6px;display:block;color:var(--ink);">1. Email de Administrador *</label>
+        <input type="email" id="adminUser" placeholder="Ingresá tu correo de administrador" autocomplete="username" required style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14.5px;font-weight:600;color:var(--ink);">
+      </div>
+      
+      <div class="field" style="text-align:left;width:100%;box-sizing:border-box;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <label style="font-size:13px;font-weight:700;color:var(--ink);margin:0;">2. Contraseña / PIN *</label>
+          <button type="button" onclick="toggleAdminPassVisibility()" style="font-size:12px;color:#2563EB;font-weight:600;display:flex;align-items:center;gap:4px;">
+            <span id="adminPassToggleIcon">👁️</span> <span id="adminPassToggleText">Ver PIN</span>
+          </button>
+        </div>
+        <div style="position:relative;">
+          <input type="password" id="adminPass" placeholder="Ingresá tu contraseña de administrador" autocomplete="current-password" required style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14.5px;">
+        </div>
+      </div>
+
+      <!-- NOTIFICACIÓN DE ENVÍO SEGURO DE CLAVE AL EMAIL / WHATSAPP -->
+      <div id="admin2FADispatchBox" style="display:none;background:#EFF6FF;border:1.5px solid #93C5FD;border-radius:12px;padding:14px 16px;text-align:left;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:13px;font-weight:700;color:#1E40AF;display:flex;align-items:center;gap:6px;">
+            <span>📩 Clave enviada a tu cuenta</span>
+          </span>
+          <span id="admin2FATimer" style="font-size:11.5px;font-weight:700;color:#2563EB;background:#DBEAFE;padding:2px 8px;border-radius:12px;">5:00</span>
+        </div>
+        <p style="margin:0 0 8px;font-size:12.5px;color:#1E3A8A;line-height:1.45;">
+          Por seguridad, enviamos una clave aleatoria de 6 dígitos a los canales autorizados:
+        </p>
+        <div style="background:#FFFFFF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:#1E40AF;line-height:1.5;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span>📧 Email:</span> <strong id="admin2FAMaskedEmail" style="letter-spacing:0.5px;">mecanicadakar@gmail.com</strong>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <span>📱 Celular / WhatsApp:</span> <strong id="admin2FAMaskedPhone" style="letter-spacing:0.5px;">+595975635770</strong>
+          </div>
+        </div>
+        <p style="margin:0;font-size:11.5px;color:#475569;display:flex;justify-content:space-between;align-items:center;">
+          <span>Revisá tu bandeja de entrada o mensajes</span>
+          <a href="javascript:void(0)" onclick="reenviar2FACode()" style="color:#2563EB;font-weight:700;text-decoration:none;">🔄 Reenviar clave</a>
+        </p>
+      </div>
+
+      <!-- TERCER BOX: CLAVE DE VERIFICACIÓN DE USUARIO (SOLO ENTRADA SEGURA) -->
+      <div class="field" id="admin2FAField" style="display:none;text-align:left;width:100%;box-sizing:border-box;">
+        <label style="font-size:13px;font-weight:700;margin-bottom:6px;display:block;color:#1E40AF;">
+          3. Clave de Verificación recibida (6 dígitos) *
+        </label>
+        <div style="position:relative;">
+          <input type="text" id="admin2FACode" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="••••••" autocomplete="one-time-code" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #2563EB;border-radius:10px;font-size:18px;font-weight:800;letter-spacing:8px;text-align:center;color:#1D4ED8;background:#F8FAFC;">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:12px;">
+          <span style="color:var(--gray);">Ingresá la clave de 6 dígitos que recibiste</span>
+          <button type="button" onclick="resetAdminLogin2FA()" style="color:#64748B;background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;">Cambiar email/PIN</button>
+        </div>
+      </div>
+
+      <div class="err" id="loginErr" style="display:none;font-size:13px;padding:10px 14px;border-radius:10px;background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;text-align:left;line-height:1.45;"></div>
+
+      <button type="submit" class="submit-btn" id="adminSubmitBtn" style="margin-top:6px;width:100%;padding:14px;font-size:15px;font-weight:700;">
+        Ingresar como Administrador
+      </button>
+    </form>
   </div>
 </div>
 
@@ -1080,10 +1470,12 @@
     <div class="admin-topbar">
       <h1>Gestión de talleres</h1>
       <div class="admin-links">
-        <button type="button" class="ghost-btn" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="ghost-btn" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
-        <button type="button" class="ghost-btn" onclick="go('adminCategorias')">🏷️ Categorías</button>
-        <button type="button" class="ghost-btn" onclick="logoutAdmin()">Salir</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
     <div class="tabs" id="adminTabs">
@@ -1101,10 +1493,12 @@
     <div class="admin-topbar">
       <h1>Auspicios</h1>
       <div class="admin-links">
-        <button type="button" class="ghost-btn" onclick="go('admin')">← Talleres</button>
-        <button type="button" class="ghost-btn" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
-        <button type="button" class="ghost-btn" onclick="go('adminCategorias')">🏷️ Categorías</button>
-        <button type="button" class="ghost-btn" onclick="logoutAdmin()">Salir</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
     <div style="margin:26px 0 20px;">
@@ -1120,9 +1514,12 @@
     <div class="admin-topbar">
       <h1>Ventas y Ofertas</h1>
       <div class="admin-links">
-        <button type="button" class="ghost-btn" onclick="go('admin')">← Talleres</button>
-        <button type="button" class="ghost-btn" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="ghost-btn" onclick="logoutAdmin()">Salir</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
     <div class="tabs" id="adminProductosTabs">
@@ -1140,9 +1537,12 @@
     <div class="admin-topbar">
       <h1>Categorías</h1>
       <div class="admin-links">
-        <button type="button" class="ghost-btn" onclick="go('admin')">← Talleres</button>
-        <button type="button" class="ghost-btn" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
-        <button type="button" class="ghost-btn" onclick="logoutAdmin()">Salir</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
     <p style="color:var(--gray);font-size:13.5px;margin:10px 0 20px;">
@@ -1153,6 +1553,34 @@
       <button class="submit-btn" style="width:auto;padding:0 20px;" onclick="agregarCategoria()">+ Agregar</button>
     </div>
     <div id="categoriasAdminList"></div>
+  </div>
+</div>
+
+<!-- ======================= ADMIN FEEDBACKS & QUEJAS ======================= -->
+<div class="view" id="view-adminFeedbacks">
+  <div class="admin-wrap">
+    <div class="admin-topbar">
+      <h1>Valoraciones, Sugerencias y Quejas</h1>
+      <div class="admin-links">
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
+      </div>
+    </div>
+    <p style="color:var(--gray);font-size:13.5px;margin:10px 0 20px;">
+      Revisá las valoraciones, sugerencias y quejas enviadas por los clientes. Podés aprobarlas para que aparezcan públicamente o marcarlas como resueltas.
+    </p>
+    <div class="tabs" id="adminFeedbacksTabs">
+      <div class="tab active" data-tab="pendiente" onclick="setAdminFeedbacksTab('pendiente')">Pendientes (<span id="count-fb-pendiente">0</span>)</div>
+      <div class="tab" data-tab="aprobado" onclick="setAdminFeedbacksTab('aprobado')">Aprobadas / Públicas (<span id="count-fb-aprobado">0</span>)</div>
+      <div class="tab" data-tab="resuelto" onclick="setAdminFeedbacksTab('resuelto')">Resueltas (<span id="count-fb-resuelto">0</span>)</div>
+      <div class="tab" data-tab="rechazado" onclick="setAdminFeedbacksTab('rechazado')">Rechazadas (<span id="count-fb-rechazado">0</span>)</div>
+      <div class="tab" data-tab="todas" onclick="setAdminFeedbacksTab('todas')">Todas (<span id="count-fb-todas">0</span>)</div>
+    </div>
+    <div id="adminFeedbacksList" style="margin-top:20px;"></div>
   </div>
 </div>
 
@@ -1232,12 +1660,259 @@
   </div>
 </div>
 
+<!-- ======================= MITALLER LOGIN & REGISTRO MODAL ======================= -->
+<div class="mitaller-modal-bg" id="miTallerLoginModalBg" onclick="if(event.target===this)cerrarMiTallerLoginModal()">
+  <div class="mitaller-card">
+    <div class="mitaller-header">
+      <div class="mitaller-brand">
+        <div class="mitaller-icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="mitaller-title">MiTaller Cloud</h3>
+          <p class="mitaller-sub">Gestión Profesional y Postulación</p>
+        </div>
+      </div>
+      <button type="button" class="mitaller-close-btn" onclick="cerrarMiTallerLoginModal()">&times;</button>
+    </div>
+
+    <div class="mitaller-tabs">
+      <div class="mitaller-tab active" id="mt-tab-btn-login" onclick="setMiTallerTab('login')">Iniciar Sesión</div>
+      <div class="mitaller-tab" id="mt-tab-btn-register" onclick="setMiTallerTab('register')">Registrar mi Taller</div>
+    </div>
+
+    <div class="mitaller-body">
+      <!-- FORMULARIO DE INICIO DE SESIÓN -->
+      <form id="mt-form-login" onsubmit="submitMiTallerLogin(event)">
+        <div class="mitaller-label-row">
+          <label class="mitaller-label">CORREO ELECTRÓNICO / USUARIO</label>
+        </div>
+        <div class="mitaller-input-wrap">
+          <span class="mitaller-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+          <input type="text" id="mt-login-user" class="mitaller-input" placeholder="taller@ejemplo.com o usuario" required autocomplete="username">
+        </div>
+
+        <div class="mitaller-label-row">
+          <label class="mitaller-label">CONTRASEÑA</label>
+          <a class="mitaller-forgot" onclick="recuperarPasswordMiTaller()">¿Olvidaste tu contraseña?</a>
+        </div>
+        <div class="mitaller-input-wrap">
+          <span class="mitaller-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <input type="password" id="mt-login-pass" class="mitaller-input" placeholder="••••••••" required autocomplete="current-password">
+          <button type="button" class="mitaller-eye-btn" onclick="togglePassVisibility('mt-login-pass', 'mt-eye-icon-login')">
+            <svg id="mt-eye-icon-login" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#475569;cursor:pointer;">
+            <input type="checkbox" id="mt-remember-me" checked style="accent-color:#2563EB;">
+            Recordar mi sesión
+          </label>
+        </div>
+
+        <div class="err" id="mt-login-err" style="display:none;margin-bottom:12px;font-size:13px;"></div>
+
+        <button type="submit" class="mitaller-btn-primary" id="mt-login-submit-btn">
+          Iniciar Sesión
+        </button>
+
+        <div class="mitaller-divider">
+          <span>O CONTINUAR CON</span>
+        </div>
+
+        <button type="button" class="mitaller-btn-google" onclick="loginMiTallerGoogle()">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          Continuar con Google
+        </button>
+      </form>
+
+      <!-- FORMULARIO DE REGISTRO -->
+      <form id="mt-form-register" style="display:none;" onsubmit="submitMiTallerRegister(event)">
+        <div class="mitaller-label-row">
+          <label class="mitaller-label">NOMBRE DEL TALLER *</label>
+        </div>
+        <div class="mitaller-input-wrap">
+          <span class="mitaller-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </span>
+          <input type="text" id="mt-reg-nombre" class="mitaller-input" placeholder="Ej: Taller Mecánico Dakar" required>
+        </div>
+
+        <div class="mitaller-label-row">
+          <label class="mitaller-label">USUARIO O EMAIL *</label>
+        </div>
+        <div class="mitaller-input-wrap">
+          <span class="mitaller-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg>
+          </span>
+          <input type="text" id="mt-reg-user" class="mitaller-input" placeholder="mecanicadakar@gmail.com" required>
+        </div>
+
+        <div class="mitaller-label-row">
+          <label class="mitaller-label">CONTRASEÑA DE ACCESO *</label>
+        </div>
+        <div class="mitaller-input-wrap">
+          <span class="mitaller-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <input type="password" id="mt-reg-pass" class="mitaller-input" placeholder="Mínimo 6 caracteres" required>
+          <button type="button" class="mitaller-eye-btn" onclick="togglePassVisibility('mt-reg-pass', 'mt-eye-icon-reg')">
+            <svg id="mt-eye-icon-reg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+
+        <div class="row2">
+          <div>
+            <div class="mitaller-label-row"><label class="mitaller-label">WHATSAPP *</label></div>
+            <div class="mitaller-input-wrap">
+              <input type="text" id="mt-reg-whatsapp" class="mitaller-input" style="padding-left:14px;" placeholder="59598..." required>
+            </div>
+          </div>
+          <div>
+            <div class="mitaller-label-row"><label class="mitaller-label">CIUDAD *</label></div>
+            <div class="mitaller-input-wrap">
+              <input type="text" id="mt-reg-ciudad" class="mitaller-input" style="padding-left:14px;" placeholder="Encarnación" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="err" id="mt-reg-err" style="display:none;margin-bottom:12px;font-size:13px;"></div>
+
+        <button type="submit" class="mitaller-btn-primary" id="mt-reg-submit-btn">
+          Registrar mi Taller y Continuar
+        </button>
+      </form>
+    </div>
+
+    <div class="mitaller-footer">
+      <span style="display:flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Firebase Cloud Auth
+      </span>
+      <a class="mitaller-footer-guest" onclick="continuarComoInvitado()">Continuar como Invitado &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= MODAL DE VALORACIONES Y QUEJAS ======================= -->
+<div class="modal-bg" id="feedbackModalBg" onclick="if(event.target===this)cerrarModalFeedback()">
+  <div class="modal modal-wide" style="max-width:540px;">
+    <button class="close-x" onclick="cerrarModalFeedback()">&times;</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+      <span style="font-size:24px;">⭐</span>
+      <h3 style="margin:0;font-size:20px;">Valoraciones, Opiniones o Quejas</h3>
+    </div>
+    <p style="color:var(--gray);font-size:13.5px;margin:0 0 16px;">
+      Dejá tu valoración, opinión sincera o queja para ayudar a la comunidad y mejorar la atención de los talleres.
+    </p>
+
+    <div class="banner-ok" id="feedbackOk">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>¡Muchas gracias! Tu opinión fue registrada exitosamente.</span>
+    </div>
+
+    <form id="feedbackForm" onsubmit="submitFeedbackForm(event)">
+      <!-- TIPO DE MENSAJE -->
+      <div style="margin-bottom:14px;">
+        <label style="font-size:12.5px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">¿Qué tipo de comentario querés dejar? *</label>
+        <div class="feedback-type-pills">
+          <div class="feedback-pill active" data-type="valoracion" onclick="setFeedbackTipo('valoracion')">
+            <span>⭐</span> Valoración
+          </div>
+          <div class="feedback-pill" data-type="opinion" onclick="setFeedbackTipo('opinion')">
+            <span>💬</span> Opinión
+          </div>
+          <div class="feedback-pill" data-type="queja" onclick="setFeedbackTipo('queja')">
+            <span>⚠️</span> Queja o Reclamo
+          </div>
+          <div class="feedback-pill" data-type="sugerencia" onclick="setFeedbackTipo('sugerencia')">
+            <span>💡</span> Sugerencia
+          </div>
+          <div class="feedback-pill" data-type="consulta" onclick="setFeedbackTipo('consulta')">
+            <span>❓</span> Consulta
+          </div>
+        </div>
+        <input type="hidden" id="fb-tipo" value="valoracion">
+      </div>
+
+      <!-- TALLER DESTINO -->
+      <div class="field">
+        <label>Taller sobre el que opinás (opcional)</label>
+        <select id="fb-taller" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;">
+          <option value="">-- TallerYa (Plataforma General) --</option>
+        </select>
+      </div>
+
+      <!-- CALIFICACIÓN CON ESTRELLAS -->
+      <div id="fb-calificacion-container" class="field">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <label>Calificación *</label>
+          <span id="fb-rating-text" style="font-size:13px;font-weight:700;color:#D97706;">5 de 5 - Excelente / Altamente recomendado</span>
+        </div>
+        <div class="star-picker" id="fb-star-picker">
+          <span data-val="1" onclick="setStarRating(1)" onmouseover="hoverStarRating(1)" onmouseout="resetStarHover()">★</span>
+          <span data-val="2" onclick="setStarRating(2)" onmouseover="hoverStarRating(2)" onmouseout="resetStarHover()">★</span>
+          <span data-val="3" onclick="setStarRating(3)" onmouseover="hoverStarRating(3)" onmouseout="resetStarHover()">★</span>
+          <span data-val="4" onclick="setStarRating(4)" onmouseover="hoverStarRating(4)" onmouseout="resetStarHover()">★</span>
+          <span data-val="5" onclick="setStarRating(5)" onmouseover="hoverStarRating(5)" onmouseout="resetStarHover()" class="active">★</span>
+        </div>
+        <input type="hidden" id="fb-calificacion" value="5">
+      </div>
+
+      <!-- TÍTULO -->
+      <div class="field">
+        <label>Título o Resumen breve *</label>
+        <input type="text" id="fb-titulo" placeholder="Ej: Excelente atención y rapidez / Sugerencia sobre el horario" required>
+      </div>
+
+      <!-- MENSAJE -->
+      <div class="field">
+        <label>Comentario / Detalle de tu experiencia *</label>
+        <textarea id="fb-mensaje" rows="4" placeholder="Contanos tu experiencia, sugerencia o detalle del reclamo..." required></textarea>
+      </div>
+
+      <!-- DATOS DE CONTACTO -->
+      <div class="row2">
+        <div class="field">
+          <label>Tu Nombre *</label>
+          <input type="text" id="fb-nombre" placeholder="Ej: Carlos Gómez" required>
+        </div>
+        <div class="field">
+          <label>Teléfono o Email (opcional)</label>
+          <input type="text" id="fb-contacto" placeholder="Para seguimiento o respuesta">
+        </div>
+      </div>
+
+      <div class="err" id="fb-err" style="display:none;margin-bottom:12px;font-size:13px;"></div>
+
+      <button type="submit" class="submit-btn" id="fb-submit-btn" style="width:100%;margin-top:8px;">
+        Enviar Valoración / Opinión
+      </button>
+    </form>
+  </div>
+</div>
+
 <footer>
   <div class="footer-inner">
     <span class="brand" style="display:flex;align-items:center;gap:10px;">
       <span class="brand-icon" style="width:30px;height:30px;"><img src="/logo.png" alt="TallerYa"></span>
       TallerYa
     </span>
+    <div class="footer-stats" style="text-align:center;background:rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#E2E8F0;">
+      <span>👁️ Visitas a la web:</span> <strong id="footer-visitas" style="color:#FDC58F;font-size:14px;">0</strong>
+    </div>
     <div style="text-align:right;">
       <small style="display:block;">
         Contacto: Email: <a href="mailto:tallerya7@gmail.com" style="color:#FDC58F;">tallerya7@gmail.com</a>
@@ -1266,17 +1941,33 @@ async function fetchCategorias(){
 /* ============================================================
    API — capa de datos real (Neon vía funciones serverless)
 ============================================================ */
+function getAuthHeaders(){
+  try{
+    const token = sessionStorage.getItem('tallerya_admin_token');
+    return token ? { 'Authorization': 'Bearer ' + token } : {};
+  }catch(e){
+    return {};
+  }
+}
+
 async function apiGet(url){
-  const r = await fetch(url, { credentials: 'same-origin', cache: 'no-store' });
+  const r = await fetch(url, {
+    credentials: 'include',
+    cache: 'no-store',
+    headers: { ...getAuthHeaders() }
+  });
   if(!r.ok) throw new Error('GET '+url+' -> '+r.status);
   return r.json();
 }
 async function apiSend(url, method, body){
   const r = await fetch(url, {
     method,
-    credentials: 'same-origin',
+    credentials: 'include',
     cache: 'no-store',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
     body: body !== undefined ? JSON.stringify(body) : undefined
   });
   let data = null;
@@ -1285,14 +1976,26 @@ async function apiSend(url, method, body){
   return data;
 }
 
-async function fetchTalleres(){ talleres = await apiGet('/api/talleres'); }
+async function fetchTalleres(adminMode = false){ talleres = await apiGet(adminMode ? '/api/talleres?all=1' : '/api/talleres'); }
 async function fetchAuspiciosList(){ auspicios = await apiGet('/api/auspicios'); }
-async function fetchProductosList(){ productos = await apiGet('/api/productos'); }
+async function fetchProductosList(adminMode = false){ productos = await apiGet(adminMode ? '/api/productos?all=1' : '/api/productos'); }
+async function fetchFeedbacksList(){
+  try {
+    const list = await apiGet('/api/feedbacks');
+    feedbacks = Array.isArray(list) ? list : [];
+  } catch(e) {
+    console.error('Error cargando valoraciones:', e);
+    feedbacks = [];
+  }
+}
 
 let talleres = [];
 let auspicios = [];
 let productos = [];
+let feedbacks = [];
+let categoriasConId = [];
 let adminProductosTab = 'pendiente';
+let adminFeedbacksTab = 'pendiente';
 let adminTab = 'pendiente';
 let isAdmin = false;
 
@@ -1328,41 +2031,104 @@ function gradFor(id){
 /* ============================================================
    ROUTER
 ============================================================ */
+function updateAdminNav(activeView){
+  document.querySelectorAll('.admin-nav-btn').forEach(btn=>{
+    if(!btn.dataset.targetView) return;
+    btn.classList.toggle('active', btn.dataset.targetView===activeView);
+  });
+}
+
 async function go(view){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('nav.mainnav').classList.remove('open');
+  const mainnav = document.querySelector('nav.mainnav');
+  if(mainnav) mainnav.classList.remove('open');
 
-  if(view==='admin' || view==='adminAuspicios' || view==='adminCategorias' || view==='adminProductos'){
+  if(view==='admin' || view==='adminAuspicios' || view==='adminCategorias' || view==='adminProductos' || view==='adminFeedbacks'){
     if(!isAdmin){
       isAdmin = await checkAdminSession();
     }
     if(!isAdmin){
-      document.getElementById('view-adminlogin').classList.add('active');
-      document.getElementById('nav-admin').classList.add('active');
+      const loginView = document.getElementById('view-adminlogin');
+      if(loginView) loginView.classList.add('active');
+      const navAdmin = document.getElementById('nav-admin');
+      if(navAdmin) navAdmin.classList.add('active');
+      checkAdminIpStatus();
       window.scrollTo(0,0);
       return;
     }
+    updateAdminNav(view);
   }
 
-  if(view==='home'){ document.getElementById('view-home').classList.add('active'); document.getElementById('nav-home').classList.add('active'); renderHome(); }
-  else if(view==='postular'){
-    document.getElementById('view-postular').classList.add('active'); document.getElementById('nav-postular').classList.add('active');
-    if(!activeMaps['f']) initPinMap('f', null);
-    else setTimeout(()=> activeMaps['f'].map.invalidateSize(), 60);
+  if(view==='home'){
+    const v = document.getElementById('view-home');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-home');
+    if(n) n.classList.add('active');
+    renderHome();
   }
-  else if(view==='productos'){ document.getElementById('view-productos').classList.add('active'); document.getElementById('nav-productos').classList.add('active'); renderProductosPublico(); }
-  else if(view==='admin'){ document.getElementById('view-admin').classList.add('active'); document.getElementById('nav-admin').classList.add('active'); renderAdmin(); }
-  else if(view==='adminAuspicios'){ document.getElementById('view-adminAuspicios').classList.add('active'); document.getElementById('nav-admin').classList.add('active'); renderSponsorAdmin(); }
-  else if(view==='adminCategorias'){ document.getElementById('view-adminCategorias').classList.add('active'); document.getElementById('nav-admin').classList.add('active'); renderCategoriasAdmin(); }
-  else if(view==='adminProductos'){ document.getElementById('view-adminProductos').classList.add('active'); document.getElementById('nav-admin').classList.add('active'); renderProductosAdmin(); }
+  else if(view==='postular'){
+    const v = document.getElementById('view-postular');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-postular');
+    if(n) n.classList.add('active');
+    renderTallerSessionBanner();
+    autoFillPostularFormIfLogged();
+    if(!activeMaps['f']) initPinMap('f', null);
+    else setTimeout(()=> { if(activeMaps['f'] && activeMaps['f'].map) activeMaps['f'].map.invalidateSize(); }, 60);
+  }
+  else if(view==='productos'){
+    const v = document.getElementById('view-productos');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-productos');
+    if(n) n.classList.add('active');
+    renderProductosPublico();
+  }
+  else if(view==='admin'){
+    const v = document.getElementById('view-admin');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-admin');
+    if(n) n.classList.add('active');
+    renderAdmin();
+  }
+  else if(view==='adminAuspicios'){
+    const v = document.getElementById('view-adminAuspicios');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-admin');
+    if(n) n.classList.add('active');
+    renderSponsorAdmin();
+  }
+  else if(view==='adminCategorias'){
+    const v = document.getElementById('view-adminCategorias');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-admin');
+    if(n) n.classList.add('active');
+    renderCategoriasAdmin();
+  }
+  else if(view==='adminProductos'){
+    const v = document.getElementById('view-adminProductos');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-admin');
+    if(n) n.classList.add('active');
+    renderProductosAdmin();
+  }
+  else if(view==='adminFeedbacks'){
+    const v = document.getElementById('view-adminFeedbacks');
+    if(v) v.classList.add('active');
+    const n = document.getElementById('nav-admin');
+    if(n) n.classList.add('active');
+    renderAdminFeedbacks();
+  }
 
   window.scrollTo(0,0);
 }
 
 async function checkAdminSession(){
   try{
-    const r = await fetch('/api/talleres?estado=pendiente', { credentials:'same-origin' });
+    const r = await fetch('/api/talleres?estado=pendiente', {
+      credentials: 'include',
+      headers: { ...getAuthHeaders() }
+    });
     return r.ok;
   }catch(e){ return false; }
 }
@@ -1517,6 +2283,56 @@ function copiarLinkCompartir(){
   }
 }
 
+let totalVisitas = 0;
+async function registrarYObtenerVisitas(){
+  try{
+    const yaRegistrado = sessionStorage.getItem('tallerya_visita_registrada');
+    let res;
+    if(!yaRegistrado){
+      res = await apiSend('/api/visitas', 'POST');
+      try{ sessionStorage.setItem('tallerya_visita_registrada', '1'); }catch(e){}
+    } else {
+      res = await apiGet('/api/visitas');
+    }
+    if(res && typeof res.total === 'number'){
+      totalVisitas = res.total;
+      updateVisitasUI();
+    }
+  }catch(err){
+    console.warn('[Visitas Error]:', err);
+  }
+}
+
+function updateVisitasUI(){
+  const numStr = totalVisitas.toLocaleString('es-PY') || String(totalVisitas);
+  const statEl = document.getElementById('stat-visitas');
+  if(statEl) statEl.textContent = numStr;
+  const footerEl = document.getElementById('footer-visitas');
+  if(footerEl) footerEl.textContent = numStr;
+}
+
+async function incrementTallerClics(id){
+  if(!id) return;
+  try{
+    const res = await apiSend('/api/talleres/' + id, 'POST');
+    if(res && typeof res.clics === 'number'){
+      const t = talleres.find(x=>x.id===id);
+      if(t) t.clics = res.clics;
+      const el = document.getElementById('clics-count-' + id);
+      if(el) el.textContent = res.clics;
+      const modalEl = document.getElementById('modal-clics-count-' + id);
+      if(modalEl) modalEl.textContent = res.clics;
+    }
+  }catch(e){
+    console.warn('[incrementTallerClics Error]:', e);
+  }
+}
+
+function trackAndOpenTaller(id){
+  incrementTallerClics(id);
+  openTallerDetail(id);
+}
+
 function tallerCard(t, destacadoStyle){
   const tagsHtml = t.servicios.slice(0,3).map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join('') +
     (t.servicios.length>3 ? `<span class="tag">+${t.servicios.length-3}</span>` : '');
@@ -1531,24 +2347,31 @@ function tallerCard(t, destacadoStyle){
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((t.direccion||'') + ', ' + (t.ciudad||''))}`;
 
   const fav = esFavorito(t.id);
+  const clicsNum = typeof t.clics === 'number' ? t.clics : 0;
 
   return `
-  <div class="card">
+  <div class="card" onclick="trackAndOpenTaller('${t.id}')" style="cursor:pointer;">
     <div class="card-banner" style="background:${gradFor(t.id)}">
       ${bannerInner}
-      <button type="button" class="fav-btn ${fav?'active':''}" onclick="toggleFavorito('${t.id}')" aria-label="Favorito">${ICON_HEART}</button>
+      <button type="button" class="fav-btn ${fav?'active':''}" onclick="event.stopPropagation();toggleFavorito('${t.id}')" aria-label="Favorito">${ICON_HEART}</button>
       ${t.destacado ? `<span class="badge-destacado">${ICON_STAR} Destacado</span>` : ''}
       <span class="card-cat">${escapeHtml(t.categoria)}</span>
     </div>
     <div class="card-body">
-      <h3>${escapeHtml(t.nombre)} <span class="verified-badge" title="Datos verificados por TallerYa">${ICON_CHECK} Verificado</span></h3>
-      <a class="row-icon" href="${mapsUrl}" target="_blank" rel="noopener" style="text-decoration:none;">${ICON_PIN}<span style="text-decoration:underline;">${escapeHtml(t.direccion || t.ciudad)}</span></a>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;flex-wrap:wrap;">
+        <span class="verified-badge" style="margin:0;" title="Datos verificados por TallerYa">${ICON_CHECK} Verificado</span>
+        <span class="clics-badge" id="clics-badge-${t.id}" title="Personas que vieron este taller" style="font-size:11.5px;font-weight:700;color:#1D4ED8;background:#EFF6FF;padding:2px 8px;border-radius:6px;border:1px solid #BFDBFE;display:inline-flex;align-items:center;gap:4px;">
+          👁️ <span id="clics-count-${t.id}">${clicsNum}</span> visitas
+        </span>
+      </div>
+      <h3>${escapeHtml(t.nombre)}</h3>
+      <a class="row-icon" href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation();incrementTallerClics('${t.id}')" style="text-decoration:none;">${ICON_PIN}<span style="text-decoration:underline;">${escapeHtml(t.direccion || t.ciudad)}</span></a>
       ${t.horario ? `<div class="row-icon">${ICON_CLOCK}<span>${escapeHtml(t.horario)}</span> ${abiertoBadgeHTML(t.horario)}</div>` : ''}
       <div class="tags">${tagsHtml}</div>
-      <div class="card-actions">
-        <a class="wa-btn" href="${waLink}" target="_blank" rel="noopener">${ICON_WA} WhatsApp</a>
+      <div class="card-actions" onclick="event.stopPropagation();">
+        <a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" onclick="incrementTallerClics('${t.id}')">${ICON_WA} WhatsApp</a>
         <button type="button" class="icon-btn" onclick="shareTaller('${t.id}', event)" aria-label="Compartir">${ICON_SHARE}</button>
-        <button type="button" class="verlink" onclick="openTallerDetail('${t.id}')">Ver más →</button>
+        <button type="button" class="verlink" onclick="trackAndOpenTaller('${t.id}')">Ver más →</button>
       </div>
     </div>
   </div>`;
@@ -1556,13 +2379,14 @@ function tallerCard(t, destacadoStyle){
 
 async function renderHome(){
   try{
-    await Promise.all([fetchTalleres(), fetchAuspiciosList()]);
+    await Promise.all([fetchTalleres(), fetchAuspiciosList(), fetchFeedbacksList(), registrarYObtenerVisitas()]);
   }catch(e){
     console.error(e);
   }
   renderDestacados();
   renderListado();
   renderSponsors();
+  renderHomeFeedbacks();
   updateStats();
   abrirTallerCompartidoSiCorresponde();
 }
@@ -1592,6 +2416,18 @@ function renderDestacados(){
 function renderListado(){
   const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
   const cat = document.getElementById('categoryFilter').value;
+  const listadoSec = document.getElementById('listado-section');
+  const dividerAfterDestacados = document.getElementById('divider-after-destacados');
+  const isFiltering = Boolean(q || (cat && cat !== 'Todas') || soloFavoritos);
+
+  if(!isFiltering){
+    if(listadoSec) listadoSec.style.display = 'none';
+    if(dividerAfterDestacados) dividerAfterDestacados.style.display = 'none';
+    return;
+  }
+  if(listadoSec) listadoSec.style.display = '';
+  if(dividerAfterDestacados) dividerAfterDestacados.style.display = '';
+
   let list = talleres.filter(t=>t.estado==='aprobado');
   if(soloFavoritos){
     const favs = getFavoritos();
@@ -1622,21 +2458,68 @@ function renderSponsors(){
   const strip = document.getElementById('sponsorStrip');
   const section = document.getElementById('auspicios-section');
   const divider = document.getElementById('divider-before-auspicios');
-  if(auspicios.length===0){ section.style.display='none'; if(divider) divider.style.display='none'; return; }
-  section.style.display='';
+  if(section) section.style.display='';
   if(divider) divider.style.display='';
+  if(!strip) return;
+  if(auspicios.length===0){
+    strip.innerHTML = `
+      <div class="empty" style="width:100%;text-align:center;padding:32px 20px;">
+        <div style="font-size:26px;margin-bottom:8px;">📣</div>
+        <div style="font-weight:700;color:var(--ink);font-size:15px;margin-bottom:4px;">Espacio disponible para nuevos auspiciantes</div>
+        <div style="font-size:13px;color:var(--gray);margin-bottom:14px;">Sé el primero en promocionar tu marca o lubricentro aquí.</div>
+        <a href="https://wa.me/595975635770?text=Hola%20TallerYa%2C%20quiero%20ser%20auspiciante%20en%20la%20plataforma%20%F0%9F%91%8B" target="_blank" rel="noopener" class="submit-btn" style="width:auto;display:inline-flex;align-items:center;gap:6px;padding:9px 18px;font-size:13px;background:#25D366;text-decoration:none;">
+          💬 Contactar por WhatsApp (+595 975 635770)
+        </a>
+      </div>
+    `;
+    return;
+  }
   strip.innerHTML = auspicios.map(s=>{
     const bannerInner = s.imagen
       ? `<img src="${escapeAttr(s.imagen)}" alt="${escapeAttr(s.nombre)}">`
-      : '';
+      : `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:32px;">📣</div>`;
+    const waNumber = (s.whatsapp||'').replace(/[^0-9]/g,'');
+    const waLink = waNumber ? `https://wa.me/${waNumber}?text=${encodeURIComponent('Hola, vi a '+s.nombre+' como auspiciante en TallerYa 👋')}` : '';
+    const phoneClean = (s.telefono||'').replace(/[^0-9+]/g,'');
+    const starBadge = s.destacado ? `
+      <div style="position:absolute;top:10px;right:10px;background:linear-gradient(135deg, #F59E0B, #D97706);color:#FFFFFF;font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.25);z-index:2;letter-spacing:0.3px;">
+        ⭐ DESTACADO
+      </div>` : '';
+
     return `
-    <div class="sponsor-card">
-      <div class="sponsor-banner">${bannerInner}</div>
-      <div class="sponsor-body">
-        <span class="sponsor-cat">${escapeHtml(s.categoria)}</span>
-        <h4>${escapeHtml(s.nombre)}</h4>
-        <p>${escapeHtml(s.descripcion)}</p>
-        ${s.link ? `<a href="${escapeAttr(s.link)}" target="_blank" rel="noopener">Ver más →</a>` : ''}
+    <div class="sponsor-card" style="position:relative;display:flex;flex-direction:column;">
+      <div class="sponsor-banner" style="position:relative;">
+        ${bannerInner}
+        ${starBadge}
+      </div>
+      <div class="sponsor-body" style="display:flex;flex-direction:column;flex:1;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;">
+          <span class="sponsor-cat">${escapeHtml(s.categoria||'Auspiciante')}</span>
+          ${s.destacado ? `<span style="font-size:11.5px;font-weight:700;color:#D97706;display:inline-flex;align-items:center;gap:3px;">🌟 Oficial</span>` : ''}
+        </div>
+        <h4 style="margin:0 0 6px;font-size:16px;color:var(--ink);">${escapeHtml(s.nombre)}</h4>
+        ${s.descripcion ? `<p style="margin:0 0 10px;font-size:12.5px;color:var(--gray);line-height:1.45;flex:1;">${escapeHtml(s.descripcion)}</p>` : '<div style="flex:1;"></div>'}
+        
+        ${(s.direccion || s.ciudad) ? `<div style="font-size:12px;color:var(--ink);margin:0 0 6px;display:flex;align-items:center;gap:5px;">📍 <span>${escapeHtml([s.direccion, s.ciudad].filter(Boolean).join(', '))}</span></div>` : ''}
+        ${s.horario ? `<div style="font-size:12px;color:var(--gray);margin:0 0 10px;display:flex;align-items:center;gap:5px;">🕒 <span>${escapeHtml(s.horario)}</span></div>` : ''}
+
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:auto;padding-top:10px;border-top:1px solid var(--line);">
+          ${s.whatsapp ? `
+            <a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" style="padding:8px 12px;font-size:12.5px;justify-content:center;width:100%;box-sizing:border-box;">
+              ${ICON_WA} WhatsApp: ${escapeHtml(s.whatsapp)}
+            </a>
+          ` : ''}
+          ${(s.telefono && s.telefono !== s.whatsapp) ? `
+            <a href="tel:${escapeAttr(phoneClean)}" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;background:#F8FAFC;color:#1E293B;border-radius:8px;font-size:12.5px;font-weight:600;text-decoration:none;border:1px solid #CBD5E1;">
+              📞 Tel: ${escapeHtml(s.telefono)}
+            </a>
+          ` : (s.telefono && !s.whatsapp ? `
+            <a href="tel:${escapeAttr(phoneClean)}" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;background:#F8FAFC;color:#1E293B;border-radius:8px;font-size:12.5px;font-weight:600;text-decoration:none;border:1px solid #CBD5E1;">
+              📞 Tel: ${escapeHtml(s.telefono)}
+            </a>
+          ` : '')}
+          ${s.link ? `<a href="${escapeAttr(s.link)}" target="_blank" rel="noopener" style="font-size:12px;font-weight:700;color:var(--blue);text-align:center;text-decoration:none;padding:3px 0;">🌐 Visitar sitio web →</a>` : ''}
+        </div>
       </div>
     </div>
   `;
@@ -1648,6 +2531,7 @@ function updateStats(){
   document.getElementById('stat-talleres').textContent = aprobados.length;
   const ciudades = new Set(aprobados.map(t=>t.ciudad));
   document.getElementById('stat-ciudades').textContent = ciudades.size;
+  updateVisitasUI();
 }
 
 document.getElementById('searchInput').addEventListener('input', renderListado);
@@ -1766,26 +2650,334 @@ async function submitPostular(e){
 }
 
 /* ============================================================
-   ADMIN LOGIN
+   ADMIN LOGIN & ADVANCED SECURITY
 ============================================================ */
-async function tryLogin(){
-  const user = document.getElementById('adminUser').value.trim();
-  const pin = document.getElementById('adminPass').value;
-  try{
-    await apiSend('/api/login', 'POST', { user, pin });
-    isAdmin = true;
-    document.getElementById('loginErr').style.display='none';
-    document.getElementById('adminUser').value='';
-    document.getElementById('adminPass').value='';
-    go('admin');
-  }catch(err){
-    document.getElementById('loginErr').textContent = err.message || 'Usuario o PIN incorrecto. Probá de nuevo.';
-    document.getElementById('loginErr').style.display='block';
+let adminLockoutTimer = null;
+
+function toggleAdminPassVisibility() {
+  const passInput = document.getElementById('adminPass');
+  const toggleIcon = document.getElementById('adminPassToggleIcon');
+  const toggleText = document.getElementById('adminPassToggleText');
+  if (!passInput) return;
+  if (passInput.type === 'password') {
+    passInput.type = 'text';
+    if (toggleIcon) toggleIcon.textContent = '🙈';
+    if (toggleText) toggleText.textContent = 'Ocultar PIN';
+  } else {
+    passInput.type = 'password';
+    if (toggleIcon) toggleIcon.textContent = '👁️';
+    if (toggleText) toggleText.textContent = 'Ver PIN';
   }
 }
+
+function startLockoutCountdown(seconds) {
+  if (adminLockoutTimer) clearInterval(adminLockoutTimer);
+  let remaining = seconds;
+  const errEl = document.getElementById('loginErr');
+  const submitBtn = document.getElementById('adminSubmitBtn');
+
+  function update() {
+    if (remaining <= 0) {
+      if (adminLockoutTimer) clearInterval(adminLockoutTimer);
+      if (errEl) {
+        errEl.style.display = 'none';
+        errEl.innerHTML = '';
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Ingresar como Administrador';
+      }
+      checkAdminIpStatus();
+      return;
+    }
+
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    const timeStr = mins > 0 ? `${mins}m ${secs < 10 ? '0' : ''}${secs}s` : `${secs}s`;
+
+    if (errEl) {
+      errEl.style.display = 'block';
+      errEl.innerHTML = `
+        <div style="font-weight:700;margin-bottom:4px;">🚫 Acceso temporalmente bloqueado por seguridad</div>
+        <div>Superaste los 3 intentos permitidos desde tu IP. Podrás intentar de nuevo en: <b style="color:#B91C1C;font-size:14px;">${timeStr}</b></div>
+      `;
+    }
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = `Bloqueado temporalmente (${timeStr})`;
+    }
+    remaining--;
+  }
+
+  update();
+  adminLockoutTimer = setInterval(update, 1000);
+}
+
+async function checkAdminIpStatus() {
+  try {
+    const res = await apiGet('/api/login');
+    if (res && res.ipStatus) {
+      const { isLocked, remainingSeconds, remainingAttempts } = res.ipStatus;
+      const alertBox = document.getElementById('adminSecurityAlert');
+      const submitBtn = document.getElementById('adminSubmitBtn');
+
+      if (isLocked && remainingSeconds > 0) {
+        startLockoutCountdown(remainingSeconds);
+      } else if (remainingAttempts < 3) {
+        if (alertBox) {
+          alertBox.style.display = 'block';
+          alertBox.style.background = '#FFFBEB';
+          alertBox.style.border = '1px solid #FDE68A';
+          alertBox.style.color = '#B45309';
+          alertBox.innerHTML = `⚠️ <b>Atención:</b> Se registraron intentos fallidos previos. Te quedan <b>${remainingAttempts} de 3 intentos</b> disponibles.`;
+        }
+      } else {
+        if (alertBox) alertBox.style.display = 'none';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Ingresar como Administrador';
+        }
+      }
+    }
+  } catch (e) {
+    // Non-blocking
+  }
+}
+
+let admin2FAChallengeId = null;
+let admin2FATimerInterval = null;
+
+function resetAdminLogin2FA() {
+  admin2FAChallengeId = null;
+  if (admin2FATimerInterval) clearInterval(admin2FATimerInterval);
+  
+  const dispatchBox = document.getElementById('admin2FADispatchBox');
+  if (dispatchBox) dispatchBox.style.display = 'none';
+  
+  const faField = document.getElementById('admin2FAField');
+  if (faField) faField.style.display = 'none';
+  
+  const faInput = document.getElementById('admin2FACode');
+  if (faInput) faInput.value = '';
+
+  const userInput = document.getElementById('adminUser');
+  const passInput = document.getElementById('adminPass');
+  if (userInput) userInput.readOnly = false;
+  if (passInput) passInput.readOnly = false;
+
+  const submitBtn = document.getElementById('adminSubmitBtn');
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Ingresar como Administrador';
+  }
+}
+
+function start2FATimer(seconds = 300) {
+  if (admin2FATimerInterval) clearInterval(admin2FATimerInterval);
+  let remaining = seconds;
+  const timerEl = document.getElementById('admin2FATimer');
+
+  function tick() {
+    if (remaining <= 0) {
+      if (admin2FATimerInterval) clearInterval(admin2FATimerInterval);
+      if (timerEl) timerEl.textContent = 'Expirado';
+      const errEl = document.getElementById('loginErr');
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = '⚠️ La clave de verificación ha caducado. Hacé clic en "Reenviar clave" para solicitar un nuevo código.';
+      }
+      return;
+    }
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    if (timerEl) timerEl.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    remaining--;
+  }
+
+  tick();
+  admin2FATimerInterval = setInterval(tick, 1000);
+}
+
+async function reenviar2FACode() {
+  const userInput = document.getElementById('adminUser');
+  const passInput = document.getElementById('adminPass');
+  if (!userInput || !passInput) return;
+  
+  admin2FAChallengeId = null;
+  userInput.readOnly = false;
+  passInput.readOnly = false;
+  
+  showToast('📩 Solicitando reenvío de clave de verificación...');
+  await tryLogin();
+}
+
+async function tryLogin(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const userInput = document.getElementById('adminUser');
+  const passInput = document.getElementById('adminPass');
+  const faInput = document.getElementById('admin2FACode');
+  const user = userInput ? userInput.value.trim() : '';
+  const pin = passInput ? passInput.value : '';
+  const code = faInput ? faInput.value.trim() : '';
+  const errEl = document.getElementById('loginErr');
+  const submitBtn = document.getElementById('adminSubmitBtn');
+  const alertBox = document.getElementById('adminSecurityAlert');
+
+  if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+
+  // -------------------------------------------------------------
+  // PASO 2: Verificar la clave aleatoria de 6 dígitos (Tercer Box)
+  // -------------------------------------------------------------
+  if (admin2FAChallengeId) {
+    if (!code || code.length < 6) {
+      if (errEl) {
+        errEl.textContent = 'Por favor, ingresá en el tercer casillero los 6 dígitos de la clave que recibiste en tu email o celular.';
+        errEl.style.display = 'block';
+      }
+      if (faInput) faInput.focus();
+      return;
+    }
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Verificando clave de seguridad...'; }
+
+    try {
+      const resp = await apiSend('/api/login', 'POST', {
+        action: 'verify_2fa',
+        challengeId: admin2FAChallengeId,
+        code
+      });
+
+      if (resp && resp.token) {
+        try { sessionStorage.setItem('tallerya_admin_token', resp.token); } catch(e){}
+      }
+      isAdmin = true;
+      if (adminLockoutTimer) clearInterval(adminLockoutTimer);
+      if (admin2FATimerInterval) clearInterval(admin2FATimerInterval);
+      if (errEl) errEl.style.display = 'none';
+      if (alertBox) alertBox.style.display = 'none';
+      
+      resetAdminLogin2FA();
+      if (userInput) userInput.value = '';
+      if (passInput) passInput.value = '';
+
+      showToast('🛡️ Autenticación completada con éxito');
+      go('admin');
+    } catch (err) {
+      console.error('[tryLogin Step 2 Error]:', err);
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Confirmar e Ingresar con Clave 🔐'; }
+
+      if (err.status === 429 || (err.message && err.message.includes('bloqueado'))) {
+        resetAdminLogin2FA();
+        startLockoutCountdown(15 * 60);
+        return;
+      }
+
+      if (err.expired || (err.message && err.message.includes('expirado')) || (err.message && err.message.includes('caducado'))) {
+        resetAdminLogin2FA();
+      }
+
+      if (errEl) {
+        errEl.textContent = err.message || 'Clave de verificación incorrecta. Revisá el código e intentá nuevamente.';
+        errEl.style.display = 'block';
+      }
+
+      checkAdminIpStatus();
+    }
+    return;
+  }
+
+  // -------------------------------------------------------------
+  // PASO 1: Validar Usuario y Contraseña/PIN iniciales
+  // -------------------------------------------------------------
+  if (!user) {
+    if (errEl) { errEl.textContent = 'Por favor ingresá tu email de administrador.'; errEl.style.display = 'block'; }
+    if (userInput) userInput.focus();
+    return;
+  }
+  if (!pin) {
+    if (errEl) { errEl.textContent = 'Por favor ingresá tu contraseña o PIN de administrador.'; errEl.style.display = 'block'; }
+    if (passInput) passInput.focus();
+    return;
+  }
+
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Validando credenciales...'; }
+
+  try {
+    const resp = await apiSend('/api/login', 'POST', { user, pin });
+
+    // Si el backend solicita verificación de doble factor (2FA)
+    if (resp && resp.requires2FA) {
+      admin2FAChallengeId = resp.challengeId;
+
+      // Actualizar UI con aviso de envío al email/celular autorizado
+      const dispatchBox = document.getElementById('admin2FADispatchBox');
+      const faField = document.getElementById('admin2FAField');
+      const maskedEmailEl = document.getElementById('admin2FAMaskedEmail');
+      const maskedPhoneEl = document.getElementById('admin2FAMaskedPhone');
+
+      if (maskedEmailEl && resp.maskedEmail) maskedEmailEl.textContent = resp.maskedEmail;
+      if (maskedPhoneEl && resp.maskedPhone) maskedPhoneEl.textContent = resp.maskedPhone;
+
+      if (dispatchBox) dispatchBox.style.display = 'block';
+      if (faField) faField.style.display = 'block';
+
+      if (userInput) userInput.readOnly = true;
+      if (passInput) passInput.readOnly = true;
+
+      start2FATimer(resp.expiresInSeconds || 300);
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Confirmar e Ingresar con Clave 🔐';
+      }
+
+      if (faInput) {
+        faInput.value = '';
+        faInput.focus();
+      }
+
+      showToast('📩 Clave de verificación enviada a tus canales autorizados');
+      return;
+    }
+
+    // Si retornó token directamente
+    if (resp && resp.token) {
+      try { sessionStorage.setItem('tallerya_admin_token', resp.token); } catch(e){}
+    }
+    isAdmin = true;
+    if (adminLockoutTimer) clearInterval(adminLockoutTimer);
+    if (errEl) errEl.style.display = 'none';
+    if (alertBox) alertBox.style.display = 'none';
+    if (userInput) userInput.value = '';
+    if (passInput) passInput.value = '';
+    showToast('🛡️ Sesión de Administrador iniciada de forma segura');
+    go('admin');
+  } catch (err) {
+    console.error('[tryLogin Step 1 Error]:', err);
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Ingresar como Administrador'; }
+
+    // If locked out (429 or status returned)
+    if (err.status === 429 || (err.message && err.message.includes('bloqueado'))) {
+      startLockoutCountdown(15 * 60);
+      return;
+    }
+
+    if (errEl) {
+      errEl.textContent = err.message || 'Usuario o PIN incorrecto. Probá de nuevo.';
+      errEl.style.display = 'block';
+    }
+
+    // Refresh IP remaining status
+    checkAdminIpStatus();
+  }
+}
+
 async function logoutAdmin(){
-  try{ await fetch('/api/logout', { method:'POST', credentials:'same-origin' }); }catch(e){}
+  resetAdminLogin2FA();
+  try{ sessionStorage.removeItem('tallerya_admin_token'); }catch(e){}
+  try{ await fetch('/api/logout', { method:'POST', credentials:'include', headers: { ...getAuthHeaders() } }); }catch(e){}
   isAdmin = false;
+  showToast('Sesión de administrador cerrada');
   go('home');
 }
 
@@ -2098,8 +3290,10 @@ function setAdminTab(tab){
 
 let currentAdminFotos = {};
 
-async function renderAdmin(){
-  try{ await fetchTalleres(); }catch(e){ console.error(e); }
+async function renderAdmin(fetchFirst = true){
+  if (fetchFirst) {
+    try{ await fetchTalleres(true); }catch(e){ console.error(e); }
+  }
   document.getElementById('count-pendiente').textContent = talleres.filter(t=>t.estado==='pendiente').length;
   document.getElementById('count-aprobado').textContent = talleres.filter(t=>t.estado==='aprobado').length;
   document.getElementById('count-rechazado').textContent = talleres.filter(t=>t.estado==='rechazado').length;
@@ -2127,11 +3321,22 @@ async function renderAdmin(){
       </div>
     ` : `<div style="font-size:12px;color:var(--gray);margin:6px 0;">📷 Sin fotos adjuntas</div>`;
 
+    const destacadoBadge = t.destacado 
+      ? `<span class="cat-pill" style="background:#FEF3C7;color:#B45309;border:1.5px solid #F59E0B;font-weight:800;font-size:11.5px;padding:3px 10px;">🌟 DESTACADO ACTIVO</span>`
+      : (t.destacadoSolicitado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió destacado</span>' : '');
+
+    const destacadoBtnHTML = t.destacado
+      ? `<button type="button" class="abtn feature on" onclick="toggleDestacado('${t.id}', event)" style="background:#D97706 !important;color:#FFFFFF !important;border:2px solid #92400E !important;font-weight:800;box-shadow:0 3px 8px rgba(217,119,6,0.45);">⭐ DESTACADO (SÍ)</button>`
+      : `<button type="button" class="abtn feature" onclick="toggleDestacado('${t.id}', event)" style="background:#F1F5F9 !important;color:#475569 !important;border:1.5px solid #CBD5E1 !important;font-weight:600;">☆ Sin destacar (NO)</button>`;
+
     return `
     <div class="admin-row">
       <div class="info">
-        <h4>${escapeHtml(t.nombre)} <span class="cat-pill">${escapeHtml(t.categoria)}</span> ${t.destacadoSolicitado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió destacado</span>' : ''} ${t.auspicioSolicitado ? '<span class="cat-pill" style="background:#EAF0FD;color:var(--blue);">📢 Quiere ser auspiciante</span>' : ''}</h4>
+        <h4>${escapeHtml(t.nombre)} <span class="cat-pill">${escapeHtml(t.categoria)}</span> ${destacadoBadge} ${t.auspicioSolicitado ? '<span class="cat-pill" style="background:#EAF0FD;color:var(--blue);">📢 Quiere ser auspiciante</span>' : ''}</h4>
         ${t.codigo ? `<div class="meta" style="font-weight:700;color:var(--ink);">🧾 Código: ${escapeHtml(t.codigo)}</div>` : ''}
+        ${t.usuarioLogin ? `<div class="meta" style="font-weight:700;color:#1D4ED8;background:#EFF6FF;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;margin-top:2px;border:1px solid #BFDBFE;">👤 <b>Usuario:</b> ${escapeHtml(t.usuarioLogin)}</div>` : ''}
+        ${t.email ? `<div class="meta" style="font-weight:700;color:#1E40AF;background:#F0FDF4;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;margin-top:2px;border:1px solid #BBF7D0;">✉️ <b>Email registrado:</b> ${escapeHtml(t.email)}</div>` : ''}
+        <div class="meta" style="font-weight:700;color:#059669;background:#ECFDF5;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;margin-top:2px;border:1px solid #A7F3D0;">👁️ <b>Visitas recibidas en su ficha:</b> ${t.clics || 0}</div>
         <div class="meta">${ICON_PIN}${escapeHtml(t.direccion||t.ciudad)}</div>
         <div class="meta">📞 ${escapeHtml(t.whatsapp||t.telefono||'—')}</div>
         ${t.telefonoPago ? `<div class="meta" style="color:var(--orange-dark);font-weight:700;">☎️ Contacto para pago: ${escapeHtml(t.telefonoPago)}</div>` : ''}
@@ -2139,30 +3344,69 @@ async function renderAdmin(){
         ${fotosGalleryHTML}
       </div>
       <div class="admin-actions">
-        ${t.estado!=='aprobado' ? `<button class="abtn approve" onclick="setEstado('${t.id}','aprobado')">${ICON_CHECK} Aprobar</button>` : ''}
-        ${t.estado!=='rechazado' ? `<button class="abtn reject" onclick="setEstado('${t.id}','rechazado')">${ICON_X} Rechazar</button>` : ''}
-        <button class="abtn feature ${t.destacado?'on':''}" onclick="toggleDestacado('${t.id}')">${ICON_STAR} Destacado</button>
-        <button class="abtn edit" onclick="openEditModal('${t.id}')">${ICON_EDIT} Editar</button>
-        <button class="abtn delete" onclick="deleteTaller('${t.id}')">${ICON_TRASH}</button>
+        ${t.estado!=='aprobado' ? `<button type="button" class="abtn approve" onclick="setEstado('${t.id}','aprobado')">${ICON_CHECK} Aprobar</button>` : ''}
+        ${t.estado!=='rechazado' ? `<button type="button" class="abtn reject" onclick="setEstado('${t.id}','rechazado')">${ICON_X} Rechazar</button>` : ''}
+        ${destacadoBtnHTML}
+        <button type="button" class="abtn edit" onclick="openEditModal('${t.id}')">${ICON_EDIT} Editar</button>
+        <button type="button" class="abtn delete" onclick="deleteTaller('${t.id}')">${ICON_TRASH}</button>
       </div>
     </div>`;
   }).join('');
 }
 
 async function setEstado(id, estado){
-  try{ await apiSend('/api/talleres/'+id, 'PATCH', { estado }); renderAdmin(); }
-  catch(err){ alert('No se pudo actualizar: ' + err.message); }
+  const t = talleres.find(x=>x.id===id);
+  const prevEstado = t ? t.estado : null;
+  if(t){
+    t.estado = estado;
+    renderAdmin(false);
+  }
+  try{
+    await apiSend('/api/talleres/'+id, 'PATCH', { estado });
+    await renderAdmin(true);
+    showToast(estado === 'aprobado' ? '✅ Taller aprobado' : '❌ Taller rechazado');
+  }catch(err){
+    console.error('[setEstado Error]:', err);
+    if(t && prevEstado){
+      t.estado = prevEstado;
+      renderAdmin(false);
+    }
+    alert('No se pudo actualizar el estado: ' + err.message);
+  }
 }
-async function toggleDestacado(id){
+
+async function toggleDestacado(id, event){
+  if(event) event.stopPropagation();
   const t = talleres.find(x=>x.id===id);
   if(!t) return;
-  try{ await apiSend('/api/talleres/'+id, 'PATCH', { destacado: !t.destacado }); renderAdmin(); }
-  catch(err){ alert('No se pudo actualizar: ' + err.message); }
+  const nuevoVal = !Boolean(t.destacado);
+  t.destacado = nuevoVal;
+  renderAdmin(false);
+  try{
+    await apiSend('/api/talleres/'+id, 'PATCH', { destacado: nuevoVal });
+    await renderAdmin(true);
+    showToast(nuevoVal ? '⭐ Taller marcado como Destacado' : '☆ Taller quitado de Destacados');
+  }catch(err){
+    console.error('[toggleDestacado Error]:', err);
+    t.destacado = !nuevoVal;
+    renderAdmin(false);
+    alert('No se pudo actualizar destacado: ' + err.message);
+  }
 }
+
 async function deleteTaller(id){
-  if(!confirm('¿Eliminar este taller definitivamente?')) return;
-  try{ await apiSend('/api/talleres/'+id, 'DELETE'); renderAdmin(); }
-  catch(err){ alert('No se pudo eliminar: ' + err.message); }
+  const t = talleres.find(x=>x.id===id);
+  const nombre = t ? t.nombre : 'este taller';
+  if(!confirm(`¿Eliminar definitivamente "${nombre}"? Esta acción no se puede deshacer.`)) return;
+  try{
+    await apiSend('/api/talleres/'+id, 'DELETE');
+    talleres = talleres.filter(x=>x.id!==id);
+    await renderAdmin(true);
+    showToast('🗑️ Taller eliminado');
+  }catch(err){
+    console.error('[deleteTaller Error]:', err);
+    alert('No se pudo eliminar el taller: ' + err.message);
+  }
 }
 
 function openEditModal(id){
@@ -2174,7 +3418,7 @@ function openEditModal(id){
     <div class="field"><label>Nombre del taller *</label><input id="e-nombre" value="${escapeAttr(t.nombre)}"></div>
     <div class="row2">
       <div class="field"><label>Categoría</label>
-        <select id="e-categoria">${CATEGORIES.map(c=>`<option value="${c}" ${c===t.categoria?'selected':''}>${c}</option>`).join('')}</select>
+        <select id="e-categoria">${(CATEGORIES && CATEGORIES.length ? CATEGORIES : ['Mecánica General', 'Otros']).map(c=>`<option value="${c}" ${c===t.categoria?'selected':''}>${c}</option>`).join('')}</select>
       </div>
       <div class="field"><label>Horario</label><input id="e-horario" value="${escapeAttr(t.horario||'')}" placeholder="Lun-Vie 9-18h"></div>
     </div>
@@ -2192,42 +3436,117 @@ function openEditModal(id){
     ${multiImageUploadHTML('e', t.imagenes && t.imagenes.length ? t.imagenes : (t.imagen ? [t.imagen] : []))}
     <div id="e-destacado-wrap"></div>
     ${mapFieldHTML('e', t.ubicacion)}
-    <button class="submit-btn" onclick="saveEdit('${t.id}')">Guardar cambios</button>
+    <button class="submit-btn" id="e-save-btn" onclick="saveEdit('${t.id}')">Guardar cambios</button>
   `;
   document.getElementById('editModalBg').classList.add('show');
-  document.getElementById('e-destacado-wrap').innerHTML = destacadoBoxHTML('e', {
-    mostrarAuspicio: true,
-    destacadoChecked: Boolean(t.destacadoSolicitado),
-    auspicioChecked: Boolean(t.auspicioSolicitado),
-    telefono: t.telefonoPago || ''
-  });
+  document.getElementById('e-destacado-wrap').innerHTML = `
+    <div class="field destacado-box">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14.5px;margin-bottom:10px;">
+        <input type="checkbox" id="e-destacado-activo-check" ${t.destacado ? 'checked' : ''} style="width:18px;height:18px;flex-shrink:0;">
+        🌟 <b>Destacado ACTIVO</b> <span class="hint">(se muestra destacado en el inicio)</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14.5px;margin-bottom:10px;">
+        <input type="checkbox" id="e-destacado-check" ${t.destacadoSolicitado ? 'checked' : ''} onchange="toggleDestacadoPago('e')" style="width:18px;height:18px;flex-shrink:0;">
+        ⭐ Pidió destacar taller <span class="hint">(solicitud recibida)</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14.5px;">
+        <input type="checkbox" id="e-auspicio-check" ${t.auspicioSolicitado ? 'checked' : ''} onchange="toggleDestacadoPago('e')" style="width:18px;height:18px;flex-shrink:0;">
+        📢 Pidió ser auspiciante
+      </label>
+      <div id="e-destacado-pago" style="${(t.destacadoSolicitado || t.auspicioSolicitado) ? '' : 'display:none;'}margin-top:14px;">
+        <div class="pago-card" style="text-align:left;">
+          <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px;">Teléfono de contacto para pago</label>
+          <input type="text" id="e-telefono-pago" value="${escapeAttr(t.telefonoPago||'')}" placeholder="Ej: 0975 123 456" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px;box-sizing:border-box;">
+        </div>
+      </div>
+    </div>
+  `;
   setupMultiImageUpload('e', t.imagenes && t.imagenes.length ? t.imagenes : (t.imagen ? [t.imagen] : []));
   initPinMap('e', t.ubicacion);
 }
+
 async function saveEdit(id){
+  const t = talleres.find(x=>x.id===id);
+  const nombreInput = document.getElementById('e-nombre');
+  const direccionInput = document.getElementById('e-direccion');
+  const ciudadInput = document.getElementById('e-ciudad');
+  const whatsappInput = document.getElementById('e-whatsapp');
+
+  if(!nombreInput || !direccionInput || !ciudadInput || !whatsappInput){
+    console.error('[saveEdit Error]: Form elements not found');
+    alert('Error al leer el formulario.');
+    return;
+  }
+
+  const nombre = nombreInput.value.trim();
+  const direccion = direccionInput.value.trim();
+  const ciudad = ciudadInput.value.trim();
+  const whatsapp = whatsappInput.value.trim();
+
+  if(!nombre){
+    alert('Por favor, ingresá el nombre del taller.');
+    nombreInput.focus();
+    return;
+  }
+  if(!direccion){
+    alert('Por favor, ingresá la dirección.');
+    direccionInput.focus();
+    return;
+  }
+  if(!ciudad){
+    alert('Por favor, ingresá la ciudad.');
+    ciudadInput.focus();
+    return;
+  }
+  if(!whatsapp){
+    alert('Por favor, ingresá el WhatsApp.');
+    whatsappInput.focus();
+    return;
+  }
+
+  const destacadoActivoCheck = document.getElementById('e-destacado-activo-check');
+  const destacadoCheck = document.getElementById('e-destacado-check');
+  const auspicioCheck = document.getElementById('e-auspicio-check');
+  const telefonoPagoInput = document.getElementById('e-telefono-pago');
+
   const payload = {
-    nombre: document.getElementById('e-nombre').value.trim(),
-    categoria: document.getElementById('e-categoria').value,
-    horario: document.getElementById('e-horario').value.trim(),
-    descripcion: document.getElementById('e-descripcion').value.trim(),
-    servicios: document.getElementById('e-servicios').value.split(',').map(s=>s.trim()).filter(Boolean),
-    direccion: document.getElementById('e-direccion').value.trim(),
-    ciudad: document.getElementById('e-ciudad').value.trim(),
-    telefono: document.getElementById('e-telefono').value.trim(),
-    whatsapp: document.getElementById('e-whatsapp').value.trim(),
-    email: document.getElementById('e-email').value.trim(),
+    nombre,
+    categoria: document.getElementById('e-categoria') ? document.getElementById('e-categoria').value : (t ? t.categoria : ''),
+    horario: document.getElementById('e-horario') ? document.getElementById('e-horario').value.trim() : '',
+    descripcion: document.getElementById('e-descripcion') ? document.getElementById('e-descripcion').value.trim() : '',
+    servicios: document.getElementById('e-servicios') ? document.getElementById('e-servicios').value.split(',').map(s=>s.trim()).filter(Boolean) : [],
+    direccion,
+    ciudad,
+    telefono: document.getElementById('e-telefono') ? document.getElementById('e-telefono').value.trim() : '',
+    whatsapp,
+    email: document.getElementById('e-email') ? document.getElementById('e-email').value.trim() : '',
     imagenes: mimgGetArr('e'),
     ubicacion: getPinCoords('e'),
-    destacadoSolicitado: document.getElementById('e-destacado-check') ? document.getElementById('e-destacado-check').checked : false,
-    auspicioSolicitado: document.getElementById('e-auspicio-check') ? document.getElementById('e-auspicio-check').checked : false,
-    telefonoPago: document.getElementById('e-telefono-pago') ? document.getElementById('e-telefono-pago').value.trim() : ''
+    destacado: destacadoActivoCheck ? destacadoActivoCheck.checked : (t ? Boolean(t.destacado) : false),
+    destacadoSolicitado: destacadoCheck ? destacadoCheck.checked : false,
+    auspicioSolicitado: auspicioCheck ? auspicioCheck.checked : false,
+    telefonoPago: telefonoPagoInput ? telefonoPagoInput.value.trim() : ''
   };
+
+  const btn = document.getElementById('e-save-btn');
+  if(btn){
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+  }
+
   try{
     await apiSend('/api/talleres/'+id, 'PATCH', payload);
     closeModal();
-    renderAdmin();
+    await renderAdmin(true);
+    showToast('💾 Cambios guardados correctamente');
   }catch(err){
+    console.error('[saveEdit Error]:', err);
     alert('No se pudo guardar: ' + err.message);
+  }finally{
+    if(btn){
+      btn.disabled = false;
+      btn.textContent = 'Guardar cambios';
+    }
   }
 }
 function openTallerDetail(id){
@@ -2250,6 +3569,7 @@ function openTallerDetail(id){
       </div>`;
   }
   currentDetailFotos = fotos;
+  const clicsNum = typeof t.clics === 'number' ? t.clics : 0;
 
   document.getElementById('modalTitle').textContent = t.nombre;
   document.getElementById('modalBody').innerHTML = `
@@ -2257,6 +3577,9 @@ function openTallerDetail(id){
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center;">
       <span class="cat-pill">${escapeHtml(t.categoria)}</span>
       <span class="verified-badge">${ICON_CHECK} Verificado</span>
+      <span class="clics-badge" style="font-size:12px;font-weight:700;color:#1D4ED8;background:#EFF6FF;padding:3px 10px;border-radius:20px;border:1px solid #BFDBFE;display:inline-flex;align-items:center;gap:4px;">
+        👁️ <span id="modal-clics-count-${t.id}">${clicsNum}</span> visitas recibidas
+      </span>
       ${t.destacado ? `<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">${ICON_STAR} Destacado</span>` : ''}
       ${abiertoBadgeHTML(t.horario)}
       <div style="margin-left:auto;display:flex;gap:8px;">
@@ -2266,14 +3589,14 @@ function openTallerDetail(id){
     </div>
     ${t.descripcion ? `<p style="color:var(--gray);font-size:14.5px;line-height:1.6;margin:0 0 16px;">${escapeHtml(t.descripcion)}</p>` : ''}
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
-      <a href="${mapsUrl}" target="_blank" rel="noopener" class="row-icon" style="text-decoration:none;font-size:14px;">${ICON_PIN}<span style="text-decoration:underline;">${escapeHtml(t.direccion || t.ciudad)}</span></a>
+      <a href="${mapsUrl}" target="_blank" rel="noopener" class="row-icon" onclick="incrementTallerClics('${t.id}')" style="text-decoration:none;font-size:14px;">${ICON_PIN}<span style="text-decoration:underline;">${escapeHtml(t.direccion || t.ciudad)}</span></a>
       ${t.horario ? `<div class="row-icon" style="font-size:14px;">${ICON_CLOCK}<span>${escapeHtml(t.horario)}</span></div>` : ''}
-      ${t.telefono ? `<a href="tel:${escapeAttr(t.telefono.replace(/[^0-9+]/g,''))}" class="row-icon" style="text-decoration:none;font-size:14px;">${ICON_PHONE}<span style="text-decoration:underline;">${escapeHtml(t.telefono)}</span></a>` : ''}
+      ${t.telefono ? `<a href="tel:${escapeAttr(t.telefono.replace(/[^0-9+]/g,''))}" class="row-icon" onclick="incrementTallerClics('${t.id}')" style="text-decoration:none;font-size:14px;">${ICON_PHONE}<span style="text-decoration:underline;">${escapeHtml(t.telefono)}</span></a>` : ''}
       ${t.whatsapp ? `<div class="row-icon" style="font-size:14px;">${ICON_PHONE}<span>WhatsApp: ${escapeHtml(t.whatsapp)}</span></div>` : ''}
-      ${t.email ? `<a href="mailto:${escapeAttr(t.email)}" class="row-icon" style="text-decoration:none;font-size:14px;">${ICON_MAIL}<span style="text-decoration:underline;">${escapeHtml(t.email)}</span></a>` : ''}
+      ${t.email ? `<a href="mailto:${escapeAttr(t.email)}" class="row-icon" onclick="incrementTallerClics('${t.id}')" style="text-decoration:none;font-size:14px;">${ICON_MAIL}<span style="text-decoration:underline;">${escapeHtml(t.email)}</span></a>` : ''}
     </div>
     ${t.servicios && t.servicios.length ? `<div class="tags" style="margin-bottom:20px;">${t.servicios.map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join('')}</div>` : ''}
-    ${waLink ? `<a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" style="width:100%;box-sizing:border-box;">${ICON_WA} Contactar por WhatsApp</a>` : ''}
+    ${waLink ? `<a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" onclick="incrementTallerClics('${t.id}')" style="width:100%;box-sizing:border-box;">${ICON_WA} Contactar por WhatsApp</a>` : ''}
   `;
   document.getElementById('editModalBg').classList.add('show');
 }
@@ -2537,22 +3860,28 @@ function closeModal(){
 /* ============================================================
    ADMIN — CATEGORÍAS
 ============================================================ */
-let categoriasConId = [];
 /* ============================================================
    REPUESTOS Y ACCESORIOS — vista pública
 ============================================================ */
 function productoCard(p){
   const waNumber = (p.whatsapp||'').replace(/[^0-9]/g,'');
   const waLink = waNumber ? `https://wa.me/${waNumber}?text=${encodeURIComponent('Hola, vi tu publicación de "'+p.nombre+'" en TallerYa 👋')}` : '#';
-  const bannerInner = p.imagen
-    ? `<img src="${escapeAttr(p.imagen)}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;">`
+  const fotos = (p.imagenes && p.imagenes.length ? p.imagenes : (p.imagen ? [p.imagen] : []));
+  const primeraFoto = fotos[0] || p.imagen || '';
+  const bannerInner = primeraFoto
+    ? `<img src="${escapeAttr(primeraFoto)}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;">`
     : ICON_WRENCH;
+  const fotoCountBadge = fotos.length > 1
+    ? `<span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.72);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;backdrop-filter:blur(4px);display:flex;align-items:center;gap:4px;">📷 ${fotos.length}</span>`
+    : '';
+
   return `
   <div class="card">
     <div class="card-banner" style="background:${gradFor(p.id)}">
       ${bannerInner}
       ${p.destacado ? `<span class="badge-destacado">${ICON_STAR} Destacado</span>` : ''}
       <span class="card-cat">${escapeHtml(p.categoria||'Repuestos')}</span>
+      ${fotoCountBadge}
     </div>
     <div class="card-body">
       <h3>${escapeHtml(p.nombre)}</h3>
@@ -2566,23 +3895,53 @@ function productoCard(p){
     </div>
   </div>`;
 }
+
+let currentProductoActiveFotoIdx = 0;
+
+function switchProductoDetailFoto(idx){
+  currentProductoActiveFotoIdx = idx;
+  const mainImg = document.getElementById('producto-detail-main-img');
+  if(mainImg && currentDetailFotos[idx]){
+    mainImg.src = currentDetailFotos[idx];
+    mainImg.onclick = () => openLightbox(currentDetailFotos, idx);
+  }
+  document.querySelectorAll('.pdetail-thumb').forEach((el, i)=>{
+    el.style.border = (i === idx) ? '2.5px solid var(--blue)' : '1.5px solid var(--line)';
+    el.style.opacity = (i === idx) ? '1' : '0.7';
+  });
+}
+
 function openProductoDetail(id){
   const p = productos.find(x=>x.id===id);
   if(!p) return;
   const waNumber = (p.whatsapp||'').replace(/[^0-9]/g,'');
   const waLink = waNumber ? `https://wa.me/${waNumber}?text=${encodeURIComponent('Hola, vi tu publicación de "'+p.nombre+'" en TallerYa 👋')}` : '';
-  const fotos = (p.imagenes && p.imagenes.length ? p.imagenes : (p.imagen ? [p.imagen] : []));
+  const fotos = (p.imagenes && p.imagenes.length ? p.imagenes : (p.imagen ? [p.imagen] : [])).filter(Boolean);
+  currentDetailFotos = fotos;
+  currentProductoActiveFotoIdx = 0;
 
   let galeriaHTML = '';
   if(fotos.length===1){
-    galeriaHTML = `<img src="${escapeAttr(fotos[0])}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:220px;object-fit:contain;background:var(--bg);border-radius:12px;margin-bottom:16px;display:block;cursor:zoom-in;" onclick="openLightbox(currentDetailFotos,0)">`;
+    galeriaHTML = `
+      <div style="position:relative;margin-bottom:16px;">
+        <img src="${escapeAttr(fotos[0])}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:250px;object-fit:contain;background:var(--bg);border-radius:12px;display:block;cursor:zoom-in;border:1px solid var(--line);" onclick="openLightbox(currentDetailFotos,0)">
+        <div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;pointer-events:none;">🔍 Clic para ampliar</div>
+      </div>`;
   }else if(fotos.length>1){
     galeriaHTML = `
-      <div style="display:grid;grid-template-columns:repeat(${fotos.length},1fr);gap:8px;margin-bottom:16px;">
-        ${fotos.map((f,i)=>`<img src="${escapeAttr(f)}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:150px;object-fit:cover;border-radius:10px;background:var(--bg);display:block;cursor:zoom-in;" onclick="openLightbox(currentDetailFotos,${i})">`).join('')}
+      <div style="margin-bottom:16px;">
+        <div style="position:relative;margin-bottom:8px;">
+          <img id="producto-detail-main-img" src="${escapeAttr(fotos[0])}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:250px;object-fit:contain;background:var(--bg);border-radius:12px;display:block;cursor:zoom-in;border:1px solid var(--line);" onclick="openLightbox(currentDetailFotos,0)">
+          <div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;pointer-events:none;">🔍 Clic para ampliar</div>
+        </div>
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;align-items:center;">
+          ${fotos.map((f,i)=>`
+            <img src="${escapeAttr(f)}" class="pdetail-thumb" alt="Miniatura ${i+1}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;background:#fff;cursor:pointer;border:${i===0?'2.5px solid var(--blue)':'1.5px solid var(--line)'};opacity:${i===0?'1':'0.7'};flex-shrink:0;transition:all .15s ease;" onclick="switchProductoDetailFoto(${i})">
+          `).join('')}
+        </div>
+        <div style="font-size:11.5px;color:var(--gray);margin-top:4px;">📷 ${fotos.length} fotos disponibles. Tocá una miniatura para verla o hacé clic en la foto para pantalla completa.</div>
       </div>`;
   }
-  currentDetailFotos = fotos;
 
   document.getElementById('modalTitle').textContent = p.nombre;
   document.getElementById('modalBody').innerHTML = `
@@ -2601,7 +3960,7 @@ function openProductoDetail(id){
 async function renderProductosPublico(){
   const grid = document.getElementById('productosGrid');
   try{
-    productos = await apiGet('/api/productos');
+    await fetchProductosList(false);
   }catch(e){
     grid.innerHTML = `<div class="empty" style="grid-column:1/-1;">${ICON_INBOX}<div>No se pudieron cargar las publicaciones.</div></div>`;
     return;
@@ -2650,7 +4009,7 @@ async function submitProducto(e){
     mimgSetArr('p', []);
     toggleDestacadoPago('p');
     const ok = document.getElementById('productoOk');
-    ok.innerHTML = `${ICON_CHECK} ¡Listo! Tu publicación fue enviada y está pendiente de aprobación.${resp && resp.codigo ? ` Código: <b>${resp.codigo}</b>.` : ''}`;
+    ok.innerHTML = `${ICON_CHECK} ¡Listo! Tu publicación fue enviada y está pendiente de aprobación por el administrador.${resp && resp.codigo ? ` Código: <b>${resp.codigo}</b>.` : ''}`;
     ok.classList.add('show');
     setTimeout(()=>{ ok.classList.remove('show'); cerrarFormProducto(); }, 3500);
   }catch(err){
@@ -2668,8 +4027,10 @@ function setAdminProductosTab(tab){
   document.querySelectorAll('#adminProductosTabs .tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
   renderProductosAdmin();
 }
-async function renderProductosAdmin(){
-  try{ productos = await apiGet('/api/productos'); }catch(e){ console.error(e); }
+async function renderProductosAdmin(fetchFirst = true){
+  if (fetchFirst) {
+    try{ await fetchProductosList(true); }catch(e){ console.error(e); }
+  }
   document.getElementById('count-p-pendiente').textContent = productos.filter(p=>p.estado==='pendiente').length;
   document.getElementById('count-p-aprobado').textContent = productos.filter(p=>p.estado==='aprobado').length;
   document.getElementById('count-p-rechazado').textContent = productos.filter(p=>p.estado==='rechazado').length;
@@ -2680,41 +4041,106 @@ async function renderProductosAdmin(){
     wrap.innerHTML = `<div class="empty">${ICON_INBOX}<div>No hay publicaciones en esta categoría.</div></div>`;
     return;
   }
-  wrap.innerHTML = list.map(p=>`
+  wrap.innerHTML = list.map(p=>{
+    const fotos = (p.imagenes && p.imagenes.length ? p.imagenes : (p.imagen ? [p.imagen] : [])).filter(Boolean);
+    currentAdminFotos['p_'+p.id] = fotos;
+    const fotosGalleryHTML = fotos.length ? `
+      <div style="margin:10px 0 6px;padding:8px 12px;background:#FAFBFD;border:1px solid var(--line);border-radius:10px;">
+        <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+          📷 Fotos adjuntas (${fotos.length}):
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          ${fotos.map((img, idx) => `
+            <img src="${escapeAttr(img)}" alt="Foto producto" style="width:58px;height:58px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;background:#fff;" onclick="openLightbox(currentAdminFotos['p_${p.id}'], ${idx})">
+          `).join('')}
+        </div>
+      </div>
+    ` : `<div style="font-size:12px;color:var(--gray);margin:6px 0;">📷 Sin fotos adjuntas</div>`;
+
+    const destacadoBadge = p.destacado 
+      ? `<span class="cat-pill" style="background:#FEF3C7;color:#B45309;border:1.5px solid #F59E0B;font-weight:800;font-size:11.5px;padding:3px 10px;">🌟 DESTACADO ACTIVO</span>`
+      : (p.destacadoSolicitado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió destacado</span>' : '');
+
+    const destacadoBtnHTML = p.destacado
+      ? `<button class="abtn feature on" onclick="toggleDestacadoProducto('${p.id}')" style="background:#D97706 !important;color:#FFFFFF !important;border:2px solid #92400E !important;font-weight:800;box-shadow:0 3px 8px rgba(217,119,6,0.45);">⭐ DESTACADO (SÍ)</button>`
+      : `<button class="abtn feature" onclick="toggleDestacadoProducto('${p.id}')" style="background:#F1F5F9 !important;color:#475569 !important;border:1.5px solid #CBD5E1 !important;font-weight:600;">☆ Sin destacar (NO)</button>`;
+
+    return `
     <div class="admin-row">
       <div class="info">
-        <h4>${escapeHtml(p.nombre)} <span class="cat-pill">${escapeHtml(p.categoria||'Repuestos')}</span> ${p.destacadoSolicitado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió destacado</span>' : ''}</h4>
+        <h4>${escapeHtml(p.nombre)} <span class="cat-pill">${escapeHtml(p.categoria||'Repuestos')}</span> ${destacadoBadge}</h4>
         ${p.codigo ? `<div class="meta" style="font-weight:700;color:var(--ink);">🧾 Código: ${escapeHtml(p.codigo)}</div>` : ''}
         ${p.precio ? `<div class="meta">💲 ${escapeHtml(p.precio)}</div>` : ''}
         <div class="meta">📞 ${escapeHtml(p.whatsapp||p.contacto||'—')}</div>
         ${p.telefonoPago ? `<div class="meta" style="color:var(--orange-dark);font-weight:700;">☎️ Contacto para pago: ${escapeHtml(p.telefonoPago)}</div>` : ''}
         ${p.creado ? `<div class="meta" style="color:var(--gray);">🗓️ Alta: ${formatFechaAlta(p.creado)}</div>` : ''}
+        ${fotosGalleryHTML}
       </div>
       <div class="admin-actions">
         ${p.estado!=='aprobado' ? `<button class="abtn approve" onclick="setEstadoProducto('${p.id}','aprobado')">${ICON_CHECK} Aprobar</button>` : ''}
         ${p.estado!=='rechazado' ? `<button class="abtn reject" onclick="setEstadoProducto('${p.id}','rechazado')">${ICON_X} Rechazar</button>` : ''}
-        <button class="abtn feature ${p.destacado?'on':''}" onclick="toggleDestacadoProducto('${p.id}')">${ICON_STAR} Destacado</button>
+        ${destacadoBtnHTML}
         <button class="abtn edit" onclick="openEditProductoModal('${p.id}')">${ICON_EDIT} Editar</button>
         <button class="abtn delete" onclick="deleteProducto('${p.id}')">${ICON_TRASH}</button>
       </div>
     </div>
-  `).join('');
+  `;}).join('');
 }
 async function setEstadoProducto(id, estado){
-  try{ await apiSend('/api/productos/'+id, 'PATCH', { estado }); renderProductosAdmin(); }
-  catch(err){ alert('No se pudo actualizar: ' + err.message); }
+  const p = productos.find(x=>x.id===id);
+  const prevEstado = p ? p.estado : null;
+  if(p){
+    p.estado = estado;
+    renderProductosAdmin(false);
+  }
+  try{
+    await apiSend('/api/productos/'+id, 'PATCH', { estado });
+    await renderProductosAdmin(true);
+    showToast(estado === 'aprobado' ? '✅ Publicación aprobada' : '❌ Publicación rechazada');
+  }catch(err){
+    console.error('[setEstadoProducto Error]:', err);
+    if(p && prevEstado){
+      p.estado = prevEstado;
+      renderProductosAdmin(false);
+    }
+    alert('No se pudo actualizar: ' + err.message);
+  }
 }
-async function toggleDestacadoProducto(id){
+
+async function toggleDestacadoProducto(id, event){
+  if(event) event.stopPropagation();
   const p = productos.find(x=>x.id===id);
   if(!p) return;
-  try{ await apiSend('/api/productos/'+id, 'PATCH', { destacado: !p.destacado }); renderProductosAdmin(); }
-  catch(err){ alert('No se pudo actualizar: ' + err.message); }
+  const nuevoVal = !Boolean(p.destacado);
+  p.destacado = nuevoVal;
+  renderProductosAdmin(false);
+  try{
+    await apiSend('/api/productos/'+id, 'PATCH', { destacado: nuevoVal });
+    await renderProductosAdmin(true);
+    showToast(nuevoVal ? '⭐ Marcado como Destacado' : '☆ Quitado de Destacados');
+  }catch(err){
+    console.error('[toggleDestacadoProducto Error]:', err);
+    p.destacado = !nuevoVal;
+    renderProductosAdmin(false);
+    alert('No se pudo actualizar: ' + err.message);
+  }
 }
+
 async function deleteProducto(id){
-  if(!confirm('¿Eliminar esta publicación definitivamente?')) return;
-  try{ await apiSend('/api/productos/'+id, 'DELETE'); renderProductosAdmin(); }
-  catch(err){ alert('No se pudo eliminar: ' + err.message); }
+  const p = productos.find(x=>x.id===id);
+  const nombre = p ? p.nombre : 'esta publicación';
+  if(!confirm(`¿Eliminar definitivamente "${nombre}"?`)) return;
+  try{
+    await apiSend('/api/productos/'+id, 'DELETE');
+    productos = productos.filter(x=>x.id!==id);
+    await renderProductosAdmin(true);
+    showToast('🗑️ Publicación eliminada');
+  }catch(err){
+    console.error('[deleteProducto Error]:', err);
+    alert('No se pudo eliminar: ' + err.message);
+  }
 }
+
 function openEditProductoModal(id){
   const p = productos.find(x=>x.id===id);
   if(!p) return;
@@ -2735,62 +4161,116 @@ function openEditProductoModal(id){
       <div class="field"><label>WhatsApp *</label><input id="ep-whatsapp" value="${escapeAttr(p.whatsapp||'')}"></div>
     </div>
     ${multiImageUploadHTML('ep', p.imagenes && p.imagenes.length ? p.imagenes : (p.imagen ? [p.imagen] : []))}
-    <button class="submit-btn" onclick="saveEditProducto('${p.id}')">Guardar cambios</button>
+    <div class="field destacado-box" style="margin-top:14px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14.5px;">
+        <input type="checkbox" id="ep-destacado-activo-check" ${p.destacado ? 'checked' : ''} style="width:18px;height:18px;flex-shrink:0;">
+        🌟 <b>Destacado ACTIVO</b> <span class="hint">(se muestra destacado en la lista)</span>
+      </label>
+    </div>
+    <button class="submit-btn" id="ep-save-btn" onclick="saveEditProducto('${p.id}')">Guardar cambios</button>
   `;
   document.getElementById('editModalBg').classList.add('show');
   setupMultiImageUpload('ep', p.imagenes && p.imagenes.length ? p.imagenes : (p.imagen ? [p.imagen] : []));
 }
+
 async function saveEditProducto(id){
+  const p = productos.find(x=>x.id===id);
+  const epCheck = document.getElementById('ep-destacado-activo-check');
+  const nombreInput = document.getElementById('ep-nombre');
+  const whatsappInput = document.getElementById('ep-whatsapp');
+
+  if(!nombreInput || !whatsappInput){
+    console.error('[saveEditProducto Error]: Form inputs missing');
+    alert('Error al leer el formulario.');
+    return;
+  }
+
+  const nombre = nombreInput.value.trim();
+  const whatsapp = whatsappInput.value.trim();
+
+  if(!nombre){
+    alert('Por favor, ingresá el nombre del producto.');
+    nombreInput.focus();
+    return;
+  }
+  if(!whatsapp){
+    alert('Por favor, ingresá el número de WhatsApp.');
+    whatsappInput.focus();
+    return;
+  }
+
   const payload = {
-    nombre: document.getElementById('ep-nombre').value.trim(),
-    precio: document.getElementById('ep-precio').value.trim(),
-    categoria: document.getElementById('ep-categoria').value,
-    descripcion: document.getElementById('ep-descripcion').value.trim(),
-    contacto: document.getElementById('ep-contacto').value.trim(),
-    whatsapp: document.getElementById('ep-whatsapp').value.trim(),
-    imagenes: mimgGetArr('ep')
+    nombre,
+    precio: document.getElementById('ep-precio') ? document.getElementById('ep-precio').value.trim() : '',
+    categoria: document.getElementById('ep-categoria') ? document.getElementById('ep-categoria').value : 'Repuestos',
+    descripcion: document.getElementById('ep-descripcion') ? document.getElementById('ep-descripcion').value.trim() : '',
+    contacto: document.getElementById('ep-contacto') ? document.getElementById('ep-contacto').value.trim() : '',
+    whatsapp,
+    imagenes: mimgGetArr('ep'),
+    destacado: epCheck ? epCheck.checked : (p ? Boolean(p.destacado) : false)
   };
+
+  const btn = document.getElementById('ep-save-btn');
+  if(btn){
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+  }
+
   try{
     await apiSend('/api/productos/'+id, 'PATCH', payload);
     closeModal();
-    renderProductosAdmin();
+    await renderProductosAdmin(true);
+    showToast('💾 Publicación guardada correctamente');
   }catch(err){
+    console.error('[saveEditProducto Error]:', err);
     alert('No se pudo guardar: ' + err.message);
+  }finally{
+    if(btn){
+      btn.disabled = false;
+      btn.textContent = 'Guardar cambios';
+    }
   }
 }
 
 async function renderCategoriasAdmin(){
   const wrap = document.getElementById('categoriasAdminList');
+  if(!wrap) return;
   try{
     categoriasConId = await apiGet('/api/categorias');
   }catch(e){
     wrap.innerHTML = `<div class="empty">${ICON_INBOX}<div>No se pudieron cargar las categorías.</div></div>`;
     return;
   }
-  if(categoriasConId.length===0){
+  if(!categoriasConId || categoriasConId.length===0){
     wrap.innerHTML = `<div class="empty">${ICON_INBOX}<div>Todavía no hay categorías cargadas.</div></div>`;
     return;
   }
   wrap.innerHTML = categoriasConId.map(c=>`
-    <div class="admin-row">
+    <div class="admin-row" id="cat-row-${c.id}">
       <div class="info"><h4>${escapeHtml(c.nombre)}</h4></div>
       <div class="admin-actions">
-        <button class="abtn delete" onclick="eliminarCategoria(${c.id}, '${escapeAttr(c.nombre).replace(/'/g,"\\'")}')">${ICON_TRASH} Eliminar</button>
+        <button type="button" class="abtn delete" onclick="eliminarCategoria('${c.id}', '${escapeAttr(c.nombre).replace(/'/g,"\\'")}')">${ICON_TRASH} Eliminar</button>
       </div>
     </div>
   `).join('');
 }
 async function agregarCategoria(){
   const input = document.getElementById('nuevaCategoriaInput');
+  if(!input) return;
   const nombre = input.value.trim();
-  if(!nombre) return;
+  if(!nombre){
+    input.focus();
+    return;
+  }
   try{
     await apiSend('/api/categorias', 'POST', { nombre });
     input.value = '';
     await fetchCategorias();
     initSelects();
-    renderCategoriasAdmin();
+    await renderCategoriasAdmin();
+    showToast('🏷️ Categoría agregada');
   }catch(err){
+    console.error('[agregarCategoria Error]:', err);
     alert('No se pudo agregar: ' + err.message);
   }
 }
@@ -2798,11 +4278,14 @@ async function eliminarCategoria(id, nombre){
   if(!confirm(`¿Eliminar la categoría "${nombre}"? Los talleres que ya la tengan cargada no se van a modificar, pero dejará de aparecer como opción.`)) return;
   try{
     await apiSend('/api/categorias/'+id, 'DELETE');
+    categoriasConId = categoriasConId.filter(c => String(c.id) !== String(id) && c.nombre !== nombre);
     await fetchCategorias();
     initSelects();
-    renderCategoriasAdmin();
+    await renderCategoriasAdmin();
+    showToast('🗑️ Categoría eliminada');
   }catch(err){
-    alert('No se pudo eliminar: ' + err.message);
+    console.error('[eliminarCategoria Error]:', err);
+    alert('No se pudo eliminar la categoría: ' + err.message);
   }
 }
 
@@ -2813,35 +4296,71 @@ async function renderSponsorAdmin(){
     wrap.innerHTML = `<div class="empty">${ICON_INBOX}<div>Todavía no hay auspicios cargados.</div></div>`;
     return;
   }
-  wrap.innerHTML = auspicios.map(s=>`
+  wrap.innerHTML = auspicios.map(s=>{
+    const destacadoBadge = s.destacado 
+      ? `<span class="cat-pill" style="background:#FEF3C7;color:#B45309;border:1.5px solid #F59E0B;font-weight:800;font-size:11.5px;padding:3px 10px;">🌟 DESTACADO ACTIVO</span>`
+      : (s.destacadoSolicitado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió destacado</span>' : '');
+
+    const destacadoBtnHTML = s.destacado
+      ? `<button class="abtn feature on" onclick="toggleSponsorDestacado('${s.id}')" style="background:#D97706 !important;color:#FFFFFF !important;border:2px solid #92400E !important;font-weight:800;box-shadow:0 3px 8px rgba(217,119,6,0.45);">⭐ DESTACADO (SÍ)</button>`
+      : `<button class="abtn feature" onclick="toggleSponsorDestacado('${s.id}')" style="background:#F1F5F9 !important;color:#475569 !important;border:1.5px solid #CBD5E1 !important;font-weight:600;">☆ Sin destacar (NO)</button>`;
+
+    return `
     <div class="admin-row">
       <div class="info">
-        <h4>${escapeHtml(s.nombre)} <span class="cat-pill">${escapeHtml(s.categoria)}</span> ${s.destacadoSolicitado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió destacado</span>' : ''}</h4>
+        <h4>${escapeHtml(s.nombre)} <span class="cat-pill">${escapeHtml(s.categoria||'Auspiciante')}</span> ${destacadoBadge}</h4>
         ${s.codigo ? `<div class="meta" style="font-weight:700;color:var(--ink);">🧾 Código: ${escapeHtml(s.codigo)}</div>` : ''}
-        <div class="meta">${escapeHtml(s.descripcion)}</div>
-        ${s.link ? `<div class="meta">🔗 ${escapeHtml(s.link)}</div>` : ''}
+        ${s.descripcion ? `<div class="meta">${escapeHtml(s.descripcion)}</div>` : ''}
+        ${(s.direccion || s.ciudad) ? `<div class="meta">📍 ${escapeHtml([s.direccion, s.ciudad].filter(Boolean).join(', '))}</div>` : ''}
+        <div class="meta">📞 Tel: ${escapeHtml(s.telefono||'—')} | 💬 WA: ${escapeHtml(s.whatsapp||'—')}</div>
+        ${s.link ? `<div class="meta">🔗 <a href="${escapeAttr(s.link)}" target="_blank" rel="noopener">${escapeHtml(s.link)}</a></div>` : ''}
         ${s.telefonoPago ? `<div class="meta" style="color:var(--orange-dark);font-weight:700;">☎️ Contacto para pago: ${escapeHtml(s.telefonoPago)}</div>` : ''}
         ${s.creado ? `<div class="meta" style="color:var(--gray);">🗓️ Alta: ${formatFechaAlta(s.creado)}</div>` : ''}
       </div>
       <div class="admin-actions">
-        <button class="abtn feature ${s.destacado?'on':''}" onclick="toggleSponsorDestacado('${s.id}')">${ICON_STAR}</button>
+        ${destacadoBtnHTML}
         <button class="abtn edit" onclick="openSponsorModal('${s.id}')">${ICON_EDIT} Editar</button>
         <button class="abtn delete" onclick="deleteSponsor('${s.id}')">${ICON_TRASH}</button>
       </div>
     </div>
-  `).join('');
+  `;}).join('');
 }
 async function toggleSponsorDestacado(id){
   const s = auspicios.find(x=>x.id===id);
   if(!s) return;
-  try{ await apiSend('/api/auspicios/'+id, 'PATCH', { destacado: !s.destacado }); renderSponsorAdmin(); }
-  catch(err){ alert('No se pudo actualizar: ' + err.message); }
+  const nuevoVal = !Boolean(s.destacado);
+  s.destacado = nuevoVal;
+  renderSponsorAdmin();
+  try{
+    await apiSend('/api/auspicios/'+id, 'PATCH', { destacado: nuevoVal });
+    await fetchAuspiciosList();
+    renderSponsorAdmin();
+    renderSponsors();
+    showToast(nuevoVal ? '⭐ Auspicio marcado como Destacado' : '☆ Auspicio quitado de Destacados');
+  }catch(err){
+    console.error('[toggleSponsorDestacado Error]:', err);
+    s.destacado = !nuevoVal;
+    renderSponsorAdmin();
+    alert('No se pudo actualizar: ' + err.message);
+  }
 }
+
 async function deleteSponsor(id){
-  if(!confirm('¿Eliminar este auspicio?')) return;
-  try{ await apiSend('/api/auspicios/'+id, 'DELETE'); renderSponsorAdmin(); }
-  catch(err){ alert('No se pudo eliminar: ' + err.message); }
+  const s = auspicios.find(x=>x.id===id);
+  const nombre = s ? s.nombre : 'este auspicio';
+  if(!confirm(`¿Eliminar definitivamente "${nombre}"?`)) return;
+  try{
+    await apiSend('/api/auspicios/'+id, 'DELETE');
+    auspicios = auspicios.filter(x=>x.id!==id);
+    renderSponsorAdmin();
+    renderSponsors();
+    showToast('🗑️ Auspicio eliminado');
+  }catch(err){
+    console.error('[deleteSponsor Error]:', err);
+    alert('No se pudo eliminar: ' + err.message);
+  }
 }
+
 function openSponsorModal(id){
   const s = id ? auspicios.find(x=>x.id===id) : null;
   document.getElementById('modalTitle').textContent = s ? ('Editar auspicio' + (s.codigo ? ' · ' + s.codigo : '')) : 'Nuevo auspicio';
@@ -2865,9 +4384,17 @@ function openSponsorModal(id){
     <div class="field"><label>Email</label><input id="s-email" type="email" value="${s?escapeAttr(s.email||''):''}"></div>
     ${imageUploadHTML('s', 'Imagen', s ? s.imagen : '')}
     <div class="field"><label>Link del auspicio <span class="hint">(opcional)</span></label><input id="s-link" value="${s?escapeAttr(s.link||''):''}" placeholder="https://..."></div>
+    
+    <div class="field" style="background:#FEF3C7;padding:12px 14px;border-radius:10px;border:1.5px solid #F59E0B;margin-top:10px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;font-weight:700;color:#92400E;margin:0;">
+        <input type="checkbox" id="s-destacado-activo-check" ${s && s.destacado ? 'checked' : ''} style="width:18px;height:18px;">
+        ⭐ DESTACADO ACTIVO (Aparece con estrella y resaltado en la portada)
+      </label>
+    </div>
+
     <div id="s-destacado-wrap"></div>
     ${mapFieldHTML('s', s?s.ubicacion:null)}
-    <button class="submit-btn" onclick="saveSponsor(${s?`'${s.id}'`:'null'})">Guardar</button>
+    <button class="submit-btn" id="s-save-btn" onclick="saveSponsor(${s?`'${s.id}'`:'null'})">Guardar</button>
   `;
   document.getElementById('editModalBg').classList.add('show');
   document.getElementById('s-destacado-wrap').innerHTML = destacadoBoxHTML('s', {
@@ -2878,34 +4405,59 @@ function openSponsorModal(id){
   setupImageUpload('s', s ? s.imagen : '');
   initPinMap('s', s ? s.ubicacion : null);
 }
+
 async function saveSponsor(id){
+  const nombreInput = document.getElementById('s-nombre');
+  if(!nombreInput || !nombreInput.value.trim()){
+    alert('Por favor, ingresá el nombre del auspiciante.');
+    if(nombreInput) nombreInput.focus();
+    return;
+  }
+
   const payload = {
-    nombre: document.getElementById('s-nombre').value.trim(),
-    categoria: document.getElementById('s-categoria').value.trim(),
-    horario: document.getElementById('s-horario').value.trim(),
-    descripcion: document.getElementById('s-descripcion').value.trim(),
-    servicios: document.getElementById('s-servicios').value.split(',').map(x=>x.trim()).filter(Boolean),
-    direccion: document.getElementById('s-direccion').value.trim(),
-    ciudad: document.getElementById('s-ciudad').value.trim(),
-    telefono: document.getElementById('s-telefono').value.trim(),
-    whatsapp: document.getElementById('s-whatsapp').value.trim(),
-    email: document.getElementById('s-email').value.trim(),
-    imagen: document.getElementById('s-imagen').value.trim(),
-    link: document.getElementById('s-link').value.trim(),
+    nombre: nombreInput.value.trim(),
+    categoria: document.getElementById('s-categoria') ? document.getElementById('s-categoria').value.trim() : '',
+    horario: document.getElementById('s-horario') ? document.getElementById('s-horario').value.trim() : '',
+    descripcion: document.getElementById('s-descripcion') ? document.getElementById('s-descripcion').value.trim() : '',
+    servicios: document.getElementById('s-servicios') ? document.getElementById('s-servicios').value.split(',').map(x=>x.trim()).filter(Boolean) : [],
+    direccion: document.getElementById('s-direccion') ? document.getElementById('s-direccion').value.trim() : '',
+    ciudad: document.getElementById('s-ciudad') ? document.getElementById('s-ciudad').value.trim() : '',
+    telefono: document.getElementById('s-telefono') ? document.getElementById('s-telefono').value.trim() : '',
+    whatsapp: document.getElementById('s-whatsapp') ? document.getElementById('s-whatsapp').value.trim() : '',
+    email: document.getElementById('s-email') ? document.getElementById('s-email').value.trim() : '',
+    imagen: document.getElementById('s-imagen') ? document.getElementById('s-imagen').value.trim() : '',
+    link: document.getElementById('s-link') ? document.getElementById('s-link').value.trim() : '',
+    destacado: document.getElementById('s-destacado-activo-check') ? document.getElementById('s-destacado-activo-check').checked : false,
     ubicacion: getPinCoords('s'),
     destacadoSolicitado: document.getElementById('s-destacado-check') ? document.getElementById('s-destacado-check').checked : false,
     telefonoPago: document.getElementById('s-telefono-pago') ? document.getElementById('s-telefono-pago').value.trim() : ''
   };
-  if(!payload.nombre) return;
+
+  const btn = document.getElementById('s-save-btn');
+  if(btn){
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+  }
+
   try{
     await apiSend(id ? '/api/auspicios/'+id : '/api/auspicios', id ? 'PATCH' : 'POST', payload);
     closeModal();
+    await fetchAuspiciosList();
     renderSponsorAdmin();
+    renderSponsors();
+    showToast('💾 Auspicio guardado correctamente');
   }catch(err){
+    console.error('[saveSponsor Error]:', err);
     alert('No se pudo guardar: ' + err.message);
+  }finally{
+    if(btn){
+      btn.disabled = false;
+      btn.textContent = 'Guardar';
+    }
   }
-
 }
+
+
 
 /* ============================================================
    HELPERS
@@ -2922,6 +4474,570 @@ function formatFechaAlta(iso){
   const dias = Math.max(0, Math.floor((Date.now() - d.getTime()) / 86400000));
   const diasTxt = dias===0 ? 'hoy' : dias===1 ? 'hace 1 día' : `hace ${dias} días`;
   return `${fecha} · ${diasTxt}`;
+}
+
+/* ============================================================
+   VALORACIONES, OPINIONES Y QUEJAS
+============================================================ */
+function clickNavOpiniones() {
+  const mainnav = document.querySelector('nav.mainnav');
+  if(mainnav) mainnav.classList.remove('open');
+
+  const vHome = document.getElementById('view-home');
+  if(!vHome || !vHome.classList.contains('active')) {
+    go('home');
+  }
+
+  // Update active nav state
+  document.querySelectorAll('nav.mainnav .nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('nav-opiniones');
+  if(btn) btn.classList.add('active');
+
+  setTimeout(() => {
+    const sec = document.getElementById('feedbacks-section');
+    if(sec) {
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 100);
+}
+
+function abrirModalFeedback(tallerId = '') {
+  const bg = document.getElementById('feedbackModalBg');
+  if(!bg) return;
+  const ok = document.getElementById('feedbackOk');
+  if(ok) ok.classList.remove('show');
+  const err = document.getElementById('fb-err');
+  if(err) { err.style.display = 'none'; err.textContent = ''; }
+
+  // Populate workshops select
+  const sel = document.getElementById('fb-taller');
+  if(sel) {
+    let opts = '<option value="">-- TallerYa (Plataforma General) --</option>';
+    const approved = (talleres || []).filter(t => t.estado === 'aprobado' || !t.estado);
+    approved.forEach(t => {
+      const isSel = (tallerId && (t.id === tallerId || t.codigo === tallerId)) ? 'selected' : '';
+      opts += `<option value="${escapeAttr(t.id)}" ${isSel}>${escapeHtml(t.nombre)} (${escapeHtml(t.ciudad || 'Paraguay')})</option>`;
+    });
+    sel.innerHTML = opts;
+    if(tallerId) sel.value = tallerId;
+  }
+
+  const form = document.getElementById('feedbackForm');
+  if(form) form.reset();
+  setFeedbackTipo('valoracion');
+  setStarRating(5);
+
+  bg.classList.add('show');
+}
+
+function cerrarModalFeedback() {
+  const bg = document.getElementById('feedbackModalBg');
+  if(bg) bg.classList.remove('show');
+}
+
+let currentFeedbackTipo = 'valoracion';
+function setFeedbackTipo(tipo) {
+  currentFeedbackTipo = tipo;
+  const hidden = document.getElementById('fb-tipo');
+  if(hidden) hidden.value = tipo;
+  document.querySelectorAll('.feedback-pill').forEach(p => {
+    if(p.dataset.type === tipo) p.classList.add('active');
+    else p.classList.remove('active');
+  });
+
+  const starCont = document.getElementById('fb-calificacion-container');
+  if(starCont) {
+    starCont.style.display = 'block';
+  }
+}
+
+let selectedStarRating = 5;
+const ratingLabels = {
+  1: '1 de 5 - Muy malo / Insatisfecho',
+  2: '2 de 5 - Regular / Mejorable',
+  3: '3 de 5 - Bueno / Aceptable',
+  4: '4 de 5 - Muy bueno / Recomendado',
+  5: '5 de 5 - Excelente / Altamente recomendado'
+};
+
+function setStarRating(val) {
+  selectedStarRating = val;
+  const input = document.getElementById('fb-calificacion');
+  if(input) input.value = val;
+  const lbl = document.getElementById('fb-rating-text');
+  if(lbl) lbl.textContent = ratingLabels[val] || `${val} de 5`;
+  updateStarDisplay(val);
+}
+
+function updateStarDisplay(val) {
+  const picker = document.getElementById('fb-star-picker');
+  if(!picker) return;
+  const stars = picker.querySelectorAll('span');
+  stars.forEach((s, idx) => {
+    if(idx < val) s.classList.add('active');
+    else s.classList.remove('active');
+  });
+}
+
+function hoverStarRating(val) {
+  updateStarDisplay(val);
+  const lbl = document.getElementById('fb-rating-text');
+  if(lbl) lbl.textContent = ratingLabels[val] || `${val} de 5`;
+}
+
+function resetStarHover() {
+  updateStarDisplay(selectedStarRating);
+  const lbl = document.getElementById('fb-rating-text');
+  if(lbl) lbl.textContent = ratingLabels[selectedStarRating] || `${selectedStarRating} de 5`;
+}
+
+async function submitFeedbackForm(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('fb-err');
+  if(errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+  const btn = document.getElementById('fb-submit-btn');
+
+  const tipo = document.getElementById('fb-tipo') ? document.getElementById('fb-tipo').value : currentFeedbackTipo;
+  const tallerSelect = document.getElementById('fb-taller');
+  const tallerId = tallerSelect ? tallerSelect.value : '';
+  const tallerNombre = (tallerSelect && tallerSelect.selectedIndex > 0) ? tallerSelect.options[tallerSelect.selectedIndex].text : '';
+  const calificacion = Number(document.getElementById('fb-calificacion') ? document.getElementById('fb-calificacion').value : selectedStarRating) || 5;
+  const titulo = document.getElementById('fb-titulo') ? document.getElementById('fb-titulo').value.trim() : '';
+  const mensaje = document.getElementById('fb-mensaje') ? document.getElementById('fb-mensaje').value.trim() : '';
+  const clienteNombre = document.getElementById('fb-nombre') ? document.getElementById('fb-nombre').value.trim() : '';
+  const clienteContacto = document.getElementById('fb-contacto') ? document.getElementById('fb-contacto').value.trim() : '';
+
+  if(!clienteNombre) {
+    if(errEl) { errEl.textContent = 'Por favor ingresá tu nombre.'; errEl.style.display = 'block'; }
+    return;
+  }
+  if(!titulo) {
+    if(errEl) { errEl.textContent = 'Por favor ingresá un título o resumen para tu comentario.'; errEl.style.display = 'block'; }
+    return;
+  }
+  if(!mensaje) {
+    if(errEl) { errEl.textContent = 'Por favor ingresá tu opinión o mensaje.'; errEl.style.display = 'block'; }
+    return;
+  }
+
+  if(btn) {
+    btn.disabled = true;
+    btn.textContent = 'Enviando valoración...';
+  }
+
+  try {
+    const payload = {
+      tipo,
+      tallerId,
+      tallerNombre,
+      calificacion,
+      titulo,
+      mensaje,
+      clienteNombre,
+      clienteContacto
+    };
+
+    await apiSend('/api/feedbacks', 'POST', payload);
+    const okBanner = document.getElementById('feedbackOk');
+    if(okBanner) okBanner.classList.add('show');
+
+    // Reload feedbacks and refresh UI immediately
+    await fetchFeedbacksList();
+    renderHomeFeedbacks();
+    showToast('⭐ ¡Gracias por tu opinión! Fue registrada exitosamente.');
+
+    setTimeout(() => {
+      cerrarModalFeedback();
+      const sec = document.getElementById('feedbacks-section');
+      if(sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1200);
+
+  } catch(err) {
+    console.error('Error enviando feedback:', err);
+    if(errEl) {
+      errEl.textContent = 'No se pudo registrar la opinión: ' + err.message;
+      errEl.style.display = 'block';
+    }
+  } finally {
+    if(btn) {
+      btn.disabled = false;
+      btn.textContent = 'Enviar Valoración / Opinión';
+    }
+  }
+}
+
+function renderHomeFeedbacks() {
+  const container = document.getElementById('homeFeedbacksList');
+  if(!container) return;
+
+  const publicFeedbacks = (feedbacks || []).filter(f => f.estado === 'aprobado' || !f.estado);
+
+  if(publicFeedbacks.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; background:#F8FAFC; border:1.5px dashed #CBD5E1; border-radius:16px; padding:36px 20px; text-align:center;">
+        <div style="font-size:36px; margin-bottom:8px;">⭐</div>
+        <h4 style="margin:0 0 6px; color:#1E293B; font-size:16px;">¡Sé el primero en opinar o dejar tu experiencia!</h4>
+        <p style="color:#64748B; font-size:13.5px; max-width:480px; margin:0 auto 16px;">
+          Contanos sobre la atención de los talleres mecánicos, servicios o sugerencias para la plataforma.
+        </p>
+        <button class="submit-btn" style="width:auto; padding:8px 22px; font-size:13px; display:inline-flex; align-items:center; gap:6px;" onclick="abrirModalFeedback()">
+          ⭐ Dejar una Opinión
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = publicFeedbacks.map(f => {
+    const starsNum = Math.max(1, Math.min(5, Number(f.calificacion) || 5));
+    const starsHtml = '★'.repeat(starsNum) + '☆'.repeat(5 - starsNum);
+    const tipo = (f.tipo || 'valoracion').toLowerCase();
+    
+    let tipoLabel = '⭐ Valoración';
+    let tipoClass = 'valoracion';
+    if(tipo === 'opinion' || tipo === 'opinión') { tipoLabel = '💬 Opinión'; tipoClass = 'sugerencia'; }
+    else if(tipo === 'sugerencia') { tipoLabel = '💡 Sugerencia'; tipoClass = 'sugerencia'; }
+    else if(tipo === 'queja') { tipoLabel = '⚠️ Queja / Reclamo'; tipoClass = 'queja'; }
+    else if(tipo === 'consulta') { tipoLabel = '❓ Consulta'; tipoClass = 'consulta'; }
+
+    const targetTaller = f.tallerNombre ? `🏢 ${escapeHtml(f.tallerNombre)}` : '🌐 Plataforma TallerYa';
+    const fecha = formatFechaAlta(f.creado || f.created_at);
+
+    return `
+      <div class="review-card">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:8px;">
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <span class="feedback-badge ${tipoClass}">${tipoLabel}</span>
+              <span style="font-size:11.5px; font-weight:700; color:#2563EB;">${targetTaller}</span>
+            </div>
+            <div style="color:#F59E0B; font-size:16px; letter-spacing:1px;" title="${starsNum} de 5 estrellas">
+              ${starsHtml}
+            </div>
+          </div>
+
+          <h4 style="margin:0 0 8px; font-size:15px; font-weight:800; color:#0F172A; line-height:1.3;">
+            ${escapeHtml(f.titulo || 'Opinión de cliente')}
+          </h4>
+          <p style="margin:0 0 14px; font-size:13.5px; color:#475569; line-height:1.5; white-space:pre-line;">
+            "${escapeHtml(f.mensaje)}"
+          </p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #F1F5F9; padding-top:10px; font-size:12px; color:#94A3B8;">
+          <div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#334155;">
+            <span style="width:22px; height:22px; border-radius:50%; background:#E2E8F0; display:inline-flex; align-items:center; justify-content:center; font-size:11px; color:#475569;">
+              ${escapeHtml((f.clienteNombre || 'U')[0].toUpperCase())}
+            </span>
+            ${escapeHtml(f.clienteNombre || 'Cliente')}
+          </div>
+          <span>${fecha}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function setAdminFeedbacksTab(tab) {
+  adminFeedbacksTab = tab;
+  const tabs = document.querySelectorAll('#adminFeedbacksTabs .tab');
+  tabs.forEach(t => {
+    if(t.dataset.tab === tab) t.classList.add('active');
+    else t.classList.remove('active');
+  });
+  renderAdminFeedbacks();
+}
+
+async function renderAdminFeedbacks() {
+  const container = document.getElementById('adminFeedbacksList');
+  if(!container) return;
+
+  try {
+    const list = await apiGet('/api/feedbacks');
+    feedbacks = Array.isArray(list) ? list : [];
+  } catch(e) {
+    console.error('Error al recargar feedbacks en admin:', e);
+  }
+
+  const pCount = feedbacks.filter(f => f.estado === 'pendiente').length;
+  const aCount = feedbacks.filter(f => f.estado === 'aprobado' || !f.estado).length;
+  const rCount = feedbacks.filter(f => f.estado === 'resuelto').length;
+  const rejCount = feedbacks.filter(f => f.estado === 'rechazado').length;
+
+  const cp = document.getElementById('count-fb-pendiente'); if(cp) cp.textContent = pCount;
+  const ca = document.getElementById('count-fb-aprobado'); if(ca) ca.textContent = aCount;
+  const cr = document.getElementById('count-fb-resuelto'); if(cr) cr.textContent = rCount;
+  const crej = document.getElementById('count-fb-rechazado'); if(crej) crej.textContent = rejCount;
+  const ctot = document.getElementById('count-fb-todas'); if(ctot) ctot.textContent = feedbacks.length;
+
+  let filtered = feedbacks;
+  if(adminFeedbacksTab === 'pendiente') filtered = feedbacks.filter(f => f.estado === 'pendiente');
+  else if(adminFeedbacksTab === 'aprobado') filtered = feedbacks.filter(f => f.estado === 'aprobado' || !f.estado);
+  else if(adminFeedbacksTab === 'resuelto') filtered = feedbacks.filter(f => f.estado === 'resuelto');
+  else if(adminFeedbacksTab === 'rechazado') filtered = feedbacks.filter(f => f.estado === 'rechazado');
+
+  if(filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:40px; color:#94A3B8;">No hay valoraciones en esta pestaña.</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(f => {
+    const st = f.estado || 'aprobado';
+    return `
+      <div class="admin-card" style="margin-bottom:14px; padding:18px; border:1px solid #E2E8F0; border-radius:12px; background:#fff;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+          <div>
+            <span class="feedback-badge ${f.tipo || 'valoracion'}">${f.tipo || 'valoracion'}</span>
+            <span class="feedback-status-badge ${st}" style="margin-left:6px;">${st}</span>
+            <span style="font-size:12.5px; font-weight:700; color:#2563EB; margin-left:8px;">
+              ${f.tallerNombre ? '🏢 ' + escapeHtml(f.tallerNombre) : '🌐 Plataforma TallerYa'}
+            </span>
+          </div>
+          <div style="font-size:12px; color:#94A3B8;">${formatFechaAlta(f.creado || f.created_at)}</div>
+        </div>
+
+        <h4 style="margin:4px 0 6px; font-size:15px; color:#0F172A;">${escapeHtml(f.titulo || '')} · Calificación: ⭐ ${f.calificacion || 5}/5</h4>
+        <p style="margin:0 0 10px; font-size:13.5px; color:#334155; line-height:1.4;">${escapeHtml(f.mensaje)}</p>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-top:1px solid #F1F5F9; padding-top:10px;">
+          <div style="font-size:12.5px; color:#64748B;">
+            <strong>Cliente:</strong> ${escapeHtml(f.clienteNombre)} ${f.clienteContacto ? '· 📞 ' + escapeHtml(f.clienteContacto) : ''}
+          </div>
+          <div style="display:flex; gap:6px;">
+            ${st !== 'aprobado' ? `<button class="admin-btn" style="background:#10B981; color:#fff;" onclick="moderarFeedback('${f.id}', 'aprobado')">Aprobar</button>` : ''}
+            ${st !== 'resuelto' ? `<button class="admin-btn" style="background:#2563EB; color:#fff;" onclick="moderarFeedback('${f.id}', 'resuelto')">Resolver</button>` : ''}
+            ${st !== 'rechazado' ? `<button class="admin-btn" style="background:#F59E0B; color:#fff;" onclick="moderarFeedback('${f.id}', 'rechazado')">Rechazar</button>` : ''}
+            <button class="admin-btn" style="background:#EF4444; color:#fff;" onclick="eliminarFeedback('${f.id}')">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function moderarFeedback(id, nuevoEstado) {
+  try {
+    await apiSend(`/api/feedbacks/${id}`, 'PATCH', { estado: nuevoEstado });
+    showToast(`Estado cambiado a ${nuevoEstado}`);
+    await fetchFeedbacksList();
+    renderAdminFeedbacks();
+    renderHomeFeedbacks();
+  } catch(e) {
+    alert('Error al actualizar estado: ' + e.message);
+  }
+}
+
+async function eliminarFeedback(id) {
+  if(!confirm('¿Estás seguro de eliminar esta opinión?')) return;
+  try {
+    await apiSend(`/api/feedbacks/${id}`, 'DELETE');
+    showToast('Opinión eliminada');
+    await fetchFeedbacksList();
+    renderAdminFeedbacks();
+    renderHomeFeedbacks();
+  } catch(e) {
+    alert('Error al eliminar: ' + e.message);
+  }
+}
+
+/* ============================================================
+   MITALLER CLOUD AUTH & POSTULAR SESIÓN
+============================================================ */
+function clickNavPostular() {
+  const saved = JSON.parse(localStorage.getItem('tallerya_user_account') || '{}');
+  if(saved && saved.usuario) {
+    go('postular');
+  } else {
+    abrirMiTallerLoginModal();
+  }
+}
+
+function abrirMiTallerLoginModal() {
+  const bg = document.getElementById('miTallerLoginModalBg');
+  if(bg) bg.classList.add('show');
+}
+
+function cerrarMiTallerLoginModal() {
+  const bg = document.getElementById('miTallerLoginModalBg');
+  if(bg) bg.classList.remove('show');
+}
+
+function setMiTallerTab(tab) {
+  const btnLogin = document.getElementById('mt-tab-btn-login');
+  const btnReg = document.getElementById('mt-tab-btn-register');
+  const formLogin = document.getElementById('mt-form-login');
+  const formReg = document.getElementById('mt-form-register');
+
+  if(tab === 'login') {
+    if(btnLogin) btnLogin.classList.add('active');
+    if(btnReg) btnReg.classList.remove('active');
+    if(formLogin) formLogin.style.display = 'block';
+    if(formReg) formReg.style.display = 'none';
+  } else {
+    if(btnLogin) btnLogin.classList.remove('active');
+    if(btnReg) btnReg.classList.add('active');
+    if(formLogin) formLogin.style.display = 'none';
+    if(formReg) formReg.style.display = 'block';
+  }
+}
+
+function continuarComoInvitado() {
+  cerrarMiTallerLoginModal();
+  go('postular');
+}
+
+function togglePassVisibility(inputId, iconId) {
+  const el = document.getElementById(inputId);
+  if(!el) return;
+  el.type = (el.type === 'password') ? 'text' : 'password';
+}
+
+function recuperarPasswordMiTaller() {
+  alert('Para recuperar tu contraseña, comunicate con el soporte oficial de TallerYa por WhatsApp al +595975635770 o por correo a tallerya7@gmail.com.');
+}
+
+function loginMiTallerGoogle() {
+  showToast('Conectando con Google Cloud Auth...');
+  setTimeout(() => {
+    localStorage.setItem('tallerya_user_account', JSON.stringify({
+      usuario: 'mecanicadakar@gmail.com',
+      nombre: 'Mecánica Dakar',
+      authProvider: 'google'
+    }));
+    cerrarMiTallerLoginModal();
+    go('postular');
+    showToast('✅ Sesión iniciada con Google');
+  }, 600);
+}
+
+async function submitMiTallerLogin(e) {
+  e.preventDefault();
+  const user = document.getElementById('mt-login-user').value.trim();
+  const pass = document.getElementById('mt-login-pass').value.trim();
+  const errEl = document.getElementById('mt-login-err');
+  const btn = document.getElementById('mt-login-submit-btn');
+
+  if(btn) { btn.disabled = true; btn.textContent = 'Verificando...'; }
+  if(errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+
+  try {
+    const res = await apiSend('/api/talleres/auth', 'POST', { usuario: user, password: pass });
+    if(res && res.ok) {
+      localStorage.setItem('tallerya_user_account', JSON.stringify({
+        usuario: user,
+        password: pass,
+        tallerId: res.taller ? res.taller.id : '',
+        nombre: res.taller ? res.taller.nombre : user
+      }));
+      cerrarMiTallerLoginModal();
+      go('postular');
+      showToast('✅ Bienvenido de nuevo a MiTaller Cloud');
+    } else {
+      throw new Error(res.error || 'Credenciales no válidas');
+    }
+  } catch(err) {
+    if(errEl) {
+      errEl.textContent = 'Usuario o contraseña incorrectos. Podés continuar como invitado o registrar tu taller.';
+      errEl.style.display = 'block';
+    }
+  } finally {
+    if(btn) { btn.disabled = false; btn.textContent = 'Iniciar Sesión'; }
+  }
+}
+
+async function submitMiTallerRegister(e) {
+  e.preventDefault();
+  const nombre = document.getElementById('mt-reg-nombre').value.trim();
+  const user = document.getElementById('mt-reg-user').value.trim();
+  const pass = document.getElementById('mt-reg-pass').value.trim();
+  const whatsapp = document.getElementById('mt-reg-whatsapp').value.trim();
+  const ciudad = document.getElementById('mt-reg-ciudad').value.trim();
+
+  localStorage.setItem('tallerya_user_account', JSON.stringify({
+    usuario: user,
+    password: pass,
+    nombre: nombre,
+    whatsapp: whatsapp,
+    ciudad: ciudad
+  }));
+
+  cerrarMiTallerLoginModal();
+  go('postular');
+  showToast('✅ Cuenta registrada. Ahora completá los datos de tu taller.');
+}
+
+function logoutMiTaller() {
+  localStorage.removeItem('tallerya_user_account');
+  renderTallerSessionBanner();
+  showToast('Sesión de taller cerrada');
+  go('home');
+}
+
+function renderTallerSessionBanner() {
+  const banner = document.getElementById('tallerSessionBanner');
+  if(!banner) return;
+  const saved = JSON.parse(localStorage.getItem('tallerya_user_account') || '{}');
+  if(saved && saved.usuario) {
+    const miTaller = talleres.find(x => 
+      (x.usuarioLogin && x.usuarioLogin.toLowerCase() === (saved.usuario||'').toLowerCase()) ||
+      (x.email && x.email.toLowerCase() === (saved.usuario||'').toLowerCase()) ||
+      (saved.tallerId && x.id === saved.tallerId) ||
+      (saved.nombre && x.nombre.toLowerCase().trim() === (saved.nombre||'').toLowerCase().trim())
+    );
+    const clicsInfo = miTaller ? `
+      <div style="margin-top:10px;padding:8px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;font-size:13px;color:#166534;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">📊</span>
+        <span><b>Rendimiento de tu taller:</b> Tu ficha tiene <strong style="font-size:15px;color:#15803D;">${miTaller.clics || 0}</strong> visitas / clics de clientes interesados.</span>
+      </div>` : '';
+
+    banner.innerHTML = `
+      <div class="taller-session-bar" style="flex-direction:column;align-items:stretch;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <div class="taller-session-info">
+            <span style="font-size:20px;">🏢</span>
+            <div>
+              <strong>Sesión activa:</strong> ${escapeHtml(saved.nombre || saved.usuario)} (${escapeHtml(saved.usuario)})
+            </div>
+          </div>
+          <div class="taller-session-actions">
+            <button class="taller-session-btn primary" onclick="autoFillPostularFormIfLogged()">Completar datos</button>
+            <button class="taller-session-btn logout" onclick="logoutMiTaller()">Cerrar Sesión</button>
+          </div>
+        </div>
+        ${clicsInfo}
+      </div>
+    `;
+  } else {
+    banner.innerHTML = `
+      <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:12px; padding:12px 16px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <span style="font-size:13.5px; color:#1E40AF;">
+          ¿Ya tenés cuenta en MiTaller Cloud? Iniciá sesión para gestionar tu ficha y ver las visitas recibidas.
+        </span>
+        <button class="taller-session-btn primary" onclick="abrirMiTallerLoginModal()">Iniciar Sesión</button>
+      </div>
+    `;
+  }
+}
+
+function autoFillPostularFormIfLogged() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('tallerya_user_account') || '{}');
+    if(saved.usuario && document.getElementById('f-usuario') && !document.getElementById('f-usuario').value) {
+      document.getElementById('f-usuario').value = saved.usuario;
+    }
+    if(saved.password && document.getElementById('f-password') && !document.getElementById('f-password').value) {
+      document.getElementById('f-password').value = saved.password;
+    }
+    if(saved.nombre && document.getElementById('f-nombre') && !document.getElementById('f-nombre').value) {
+      document.getElementById('f-nombre').value = saved.nombre;
+    }
+    if(saved.whatsapp && document.getElementById('f-whatsapp') && !document.getElementById('f-whatsapp').value) {
+      document.getElementById('f-whatsapp').value = saved.whatsapp;
+    }
+    if(saved.ciudad && document.getElementById('f-ciudad') && !document.getElementById('f-ciudad').value) {
+      document.getElementById('f-ciudad').value = saved.ciudad;
+    }
+  } catch(e) {}
 }
 
 /* ============================================================
