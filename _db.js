@@ -485,13 +485,29 @@ function createMockSql() {
   return mockSql;
 }
 
+function getDatabaseUrl() {
+  return (
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.POSTGRES_URL_NON_POOLING ||
+    process.env.POSTGRES_URL_UNPOOLED ||
+    process.env.STORAGE_URL ||
+    process.env.STORAGE_POSTGRES_URL ||
+    process.env.STORAGE_DATABASE_URL ||
+    process.env.NEON_DATABASE_URL ||
+    ''
+  );
+}
+
 export function getSql() {
-  if (useMock || !process.env.DATABASE_URL) {
+  const dbUrl = getDatabaseUrl();
+  if (useMock || !dbUrl) {
     return createMockSql();
   }
   if (!sqlClient) {
     try {
-      const realNeon = neon(process.env.DATABASE_URL);
+      const realNeon = neon(dbUrl);
       const wrappedSql = async function(strings, ...values) {
         if (useMock) {
           const mock = createMockSql();
@@ -500,7 +516,8 @@ export function getSql() {
         try {
           return await realNeon(strings, ...values);
         } catch (err) {
-          console.log('[TallerYa DB] Conmutando a almacenamiento local en memoria.');
+          console.error('[TallerYa DB Error]:', err);
+          console.log('[TallerYa DB] Conmutando a almacenamiento local en memoria temporal.');
           useMock = true;
           const mock = createMockSql();
           return mock(strings, ...values);
