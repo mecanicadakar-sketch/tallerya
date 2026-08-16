@@ -13,6 +13,7 @@
   "dependencies": {
     "@google/genai": "^2.16.0",
     "@neondatabase/serverless": "^0.9.5",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "nodemailer": "^9.0.5"
   }
 }
