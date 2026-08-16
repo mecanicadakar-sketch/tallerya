@@ -1,5 +1,4 @@
 import https from 'https';
-import nodemailer from 'nodemailer';
 
 export function getAuthorizedEmail() {
   if (process.env.ADMIN_EMAIL && process.env.ADMIN_EMAIL.includes('@')) {
@@ -39,7 +38,7 @@ export function maskPhone(phone = getAuthorizedPhone()) {
 }
 
 /**
- * Creates formatted HTML email template for 2FA verification
+ * Plantilla HTML para el correo de verificación 2FA
  */
 function getEmailHtml({ code, expiresInMinutes, ip, targetEmail }) {
   return `
@@ -82,7 +81,7 @@ function getEmailHtml({ code, expiresInMinutes, ip, targetEmail }) {
 }
 
 /**
- * Sends notification via Gmail/SMTP, Resend, Brevo or Webhook
+ * Envío de notificaciones por Resend, Brevo, Webhook o registro en logs
  */
 export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip }) {
   const targetEmail = getAuthorizedEmail();
@@ -92,7 +91,7 @@ export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip
 
   const timestamp = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
 
-  // Security audit log (always logged to Vercel / Server console)
+  // Registro de auditoría en los Logs de Vercel
   console.log(`\n======================================================`);
   console.log(`[🔐 TALLERYA 2FA DISPATCH]`);
   console.log(`Para: ${targetEmail} | Tel/WhatsApp: ${targetPhone}`);
@@ -108,46 +107,7 @@ export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip
   const emailHtml = getEmailHtml({ code, expiresInMinutes, ip, targetEmail });
   const emailSubject = `🔑 ${code} es tu clave de verificación de Administrador - TallerYa`;
 
-  // 1. GMAIL / SMTP via Nodemailer (GMAIL_USER + GMAIL_APP_PASSWORD o SMTP_HOST)
-  if ((process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) || (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)) {
-    try {
-      let transporter;
-      if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-        transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: process.env.GMAIL_USER.trim(),
-            pass: process.env.GMAIL_APP_PASSWORD.trim().replace(/\s+/g, '')
-          }
-        });
-      } else {
-        transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST.trim(),
-          port: Number(process.env.SMTP_PORT || 465),
-          secure: Number(process.env.SMTP_PORT || 465) === 465,
-          auth: {
-            user: process.env.SMTP_USER.trim(),
-            pass: process.env.SMTP_PASS.trim()
-          }
-        });
-      }
-
-      const senderEmail = process.env.GMAIL_USER || process.env.SMTP_USER;
-      await transporter.sendMail({
-        from: `"TallerYa Seguridad" <${senderEmail}>`,
-        to: targetEmail,
-        subject: emailSubject,
-        html: emailHtml
-      });
-
-      console.log('[sendOtpNotification SMTP Success]: Email enviado vía SMTP a', targetEmail);
-      emailSent = true;
-    } catch (smtpErr) {
-      console.error('[sendOtpNotification SMTP Error]:', smtpErr.message);
-    }
-  }
-
-  // 2. Resend API support if RESEND_API_KEY is defined
+  // 1. Envío vía Resend API (HTTP REST nativo)
   if (!emailSent && process.env.RESEND_API_KEY) {
     try {
       const fromAddress = process.env.RESEND_FROM || 'TallerYa <onboarding@resend.dev>';
@@ -166,19 +126,18 @@ export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip
       });
 
       if (!resendRes.ok) {
-        const errData = await resendRes.text();
-        console.error('[sendOtpNotification Resend API Error HTTP', resendRes.status, ']:', errData);
+        const errText = await resendRes.text();
+        console.error('[sendOtpNotification Resend API Error HTTP ' + resendRes.status + ' ]:', errText);
       } else {
-        const okData = await resendRes.json();
-        console.log('[sendOtpNotification Resend Success]: Email enviado exitosamente, ID:', okData.id);
+        console.log('[sendOtpNotification Resend Success]: Email enviado a', targetEmail);
         emailSent = true;
       }
     } catch (err) {
-      console.error('[sendOtpNotification Resend Error]:', err.message);
+      console.error('[sendOtpNotification Resend Fetch Error]:', err.message);
     }
   }
 
-  // 3. Brevo (Sendinblue) API support if BREVO_API_KEY is defined
+  // 2. Envío vía Brevo API (HTTP REST nativo)
   if (!emailSent && process.env.BREVO_API_KEY) {
     try {
       const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -206,17 +165,17 @@ export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip
     }
   }
 
-  // 4. Custom Webhook for WhatsApp / SMS notification (e.g. n8n, Twilio, Evolution API, UltraMsg)
+  // 3. Webhook para WhatsApp o SMS
   if (process.env.OTP_WEBHOOK_URL) {
     try {
       await fetch(process.env.OTP_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          app: 'TallerYa',
-          type: '2fa_otp',
-          toEmail: targetEmail,
-          toPhone: targetPhone,
+          event: '2fa_otp_generated',
+          user,
+          phone: targetPhone,
+          email: targetEmail,
           code,
           expiresInMinutes,
           ip,
@@ -238,4 +197,3 @@ export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip
     smsSent
   };
 }
-
