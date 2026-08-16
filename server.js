@@ -2,22 +2,22 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import loginHandler from './api/login.js';
-import logoutHandler from './api/logout.js';
-import mecanicoLoginHandler from './api/mecanico-login.js';
-import talleresHandler from './api/talleres/index.js';
-import talleresIdHandler from './api/talleres/[id].js';
-import auspiciosHandler from './api/auspicios/index.js';
-import auspiciosIdHandler from './api/auspicios/[id].js';
-import categoriasHandler from './api/categorias/index.js';
-import categoriasIdHandler from './api/categorias/[id].js';
-import productosHandler from './api/productos/index.js';
-import productosIdHandler from './api/productos/[id].js';
-import feedbacksHandler from './api/feedbacks/index.js';
-import feedbacksIdHandler from './api/feedbacks/[id].js';
-import visitasHandler from './api/visitas/index.js';
-import asistenteHandler from './api/asistente.js';
-import chatHandler from './api/chat.js';
+import loginHandler from './api/_routes/login.js';
+import logoutHandler from './api/_routes/logout.js';
+import mecanicoLoginHandler from './api/_routes/mecanico-login.js';
+import talleresHandler from './api/_routes/talleres.js';
+import talleresIdHandler from './api/_routes/talleres-id.js';
+import auspiciosHandler from './api/_routes/auspicios.js';
+import auspiciosIdHandler from './api/_routes/auspicios-id.js';
+import categoriasHandler from './api/_routes/categorias.js';
+import categoriasIdHandler from './api/_routes/categorias-id.js';
+import productosHandler from './api/_routes/productos.js';
+import productosIdHandler from './api/_routes/productos-id.js';
+import feedbacksHandler from './api/_routes/feedbacks.js';
+import feedbacksIdHandler from './api/_routes/feedbacks-id.js';
+import visitasHandler from './api/_routes/visitas.js';
+import asistenteHandler from './api/_routes/asistente.js';
+import chatHandler from './api/_routes/chat.js';
 import { getClientIp, checkRateLimit, isValidOrigin, logSecurityEvent } from './api/_security.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -123,4 +123,3 @@ app.use((req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`TallerYa server running on http://0.0.0.0:${PORT}`);
 });
-

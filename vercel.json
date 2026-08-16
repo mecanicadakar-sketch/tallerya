@@ -2,20 +2,8 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/talleres/:id",
-      "destination": "/api/talleres/[id]"
-    },
-    {
-      "source": "/api/auspicios/:id",
-      "destination": "/api/auspicios/[id]"
-    },
-    {
-      "source": "/api/categorias/:id",
-      "destination": "/api/categorias/[id]"
-    },
-    {
-      "source": "/api/productos/:id",
-      "destination": "/api/productos/[id]"
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
     },
     {
       "source": "/((?!api/).*)",

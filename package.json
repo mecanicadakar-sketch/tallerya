@@ -8,7 +8,7 @@
     "dev": "node server.js",
     "start": "node server.js",
     "build": "echo 'Build completed'",
-    "lint": "node --check server.js _db.js api/_auth.js api/_notify.js api/_db.js api/asistente.js api/chat.js api/login.js api/logout.js api/mecanico-login.js api/auspicios/index.js api/auspicios/[id].js api/categorias/index.js api/categorias/[id].js api/productos/index.js api/productos/[id].js api/talleres/index.js api/talleres/[id].js api/feedbacks/index.js api/feedbacks/[id].js api/visitas/index.js"
+    "lint": "node --check server.js _db.js api/index.js api/_auth.js api/_notify.js api/_db.js api/_security.js api/_routes/*.js"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",
