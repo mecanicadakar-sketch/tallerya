@@ -509,46 +509,15 @@ function getDatabaseUrl() {
 
 export function getSql() {
   const dbUrl = getDatabaseUrl();
-  if (useMock || !dbUrl) {
+  if (!dbUrl) {
     return createMockSql();
   }
   if (!sqlClient) {
     try {
       const realNeon = neon(dbUrl);
-      const wrappedSql = async function(strings, ...values) {
-        if (useMock) {
-          const mock = createMockSql();
-          return mock(strings, ...values);
-        }
-        try {
-          return await realNeon(strings, ...values);
-        } catch (err) {
-          console.error('[TallerYa DB Error]:', err);
-          console.log('[TallerYa DB] Conmutando a almacenamiento local en memoria temporal.');
-          useMock = true;
-          const mock = createMockSql();
-          return mock(strings, ...values);
-        }
-      };
-
-      wrappedSql.transaction = async function(queries) {
-        if (useMock) {
-          const mock = createMockSql();
-          return mock.transaction(queries);
-        }
-        try {
-          return await realNeon.transaction(queries);
-        } catch (err) {
-          console.log('[TallerYa DB] Conmutando a almacenamiento local en memoria.');
-          useMock = true;
-          const mock = createMockSql();
-          return mock.transaction(queries);
-        }
-      };
-
-      sqlClient = wrappedSql;
+      sqlClient = realNeon;
     } catch (e) {
-      useMock = true;
+      console.error('[TallerYa DB Init Error]:', e);
       return createMockSql();
     }
   }
@@ -559,102 +528,111 @@ let schemaReady = false;
 
 export async function ensureSchema() {
   if (schemaReady) return;
-  const sql = getSql();
-
-  if (useMock) {
+  const dbUrl = getDatabaseUrl();
+  if (!dbUrl) {
     schemaReady = true;
     return;
   }
 
+  const sql = getSql();
+
   try {
-    await sql.transaction([
-      sql`
-        CREATE TABLE IF NOT EXISTS talleres (
-          id TEXT PRIMARY KEY,
-          nombre TEXT NOT NULL,
-          categoria TEXT DEFAULT '',
-          ciudad TEXT DEFAULT '',
-          direccion TEXT DEFAULT '',
-          horario TEXT DEFAULT '',
-          descripcion TEXT DEFAULT '',
-          servicios JSONB DEFAULT '[]',
-          telefono TEXT DEFAULT '',
-          whatsapp TEXT DEFAULT '',
-          email TEXT DEFAULT '',
-          imagen TEXT DEFAULT '',
-          lat DOUBLE PRECISION,
-          lng DOUBLE PRECISION,
-          estado TEXT DEFAULT 'pendiente',
-          destacado BOOLEAN DEFAULT false,
-          created_at TIMESTAMPTZ DEFAULT now()
-        )
-      `,
-      sql`
-        CREATE TABLE IF NOT EXISTS auspicios (
-          id TEXT PRIMARY KEY,
-          nombre TEXT NOT NULL,
-          categoria TEXT DEFAULT '',
-          horario TEXT DEFAULT '',
-          descripcion TEXT DEFAULT '',
-          servicios JSONB DEFAULT '[]',
-          direccion TEXT DEFAULT '',
-          ciudad TEXT DEFAULT '',
-          telefono TEXT DEFAULT '',
-          whatsapp TEXT DEFAULT '',
-          email TEXT DEFAULT '',
-          imagen TEXT DEFAULT '',
-          link TEXT DEFAULT '',
-          lat DOUBLE PRECISION,
-          lng DOUBLE PRECISION,
-          destacado BOOLEAN DEFAULT false,
-          created_at TIMESTAMPTZ DEFAULT now()
-        )
-      `,
-      sql`
-        CREATE TABLE IF NOT EXISTS categorias (
-          id SERIAL PRIMARY KEY,
-          nombre TEXT UNIQUE NOT NULL,
-          orden INT DEFAULT 0
-        )
-      `,
-      sql`
-        CREATE TABLE IF NOT EXISTS productos (
-          id TEXT PRIMARY KEY,
-          nombre TEXT NOT NULL,
-          descripcion TEXT DEFAULT '',
-          precio TEXT DEFAULT '',
-          categoria TEXT DEFAULT '',
-          imagen TEXT DEFAULT '',
-          contacto TEXT DEFAULT '',
-          whatsapp TEXT DEFAULT '',
-          estado TEXT DEFAULT 'pendiente',
-          destacado BOOLEAN DEFAULT false,
-          folio SERIAL,
-          created_at TIMESTAMPTZ DEFAULT now()
-        )
-      `,
-      sql`
-        CREATE TABLE IF NOT EXISTS feedbacks (
-          id TEXT PRIMARY KEY,
-          tipo TEXT DEFAULT 'valoracion',
-          taller_id TEXT DEFAULT '',
-          taller_nombre TEXT DEFAULT '',
-          cliente_nombre TEXT NOT NULL,
-          cliente_contacto TEXT DEFAULT '',
-          calificacion INT DEFAULT 5,
-          titulo TEXT DEFAULT '',
-          mensaje TEXT NOT NULL,
-          estado TEXT DEFAULT 'aprobado',
-          created_at TIMESTAMPTZ DEFAULT now()
-        )
-      `,
-      sql`
-        CREATE TABLE IF NOT EXISTS visitas (
-          id TEXT PRIMARY KEY,
-          total INT DEFAULT 0,
-          updated_at TIMESTAMPTZ DEFAULT now()
-        )
-      `,
+    // 1. Create main tables
+    await sql`
+      CREATE TABLE IF NOT EXISTS talleres (
+        id TEXT PRIMARY KEY,
+        nombre TEXT NOT NULL,
+        categoria TEXT DEFAULT '',
+        ciudad TEXT DEFAULT '',
+        direccion TEXT DEFAULT '',
+        horario TEXT DEFAULT '',
+        descripcion TEXT DEFAULT '',
+        servicios JSONB DEFAULT '[]',
+        telefono TEXT DEFAULT '',
+        whatsapp TEXT DEFAULT '',
+        email TEXT DEFAULT '',
+        imagen TEXT DEFAULT '',
+        lat DOUBLE PRECISION,
+        lng DOUBLE PRECISION,
+        estado TEXT DEFAULT 'pendiente',
+        destacado BOOLEAN DEFAULT false,
+        created_at TIMESTAMPTZ DEFAULT now()
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS auspicios (
+        id TEXT PRIMARY KEY,
+        nombre TEXT NOT NULL,
+        categoria TEXT DEFAULT '',
+        horario TEXT DEFAULT '',
+        descripcion TEXT DEFAULT '',
+        servicios JSONB DEFAULT '[]',
+        direccion TEXT DEFAULT '',
+        ciudad TEXT DEFAULT '',
+        telefono TEXT DEFAULT '',
+        whatsapp TEXT DEFAULT '',
+        email TEXT DEFAULT '',
+        imagen TEXT DEFAULT '',
+        link TEXT DEFAULT '',
+        lat DOUBLE PRECISION,
+        lng DOUBLE PRECISION,
+        destacado BOOLEAN DEFAULT false,
+        created_at TIMESTAMPTZ DEFAULT now()
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS categorias (
+        id SERIAL PRIMARY KEY,
+        nombre TEXT UNIQUE NOT NULL,
+        orden INT DEFAULT 0
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS productos (
+        id TEXT PRIMARY KEY,
+        nombre TEXT NOT NULL,
+        descripcion TEXT DEFAULT '',
+        precio TEXT DEFAULT '',
+        categoria TEXT DEFAULT '',
+        imagen TEXT DEFAULT '',
+        contacto TEXT DEFAULT '',
+        whatsapp TEXT DEFAULT '',
+        estado TEXT DEFAULT 'pendiente',
+        destacado BOOLEAN DEFAULT false,
+        folio SERIAL,
+        created_at TIMESTAMPTZ DEFAULT now()
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS feedbacks (
+        id TEXT PRIMARY KEY,
+        tipo TEXT DEFAULT 'valoracion',
+        taller_id TEXT DEFAULT '',
+        taller_nombre TEXT DEFAULT '',
+        cliente_nombre TEXT NOT NULL,
+        cliente_contacto TEXT DEFAULT '',
+        calificacion INT DEFAULT 5,
+        titulo TEXT DEFAULT '',
+        mensaje TEXT NOT NULL,
+        estado TEXT DEFAULT 'aprobado',
+        created_at TIMESTAMPTZ DEFAULT now()
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS visitas (
+        id TEXT PRIMARY KEY,
+        total INT DEFAULT 0,
+        updated_at TIMESTAMPTZ DEFAULT now()
+      )
+    `;
+
+    // 2. Add columns if not exist (each in isolated try/catch to avoid aborts)
+    const alterStatements = [
       sql`ALTER TABLE talleres ADD COLUMN IF NOT EXISTS clics INT DEFAULT 0`,
       sql`ALTER TABLE talleres ADD COLUMN IF NOT EXISTS destacado_solicitado BOOLEAN DEFAULT false`,
       sql`ALTER TABLE talleres ADD COLUMN IF NOT EXISTS auspicio_solicitado BOOLEAN DEFAULT false`,
@@ -669,36 +647,59 @@ export async function ensureSchema() {
       sql`ALTER TABLE productos ADD COLUMN IF NOT EXISTS destacado_solicitado BOOLEAN DEFAULT false`,
       sql`ALTER TABLE productos ADD COLUMN IF NOT EXISTS telefono_pago TEXT DEFAULT ''`,
       sql`ALTER TABLE productos ADD COLUMN IF NOT EXISTS imagenes JSONB DEFAULT '[]'`
-    ]);
-  } catch (e) {
-    useMock = true;
-    schemaReady = true;
-    return;
-  }
+    ];
 
-  try {
-    const countRows = await sql`SELECT COUNT(*)::int AS count FROM talleres`;
-    if (countRows && countRows[0] && countRows[0].count === 0) {
-      await seedTalleres(sql);
+    for (const stmt of alterStatements) {
+      try { await stmt; } catch (alterErr) { /* column already exists or non-fatal */ }
     }
-    const countAusp = await sql`SELECT COUNT(*)::int AS count FROM auspicios`;
-    if (countAusp && countAusp[0] && countAusp[0].count === 0) {
-      await seedAuspicios(sql);
+
+    // 3. Seed initial data if tables are empty
+    try {
+      const countRows = await sql`SELECT COUNT(*)::int AS count FROM talleres`;
+      if (countRows && countRows[0] && countRows[0].count === 0) {
+        await seedTalleres(sql);
+      }
+    } catch (e) {
+      console.warn('[Seed talleres check]:', e.message);
     }
-    const countCat = await sql`SELECT COUNT(*)::int AS count FROM categorias`;
-    if (countCat && countCat[0] && countCat[0].count === 0) {
-      await seedCategorias(sql);
+
+    try {
+      const countAusp = await sql`SELECT COUNT(*)::int AS count FROM auspicios`;
+      if (countAusp && countAusp[0] && countAusp[0].count === 0) {
+        await seedAuspicios(sql);
+      }
+    } catch (e) {
+      console.warn('[Seed auspicios check]:', e.message);
     }
-    const countFb = await sql`SELECT COUNT(*)::int AS count FROM feedbacks`;
-    if (countFb && countFb[0] && countFb[0].count === 0) {
-      await seedFeedbacks(sql);
+
+    try {
+      const countCat = await sql`SELECT COUNT(*)::int AS count FROM categorias`;
+      if (countCat && countCat[0] && countCat[0].count === 0) {
+        await seedCategorias(sql);
+      }
+    } catch (e) {
+      console.warn('[Seed categorias check]:', e.message);
     }
-    const countVisitas = await sql`SELECT COUNT(*)::int AS count FROM visitas`;
-    if (countVisitas && countVisitas[0] && countVisitas[0].count === 0) {
-      await sql`INSERT INTO visitas (id, total) VALUES ('global', 1850) ON CONFLICT (id) DO NOTHING`;
+
+    try {
+      const countFb = await sql`SELECT COUNT(*)::int AS count FROM feedbacks`;
+      if (countFb && countFb[0] && countFb[0].count === 0) {
+        await seedFeedbacks(sql);
+      }
+    } catch (e) {
+      console.warn('[Seed feedbacks check]:', e.message);
     }
-  } catch (e) {
-    useMock = true;
+
+    try {
+      const countVisitas = await sql`SELECT COUNT(*)::int AS count FROM visitas`;
+      if (countVisitas && countVisitas[0] && countVisitas[0].count === 0) {
+        await sql`INSERT INTO visitas (id, total) VALUES ('global', 1850) ON CONFLICT (id) DO NOTHING`;
+      }
+    } catch (e) {
+      console.warn('[Seed visitas check]:', e.message);
+    }
+  } catch (err) {
+    console.error('[ensureSchema Error]:', err);
   }
 
   schemaReady = true;
