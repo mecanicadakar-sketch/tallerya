@@ -486,7 +486,7 @@ function createMockSql() {
 }
 
 function getDatabaseUrl() {
-  return (
+  let url = (
     process.env.DATABASE_URL ||
     process.env.POSTGRES_URL ||
     process.env.POSTGRES_PRISMA_URL ||
@@ -497,7 +497,14 @@ function getDatabaseUrl() {
     process.env.STORAGE_DATABASE_URL ||
     process.env.NEON_DATABASE_URL ||
     ''
-  );
+  ).trim();
+
+  // If the url contains channel_binding=require which can cause issues in serverless driver, clean it safely
+  if (url.includes('channel_binding=')) {
+    url = url.replace(/([?&])channel_binding=[^&]+(&|$)/, '$1').replace(/[?&]$/, '');
+  }
+
+  return url;
 }
 
 export function getSql() {
