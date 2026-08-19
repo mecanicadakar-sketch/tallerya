@@ -11,8 +11,8 @@ import {
   unblockIp,
   create2FAChallenge,
   verify2FAChallenge
-} from '../_auth.js';
-import { getSecurityAuditLogs, sanitizeText } from '../_security.js';
+} from './_auth.js';
+import { getSecurityAuditLogs, sanitizeText } from './_security.js';
 
 export default async function handler(req, res) {
   const ip = getClientIp(req);
@@ -145,36 +145,20 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Step 1 Success -> If 2FA keys (Resend/Brevo/Webhook) are configured, use 2FA. Otherwise, authenticate immediately.
-  const has2FAProvider = Boolean(process.env.RESEND_API_KEY || process.env.BREVO_API_KEY || process.env.OTP_WEBHOOK_URL);
+  // Step 1 Success -> Generate and secretly dispatch 2FA verification challenge to authorized email/phone
+  const challenge = await create2FAChallenge(cleanUser, ip);
 
-  if (has2FAProvider) {
-    try {
-      const challenge = await create2FAChallenge(cleanUser, ip);
-
-      res.status(200).json({
-        ok: true,
-        requires2FA: true,
-        step: '2fa_required',
-        challengeId: challenge.challengeId,
-        maskedEmail: challenge.maskedEmail,
-        maskedPhone: challenge.maskedPhone,
-        expiresInSeconds: challenge.expiresInSeconds,
-        message: `Hemos enviado una clave de verificación de 6 dígitos a tu correo autorizado (${challenge.maskedEmail}) y celular/WhatsApp (${challenge.maskedPhone}).`
-      });
-      return;
-    } catch (err) {
-      console.error('[Login 2FA Challenge Error]:', err);
-    }
-  }
-
-  // Direct login with PIN/Password
-  recordSuccessfulLogin(ip, cleanUser);
-  setAuthCookie(res);
   res.status(200).json({
     ok: true,
-    token: makeToken(),
-    user: cleanUser,
-    message: '✅ Sesión de administrador iniciada correctamente.'
+    requires2FA: true,
+    step: '2fa_required',
+    challengeId: challenge.challengeId,
+    maskedEmail: challenge.maskedEmail,
+    maskedPhone: challenge.maskedPhone,
+    expiresInSeconds: challenge.expiresInSeconds,
+    message: `Hemos enviado una clave de verificación de 6 dígitos a tu correo autorizado (${challenge.maskedEmail}) y celular/WhatsApp (${challenge.maskedPhone}).`
   });
 }
+
+
+

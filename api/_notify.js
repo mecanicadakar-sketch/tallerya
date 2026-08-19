@@ -82,6 +82,7 @@ function getEmailHtml({ code, expiresInMinutes, ip, targetEmail }) {
 
 /**
  * Envío de notificaciones por Resend, Brevo, Webhook o registro en logs
+ * 100% nativo sin dependencias externas pesadas para compatibilidad con Vercel.
  */
 export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip }) {
   const targetEmail = getAuthorizedEmail();
@@ -91,7 +92,7 @@ export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip
 
   const timestamp = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
 
-  // Registro de auditoría en los Logs de Vercel
+  // Registro de auditoría visible en los Logs de Vercel
   console.log(`\n======================================================`);
   console.log(`[🔐 TALLERYA 2FA DISPATCH]`);
   console.log(`Para: ${targetEmail} | Tel/WhatsApp: ${targetPhone}`);

@@ -17,7 +17,6 @@ function rowToProducto(r) {
     estado: r.estado,
     destacado: r.destacado,
     destacadoSolicitado: r.destacado_solicitado,
-    vendido: Boolean(r.vendido),
     telefonoPago: r.telefono_pago,
     creado: r.created_at,
     codigo: 'TY-P-' + String(r.folio).padStart(6, '0')
@@ -104,3 +103,4 @@ export default async function handler(req, res) {
 
   res.status(405).json({ error: 'Method not allowed' });
 }
+

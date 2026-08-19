@@ -33,11 +33,6 @@ export default async function handler(req, res) {
       res.status(200).json({ ok: true });
       return;
     }
-    if (keys.length === 1 && keys[0] === 'vendido') {
-      await sql`UPDATE productos SET vendido = ${Boolean(b.vendido)} WHERE id = ${id}`;
-      res.status(200).json({ ok: true });
-      return;
-    }
 
     const nombre = sanitizeText(b.nombre, 120);
     const descripcion = sanitizeText(b.descripcion, 2000);
@@ -52,16 +47,12 @@ export default async function handler(req, res) {
     const imagenesJson = JSON.stringify(cleanImagenes);
     const primeraImagen = cleanImagenes[0] || sanitizeText(b.imagen, 1500000) || '';
     const destacadoVal = b.destacado !== undefined ? Boolean(b.destacado) : Boolean(b.destacadoSolicitado);
-    const vendidoVal = Boolean(b.vendido);
-
+    
     await sql`
       UPDATE productos SET
         nombre = ${nombre}, descripcion = ${descripcion}, precio = ${precio},
-        categoria = ${categoria}, contacto = ${contacto}, whatsapp = ${whatsapp},
-        imagen = ${primeraImagen}, imagenes = ${imagenesJson}::jsonb,
-        destacado = ${destacadoVal}, destacado_solicitado = ${Boolean(b.destacadoSolicitado)},
-        vendido = ${vendidoVal},
-        telefono_pago = ${telefonoPago}
+        categoria = ${categoria}, imagen = ${primeraImagen}, imagenes = ${imagenesJson}::jsonb, contacto = ${contacto},
+        whatsapp = ${whatsapp}, destacado = ${destacadoVal}, destacado_solicitado = ${Boolean(b.destacadoSolicitado)}, telefono_pago = ${telefonoPago}
       WHERE id = ${id}
     `;
     res.status(200).json({ ok: true });
@@ -80,3 +71,4 @@ export default async function handler(req, res) {
 
   res.status(405).json({ error: 'Method not allowed' });
 }
+
