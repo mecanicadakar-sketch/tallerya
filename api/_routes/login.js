@@ -157,10 +157,8 @@ export default async function handler(req, res) {
         requires2FA: true,
         step: '2fa_required',
         challengeId: challenge.challengeId,
-        maskedEmail: challenge.maskedEmail,
-        maskedPhone: challenge.maskedPhone,
         expiresInSeconds: challenge.expiresInSeconds,
-        message: `Hemos enviado una clave de verificación de 6 dígitos a tu correo autorizado (${challenge.maskedEmail}) y celular/WhatsApp (${challenge.maskedPhone}).`
+        message: 'Hemos enviado una clave de verificación de 6 dígitos a los canales autorizados del administrador.'
       });
       return;
     } catch (err) {
