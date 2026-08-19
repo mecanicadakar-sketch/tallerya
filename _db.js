@@ -416,18 +416,21 @@ function createMockSql() {
           item.estado = values[0];
         } else if (qUpper.includes('SET DESTACADO =') && values.length === 2) {
           item.destacado = Boolean(values[0]);
+        } else if (qUpper.includes('SET VENDIDO =') && values.length === 2) {
+          item.vendido = Boolean(values[0]);
         } else {
           if (values[0] !== undefined) item.nombre = values[0];
           if (values[1] !== undefined) item.descripcion = values[1];
           if (values[2] !== undefined) item.precio = values[2];
           if (values[3] !== undefined) item.categoria = values[3];
-          if (values[4] !== undefined) item.imagen = values[4];
-          if (values[5] !== undefined) item.imagenes = typeof values[5] === 'string' ? JSON.parse(values[5]) : (values[5] || []);
-          if (values[6] !== undefined) item.contacto = values[6];
-          if (values[7] !== undefined) item.whatsapp = values[7];
+          if (values[4] !== undefined) item.contacto = values[4];
+          if (values[5] !== undefined) item.whatsapp = values[5];
+          if (values[6] !== undefined) item.imagen = values[6];
+          if (values[7] !== undefined) item.imagenes = typeof values[7] === 'string' ? JSON.parse(values[7]) : (values[7] || []);
           if (values[8] !== undefined) item.destacado = Boolean(values[8]);
           if (values[9] !== undefined) item.destacado_solicitado = Boolean(values[9]);
-          if (values[10] !== undefined) item.telefono_pago = values[10] || '';
+          if (values[10] !== undefined) item.vendido = Boolean(values[10]);
+          if (values[11] !== undefined) item.telefono_pago = values[11] || '';
         }
       }
       return [];
@@ -602,6 +605,7 @@ export async function ensureSchema() {
         whatsapp TEXT DEFAULT '',
         estado TEXT DEFAULT 'pendiente',
         destacado BOOLEAN DEFAULT false,
+        vendido BOOLEAN DEFAULT false,
         folio SERIAL,
         created_at TIMESTAMPTZ DEFAULT now()
       )
@@ -645,6 +649,7 @@ export async function ensureSchema() {
       sql`ALTER TABLE auspicios ADD COLUMN IF NOT EXISTS telefono_pago TEXT DEFAULT ''`,
       sql`ALTER TABLE auspicios ADD COLUMN IF NOT EXISTS folio SERIAL`,
       sql`ALTER TABLE productos ADD COLUMN IF NOT EXISTS destacado_solicitado BOOLEAN DEFAULT false`,
+      sql`ALTER TABLE productos ADD COLUMN IF NOT EXISTS vendido BOOLEAN DEFAULT false`,
       sql`ALTER TABLE productos ADD COLUMN IF NOT EXISTS telefono_pago TEXT DEFAULT ''`,
       sql`ALTER TABLE productos ADD COLUMN IF NOT EXISTS imagenes JSONB DEFAULT '[]'`
     ];
