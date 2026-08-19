@@ -166,6 +166,25 @@
     padding:14px 24px;border-radius:10px;flex:0 0 auto;transition:.15s;
   }
   .searchbar button:hover{background:var(--blue-dark);}
+  .service-chip-filter{
+    background:rgba(255,255,255,0.12);color:#F1F5F9;
+    border:1px solid rgba(255,255,255,0.22);padding:5px 12px;
+    border-radius:20px;font-size:12px;font-weight:500;
+    cursor:pointer;transition:all .15s ease;display:inline-flex;
+    align-items:center;gap:5px;user-select:none;line-height:1.3;
+  }
+  .service-chip-filter:hover{
+    background:rgba(255,255,255,0.24);border-color:rgba(255,255,255,0.45);
+  }
+  .service-chip-filter.active{
+    background:#2563EB;color:#FFFFFF;border-color:#60A5FA;
+    font-weight:700;box-shadow:0 2px 8px rgba(37,99,235,0.45);
+  }
+  .service-chip-filter .chip-count{
+    font-size:11px;opacity:0.85;font-weight:600;
+  }
+  .tag{cursor:pointer;transition:all .15s ease;}
+  .tag:hover{background:var(--blue-light);color:var(--blue);}
   .hero-stats{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap;}
   .hero-stat b{font-size:24px;display:block;font-family:'Space Grotesk',sans-serif;}
   .hero-stat span{font-size:13px;color:#AEB9D1;}
@@ -1094,9 +1113,19 @@
         <p>TallerYa conecta clientes con talleres verificados. Buscá por zona o servicio y contactá por WhatsApp al instante.</p>
       </div>
       <div class="searchbar">
-        <input type="text" id="searchInput" placeholder="Nombre, ciudad o servicio...">
-        <select id="categoryFilter"><option value="Todas">Todas</option></select>
+        <input type="text" id="searchInput" placeholder="Buscar por nombre, ciudad, servicio o palabra clave...">
+        <select id="categoryFilter"><option value="Todas">Todas las categorías</option></select>
         <button onclick="renderListado()">Buscar</button>
+      </div>
+      <div id="serviceFilterContainer" style="margin-top:14px;width:100%;max-width:960px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:#F1F5F9;display:flex;align-items:center;gap:6px;">
+            <span>🏷️ Filtrar por servicios:</span>
+            <span id="activeServicesCount" style="display:none;background:#2563EB;color:#fff;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:700;">0 activos</span>
+          </div>
+          <button type="button" id="clearAllFiltersBtn" onclick="clearAllSearchFilters()" style="display:none;font-size:12.5px;color:#FCA5A5;background:rgba(220,38,38,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:6px;cursor:pointer;font-weight:600;padding:3px 8px;transition:all .15s ease;">✕ Limpiar todos los filtros</button>
+        </div>
+        <div id="serviceFilterChips" style="display:flex;flex-wrap:wrap;gap:6px;max-height:110px;overflow-y:auto;padding:2px 0;"></div>
       </div>
       <div class="hero-stats">
         <div class="hero-stat"><b id="stat-visitas">0</b><span>Visitas a la web</span></div>
@@ -1269,75 +1298,95 @@
     </div>
 
     <div id="postularFormCard" class="form-card">
-      <div class="page-head">
-        <h2 style="font-size:22px;margin:0 0 8px;color:var(--ink);">Completá los datos de tu taller</h2>
-        <p>Completá la información. Un administrador verificará la solicitud antes de publicar.</p>
-      </div>
-      <div class="banner-ok" id="postularOk">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-        ¡Listo! Tu taller fue enviado y está pendiente de aprobación.
-      </div>
-      <form id="postularForm" onsubmit="submitPostular(event)">
+      <div id="postularFormFields">
+        <div class="page-head">
+          <h2 style="font-size:22px;margin:0 0 8px;color:var(--ink);">Completá los datos de tu taller</h2>
+          <p>Completá la información. Un administrador verificará la solicitud antes de publicar.</p>
+        </div>
+        <form id="postularForm" onsubmit="submitPostular(event)">
 
-        <div class="field">
-          <label>Nombre del taller *</label>
-          <input type="text" id="f-nombre" required placeholder="Ej: Mecánica Central">
-        </div>
-        <div class="row2">
           <div class="field">
-            <label>Categoría</label>
-            <select id="f-categoria"></select>
+            <label>Nombre del taller *</label>
+            <input type="text" id="f-nombre" required placeholder="Ej: Mecánica Central">
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label>Categoría</label>
+              <select id="f-categoria"></select>
+            </div>
+            <div class="field">
+              <label>Horario <span class="hint">(ej: Lun-Vie 9-18h)</span></label>
+              <input type="text" id="f-horario" placeholder="Lun-Vie 9-18h">
+            </div>
           </div>
           <div class="field">
-            <label>Horario <span class="hint">(ej: Lun-Vie 9-18h)</span></label>
-            <input type="text" id="f-horario" placeholder="Lun-Vie 9-18h">
-          </div>
-        </div>
-        <div class="field">
-          <label>Descripción</label>
-          <textarea id="f-descripcion" placeholder="Contanos brevemente sobre el taller..."></textarea>
-        </div>
-        <div class="field">
-          <label>Servicios <span class="hint">(separados por comas)</span></label>
-          <input type="text" id="f-servicios" placeholder="Cambio de aceite, Frenos, Diagnóstico">
-        </div>
-        <div class="row2">
-          <div class="field">
-            <label>Dirección *</label>
-            <input type="text" id="f-direccion" required placeholder="Calle y número o referencia">
+            <label>Descripción</label>
+            <textarea id="f-descripcion" placeholder="Contanos brevemente sobre el taller..."></textarea>
           </div>
           <div class="field">
-            <label>Ciudad *</label>
-            <input type="text" id="f-ciudad" required placeholder="Encarnación (Itapúa)">
+            <label>Servicios <span class="hint">(separados por comas)</span></label>
+            <input type="text" id="f-servicios" placeholder="Cambio de aceite, Frenos, Diagnóstico">
           </div>
-        </div>
-        <div class="row2">
+          <div class="row2">
+            <div class="field">
+              <label>Dirección *</label>
+              <input type="text" id="f-direccion" required placeholder="Calle y número o referencia">
+            </div>
+            <div class="field">
+              <label>Ciudad *</label>
+              <input type="text" id="f-ciudad" required placeholder="Encarnación (Itapúa)">
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label>Teléfono</label>
+              <input type="text" id="f-telefono" placeholder="0975 123 456">
+            </div>
+            <div class="field">
+              <label>WhatsApp * <span class="hint">(con código de país)</span></label>
+              <input type="text" id="f-whatsapp" required placeholder="59598...">
+            </div>
+          </div>
           <div class="field">
-            <label>Teléfono</label>
-            <input type="text" id="f-telefono" placeholder="0975 123 456">
+            <label>Email de contacto</label>
+            <input type="email" id="f-email" placeholder="contacto@taller.com">
           </div>
           <div class="field">
-            <label>WhatsApp * <span class="hint">(con código de país)</span></label>
-            <input type="text" id="f-whatsapp" required placeholder="59598...">
+            <div id="f-imagen-wrap"></div>
           </div>
+          <div class="field">
+            <div id="f-destacado-wrap"></div>
+          </div>
+          <div class="field">
+            <label>Ubicación en el mapa <span class="hint">(hacé clic para marcar el pin)</span></label>
+            <div class="map-picker" id="f-leaflet-map"></div>
+            <div class="map-coords" id="f-mapCoords">📍 Ninguna ubicación marcada todavía.</div>
+          </div>
+          <button type="submit" class="submit-btn">Enviar postulación</button>
+        </form>
+      </div>
+
+      <!-- Cartel de confirmación post-postulación -->
+      <div id="postularSuccessNotice" style="display:none;text-align:center;padding:36px 20px 24px;max-width:560px;margin:0 auto;">
+        <div style="width:64px;height:64px;background:#DCFCE7;color:#16A34A;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:32px;border:2.5px solid #86EFAC;">
+          ✓
         </div>
-        <div class="field">
-          <label>Email de contacto</label>
-          <input type="email" id="f-email" placeholder="contacto@taller.com">
+        <h3 style="font-size:22px;font-weight:800;color:var(--ink);margin:0 0 14px;">¡Postulación Registrada!</h3>
+        <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:14px;padding:18px 20px;margin-bottom:22px;text-align:center;">
+          <p style="font-size:15.5px;line-height:1.6;color:#1E293B;margin:0;font-weight:600;">
+            Esta publicación será evaluada por el administrador y luego de ser aceptada será publicada.
+          </p>
+          <div id="postularSuccessCode" style="margin-top:12px;font-size:13.5px;color:var(--gray);font-weight:600;"></div>
         </div>
-        <div class="field">
-          <div id="f-imagen-wrap"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button type="button" class="submit-btn" onclick="cerrarPostularAviso(true)" style="width:auto;min-width:180px;padding:12px 24px;font-size:14.5px;font-weight:700;">
+            Cerrar
+          </button>
+          <button type="button" class="ghost-btn" onclick="cerrarPostularAviso(false)" style="width:auto;padding:12px 20px;font-size:13.5px;font-weight:600;">
+            Nueva postulación
+          </button>
         </div>
-        <div class="field">
-          <div id="f-destacado-wrap"></div>
-        </div>
-        <div class="field">
-          <label>Ubicación en el mapa <span class="hint">(hacé clic para marcar el pin)</span></label>
-          <div class="map-picker" id="f-leaflet-map"></div>
-          <div class="map-coords" id="f-mapCoords">📍 Ninguna ubicación marcada todavía.</div>
-        </div>
-        <button type="submit" class="submit-btn">Enviar postulación</button>
-      </form>
+      </div>
     </div>
   </div>
 </div>
@@ -1359,36 +1408,51 @@
 <div class="modal-bg" id="productoFormBg">
   <div class="modal">
     <button class="close-x" onclick="cerrarFormProducto()">&times;</button>
-    <h3>Ofrecer un repuesto o accesorio</h3>
-    <p style="color:var(--gray);font-size:13px;margin:-6px 0 16px;">Un administrador revisa la publicación antes de mostrarla.</p>
-    <div class="banner-ok" id="productoOk">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      ¡Listo! Tu publicación fue enviada y está pendiente de aprobación.
-    </div>
-    <form id="productoForm" onsubmit="submitProducto(event)">
-      <div class="field"><label>Nombre del producto *</label><input id="p-nombre" required placeholder="Ej: Pastillas de freno delanteras"></div>
-      <div class="row2">
-        <div class="field"><label>Precio</label><input id="p-precio" placeholder="Gs. 150.000 o 'Consultar'"></div>
-        <div class="field"><label>Categoría</label>
-          <select id="p-categoria">
-            <option value="Repuestos">Repuestos</option>
-            <option value="Accesorios">Accesorios</option>
-            <option value="Autos">Autos</option>
-            <option value="Herramientas">Herramientas</option>
-            <option value="Lubricantes">Lubricantes</option>
-            <option value="Otros">Otros</option>
-          </select>
+    <div id="productoFormContent">
+      <h3>Ofrecer un repuesto o accesorio</h3>
+      <p style="color:var(--gray);font-size:13px;margin:-6px 0 16px;">Un administrador revisa la publicación antes de mostrarla.</p>
+      <form id="productoForm" onsubmit="submitProducto(event)">
+        <div class="field"><label>Nombre del producto *</label><input id="p-nombre" required placeholder="Ej: Pastillas de freno delanteras"></div>
+        <div class="row2">
+          <div class="field"><label>Precio</label><input id="p-precio" placeholder="Gs. 150.000 o 'Consultar'"></div>
+          <div class="field"><label>Categoría</label>
+            <select id="p-categoria">
+              <option value="Repuestos">Repuestos</option>
+              <option value="Accesorios">Accesorios</option>
+              <option value="Autos">Autos</option>
+              <option value="Herramientas">Herramientas</option>
+              <option value="Lubricantes">Lubricantes</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
         </div>
+        <div class="field"><label>Descripción</label><textarea id="p-descripcion" placeholder="Marca, modelo compatible, estado (nuevo/usado), etc."></textarea></div>
+        <div class="row2">
+          <div class="field"><label>Teléfono</label><input id="p-contacto" placeholder="0975 123 456"></div>
+          <div class="field"><label>WhatsApp * <span class="hint">(con código de país)</span></label><input id="p-whatsapp" required placeholder="59598..."></div>
+        </div>
+        <div id="p-destacado-wrap"></div>
+        <div id="p-imagen-wrap"></div>
+        <button type="submit" class="submit-btn">Publicar</button>
+      </form>
+    </div>
+
+    <!-- Cartel de confirmación post-publicación -->
+    <div id="productoSuccessNotice" style="display:none;text-align:center;padding:26px 16px 14px;">
+      <div style="width:62px;height:62px;background:#DCFCE7;color:#16A34A;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;border:2.5px solid #86EFAC;">
+        ✓
       </div>
-      <div class="field"><label>Descripción</label><textarea id="p-descripcion" placeholder="Marca, modelo compatible, estado (nuevo/usado), etc."></textarea></div>
-      <div class="row2">
-        <div class="field"><label>Teléfono</label><input id="p-contacto" placeholder="0975 123 456"></div>
-        <div class="field"><label>WhatsApp * <span class="hint">(con código de país)</span></label><input id="p-whatsapp" required placeholder="59598..."></div>
+      <h3 style="font-size:20px;font-weight:800;color:var(--ink);margin:0 0 12px;">¡Publicación Registrada!</h3>
+      <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:14px;padding:16px 18px;margin-bottom:18px;text-align:center;">
+        <p style="font-size:15px;line-height:1.55;color:#1E293B;margin:0;font-weight:600;">
+          Esta publicación será evaluada por el administrador y luego de ser aceptada será publicada.
+        </p>
+        <div id="productoSuccessCode" style="margin-top:10px;font-size:13px;color:var(--gray);font-weight:600;"></div>
       </div>
-      <div id="p-destacado-wrap"></div>
-      <div id="p-imagen-wrap"></div>
-      <button type="submit" class="submit-btn">Publicar</button>
-    </form>
+      <button type="button" class="submit-btn" onclick="cerrarFormProducto()" style="width:100%;max-width:220px;margin:0 auto;padding:12px 24px;font-size:14.5px;font-weight:700;">
+        Cerrar
+      </button>
+    </div>
   </div>
 </div>
 
@@ -2088,6 +2152,10 @@ async function go(view){
     if(v) v.classList.add('active');
     const n = document.getElementById('nav-postular');
     if(n) n.classList.add('active');
+    const formFields = document.getElementById('postularFormFields');
+    const successNotice = document.getElementById('postularSuccessNotice');
+    if(formFields) formFields.style.display = 'block';
+    if(successNotice) successNotice.style.display = 'none';
     renderTallerSessionBanner();
     autoFillPostularFormIfLogged();
     if(!activeMaps['f']) initPinMap('f', null);
@@ -2349,9 +2417,117 @@ function trackAndOpenTaller(id){
   openTallerDetail(id);
 }
 
+let selectedServiceFilters = new Set();
+
+function normalizeSearchText(str){
+  return (str || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+function toggleServiceFilter(serviceName){
+  if(!serviceName) return;
+  const cleanName = serviceName.trim();
+  if(selectedServiceFilters.has(cleanName)){
+    selectedServiceFilters.delete(cleanName);
+  }else{
+    selectedServiceFilters.add(cleanName);
+  }
+  renderServiceFilterChips();
+  renderListado();
+}
+
+function clearAllSearchFilters(){
+  selectedServiceFilters.clear();
+  const searchEl = document.getElementById('searchInput');
+  if(searchEl) searchEl.value = '';
+  const catEl = document.getElementById('categoryFilter');
+  if(catEl) catEl.value = 'Todas';
+  soloFavoritos = false;
+  const favBtn = document.getElementById('favFilterBtn');
+  if(favBtn) favBtn.classList.remove('active');
+  renderServiceFilterChips();
+  renderListado();
+}
+
+function renderServiceFilterChips(){
+  const container = document.getElementById('serviceFilterChips');
+  if(!container) return;
+
+  const activeTalleres = talleres.filter(t => t.estado === 'aprobado');
+  const serviceCounts = {};
+
+  activeTalleres.forEach(t => {
+    (t.servicios || []).forEach(s => {
+      const sTrim = (s || '').trim();
+      if(sTrim){
+        serviceCounts[sTrim] = (serviceCounts[sTrim] || 0) + 1;
+      }
+    });
+  });
+
+  const defaultServices = [
+    'Mecánica general',
+    'Electricidad',
+    'Auxilio / Grúa',
+    'Gomería',
+    'Chapería y pintura',
+    'Aire acondicionado',
+    'Frenos',
+    'Diagnóstico por escáner',
+    'Alineación y balanceo',
+    'Suspensión'
+  ];
+
+  defaultServices.forEach(ds => {
+    if(!(ds in serviceCounts)){
+      serviceCounts[ds] = 0;
+    }
+  });
+
+  const sortedServices = Object.keys(serviceCounts).sort((a, b) => {
+    const isASel = selectedServiceFilters.has(a) ? 1 : 0;
+    const isBSel = selectedServiceFilters.has(b) ? 1 : 0;
+    if(isASel !== isBSel) return isBSel - isASel;
+    return (serviceCounts[b] || 0) - (serviceCounts[a] || 0) || a.localeCompare(b);
+  });
+
+  container.innerHTML = sortedServices.map(srv => {
+    const isSelected = selectedServiceFilters.has(srv);
+    const count = serviceCounts[srv] || 0;
+    return `<button type="button" class="service-chip-filter ${isSelected ? 'active' : ''}" onclick="toggleServiceFilter('${escapeAttr(srv)}')">
+      ${isSelected ? '✓ ' : ''}${escapeHtml(srv)} ${count > 0 ? `<span class="chip-count">(${count})</span>` : ''}
+    </button>`;
+  }).join('');
+
+  const countBadge = document.getElementById('activeServicesCount');
+  const clearBtn = document.getElementById('clearAllFiltersBtn');
+  const qVal = (document.getElementById('searchInput')?.value || '').trim();
+  const catVal = document.getElementById('categoryFilter')?.value || 'Todas';
+  const anyActive = selectedServiceFilters.size > 0 || Boolean(qVal) || (catVal !== 'Todas') || soloFavoritos;
+
+  if(countBadge){
+    if(selectedServiceFilters.size > 0){
+      countBadge.style.display = 'inline-block';
+      countBadge.textContent = `${selectedServiceFilters.size} activo${selectedServiceFilters.size === 1 ? '' : 's'}`;
+    }else{
+      countBadge.style.display = 'none';
+    }
+  }
+
+  if(clearBtn){
+    clearBtn.style.display = anyActive ? 'inline-block' : 'none';
+  }
+}
+
 function tallerCard(t, destacadoStyle){
-  const tagsHtml = t.servicios.slice(0,3).map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join('') +
-    (t.servicios.length>3 ? `<span class="tag">+${t.servicios.length-3}</span>` : '');
+  const tagsHtml = t.servicios.slice(0,4).map(s => {
+    const isTagActive = selectedServiceFilters.has(s);
+    return `<span class="tag ${isTagActive ? 'active' : ''}" style="${isTagActive ? 'background:#2563EB;color:#FFFFFF;border-color:#2563EB;font-weight:700;' : ''}" onclick="event.stopPropagation();toggleServiceFilter('${escapeAttr(s)}')" title="Filtrar por servicio: ${escapeAttr(s)}">${escapeHtml(s)}</span>`;
+  }).join('') +
+    (t.servicios.length > 4 ? `<span class="tag">+${t.servicios.length - 4}</span>` : '');
   const waNumber = (t.whatsapp||'').replace(/[^0-9]/g,'');
   const waLink = waNumber ? `https://wa.me/${waNumber}?text=${encodeURIComponent('Hola, te contacto desde TallerYa 👋')}` : '#';
   const bannerInner = t.imagen
@@ -2400,6 +2576,7 @@ async function renderHome(){
     console.error(e);
   }
   renderDestacados();
+  renderServiceFilterChips();
   renderListado();
   renderSponsors();
   renderHomeFeedbacks();
@@ -2430,11 +2607,20 @@ function renderDestacados(){
 }
 
 function renderListado(){
-  const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
-  const cat = document.getElementById('categoryFilter').value;
+  const rawQ = (document.getElementById('searchInput')?.value || '').trim();
+  const normQ = normalizeSearchText(rawQ);
+  const cat = document.getElementById('categoryFilter')?.value || 'Todas';
   const listadoSec = document.getElementById('listado-section');
   const dividerAfterDestacados = document.getElementById('divider-after-destacados');
-  const isFiltering = Boolean(q || (cat && cat !== 'Todas') || soloFavoritos);
+
+  const searchTokens = normQ.split(/\s+/).filter(Boolean);
+  const hasActiveServiceTags = selectedServiceFilters.size > 0;
+  const isFiltering = Boolean(searchTokens.length || (cat && cat !== 'Todas') || soloFavoritos || hasActiveServiceTags);
+
+  const clearBtn = document.getElementById('clearAllFiltersBtn');
+  if(clearBtn){
+    clearBtn.style.display = isFiltering ? 'inline-block' : 'none';
+  }
 
   if(!isFiltering){
     if(listadoSec) listadoSec.style.display = 'none';
@@ -2444,30 +2630,76 @@ function renderListado(){
   if(listadoSec) listadoSec.style.display = '';
   if(dividerAfterDestacados) dividerAfterDestacados.style.display = '';
 
-  let list = talleres.filter(t=>t.estado==='aprobado');
+  let list = talleres.filter(t => t.estado === 'aprobado');
+
   if(soloFavoritos){
     const favs = getFavoritos();
-    list = list.filter(t=>favs.includes(t.id));
+    list = list.filter(t => favs.includes(t.id));
   }
-  if(cat && cat!=='Todas') list = list.filter(t=>t.categoria===cat);
-  if(q){
-    list = list.filter(t=>
-      t.nombre.toLowerCase().includes(q) ||
-      t.ciudad.toLowerCase().includes(q) ||
-      t.servicios.some(s=>s.toLowerCase().includes(q))
-    );
+
+  if(cat && cat !== 'Todas'){
+    const normCat = normalizeSearchText(cat);
+    list = list.filter(t => normalizeSearchText(t.categoria) === normCat);
   }
-  document.getElementById('listadoTitle').textContent = soloFavoritos
-    ? `${list.length} favorito${list.length===1?'':'s'}`
-    : `${list.length} taller${list.length===1?'':'es'} encontrado${list.length===1?'':'s'}`;
+
+  if(hasActiveServiceTags){
+    const activeTagsArray = Array.from(selectedServiceFilters).map(s => normalizeSearchText(s));
+    list = list.filter(t => {
+      const tallerServicesNorm = (t.servicios || []).map(s => normalizeSearchText(s));
+      return activeTagsArray.every(reqTag => 
+        tallerServicesNorm.some(ts => ts.includes(reqTag) || reqTag.includes(ts))
+      );
+    });
+  }
+
+  if(searchTokens.length > 0){
+    list = list.filter(t => {
+      const fullSearchable = normalizeSearchText([
+        t.nombre,
+        t.ciudad,
+        t.direccion,
+        t.categoria,
+        t.descripcion,
+        (t.servicios || []).join(' ')
+      ].filter(Boolean).join(' '));
+
+      return searchTokens.every(tok => fullSearchable.includes(tok));
+    });
+  }
+
+  let filterDetails = [];
+  if(cat && cat !== 'Todas') filterDetails.push(`Categoría: ${cat}`);
+  if(hasActiveServiceTags) filterDetails.push(`Servicios (${selectedServiceFilters.size}): ${Array.from(selectedServiceFilters).join(', ')}`);
+  if(rawQ) filterDetails.push(`"${rawQ}"`);
+
+  const detailSuffix = filterDetails.length ? ` · ${filterDetails.join(' | ')}` : '';
+
+  const titleEl = document.getElementById('listadoTitle');
+  if(titleEl){
+    titleEl.innerHTML = soloFavoritos
+      ? `${list.length} favorito${list.length === 1 ? '' : 's'}`
+      : `${list.length} taller${list.length === 1 ? '' : 'es'} encontrado${list.length === 1 ? '' : 's'} <span style="font-size:12.5px;font-weight:normal;color:var(--gray);">${escapeHtml(detailSuffix)}</span>`;
+  }
+
   const grid = document.getElementById('listadoGrid');
-  if(list.length===0){
+  if(!grid) return;
+
+  if(list.length === 0){
     grid.innerHTML = soloFavoritos
       ? `<div class="empty" style="grid-column:1/-1;">${ICON_HEART}<div>Todavía no guardaste ningún taller como favorito.<br>Tocá el corazón en cualquier tarjeta para guardarlo.</div></div>`
-      : `<div class="empty" style="grid-column:1/-1;">${ICON_INBOX}<div>No encontramos talleres con esos filtros.<br>Probá con otra búsqueda.</div></div>`;
+      : `<div class="empty" style="grid-column:1/-1;">
+          ${ICON_INBOX}
+          <div style="font-size:15px;font-weight:700;margin-top:8px;">No encontramos talleres con esos filtros combinados.</div>
+          <div style="font-size:13px;color:var(--gray);margin-top:4px;">Probá quitando algunas etiquetas de servicio o buscando por ciudad/zona.</div>
+          <button type="button" onclick="clearAllSearchFilters()" class="submit-btn" style="margin-top:14px;width:auto;padding:8px 18px;font-size:13px;display:inline-flex;align-items:center;gap:6px;">
+            ✕ Limpiar todos los filtros
+          </button>
+        </div>`;
     return;
   }
-  grid.innerHTML = list.map(t=>tallerCard(t)).join('');
+
+  list.sort((a, b) => (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0));
+  grid.innerHTML = list.map(t => tallerCard(t)).join('');
 }
 
 function renderSponsors(){
@@ -2616,6 +2848,26 @@ function resetPinMap(prefix){
 /* ============================================================
    POSTULAR
 ============================================================ */
+function cerrarPostularAviso(irInicio = true){
+  const formFields = document.getElementById('postularFormFields');
+  const successNotice = document.getElementById('postularSuccessNotice');
+  if(formFields) formFields.style.display = 'block';
+  if(successNotice) successNotice.style.display = 'none';
+  if(irInicio){
+    navTo('home');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  } else {
+    document.getElementById('postularForm').reset();
+    resetPinMap('f');
+    toggleDestacadoPago('f');
+    mimgSetArr('f', []);
+    const card = document.getElementById('postularFormCard');
+    if(card){
+      window.scrollTo({top: card.offsetTop - 20, behavior: 'smooth'});
+    }
+  }
+}
+
 async function submitPostular(e){
   e.preventDefault();
   const nombre = document.getElementById('f-nombre').value.trim();
@@ -2652,11 +2904,21 @@ async function submitPostular(e){
     resetPinMap('f');
     toggleDestacadoPago('f');
     mimgSetArr('f', []);
-    const ok = document.getElementById('postularOk');
-    ok.innerHTML = `${ICON_CHECK} ¡Listo! Tu taller fue enviado y está pendiente de aprobación.${resp && resp.codigo ? ` Tu código de referencia es <b>${resp.codigo}</b> — guardalo para consultas de pago o facturación.` : ''}`;
-    ok.classList.add('show');
-    setTimeout(()=>ok.classList.remove('show'), 10000);
-    window.scrollTo(0,0);
+
+    const formFields = document.getElementById('postularFormFields');
+    const successNotice = document.getElementById('postularSuccessNotice');
+    const codeEl = document.getElementById('postularSuccessCode');
+
+    if(codeEl){
+      codeEl.innerHTML = resp && resp.codigo ? `Código de postulación: <b style="color:#1E293B;">${resp.codigo}</b>` : '';
+    }
+    if(formFields) formFields.style.display = 'none';
+    if(successNotice) successNotice.style.display = 'block';
+
+    const card = document.getElementById('postularFormCard');
+    if(card){
+      window.scrollTo({top: card.offsetTop - 20, behavior: 'smooth'});
+    }
   }catch(err){
     alert('No se pudo enviar la postulación: ' + err.message);
   }finally{
@@ -3611,7 +3873,10 @@ function openTallerDetail(id){
       ${t.whatsapp ? `<div class="row-icon" style="font-size:14px;">${ICON_PHONE}<span>WhatsApp: ${escapeHtml(t.whatsapp)}</span></div>` : ''}
       ${t.email ? `<a href="mailto:${escapeAttr(t.email)}" class="row-icon" onclick="incrementTallerClics('${t.id}')" style="text-decoration:none;font-size:14px;">${ICON_MAIL}<span style="text-decoration:underline;">${escapeHtml(t.email)}</span></a>` : ''}
     </div>
-    ${t.servicios && t.servicios.length ? `<div class="tags" style="margin-bottom:20px;">${t.servicios.map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join('')}</div>` : ''}
+    ${t.servicios && t.servicios.length ? `<div class="tags" style="margin-bottom:20px;">${t.servicios.map(s=>{
+      const isTagActive = selectedServiceFilters.has(s);
+      return `<span class="tag ${isTagActive ? 'active' : ''}" style="${isTagActive ? 'background:#2563EB;color:#FFFFFF;border-color:#2563EB;font-weight:700;' : ''}" onclick="toggleServiceFilter('${escapeAttr(s)}');closeEditModal();showView('home');" title="Filtrar por ${escapeAttr(s)}">${escapeHtml(s)}</span>`;
+    }).join('')}</div>` : ''}
     ${waLink ? `<a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" onclick="incrementTallerClics('${t.id}')" style="width:100%;box-sizing:border-box;">${ICON_WA} Contactar por WhatsApp</a>` : ''}
   `;
   document.getElementById('editModalBg').classList.add('show');
@@ -4035,6 +4300,11 @@ async function renderProductosPublico(){
 }
 
 function abrirFormProducto(){
+  const formContent = document.getElementById('productoFormContent');
+  const successNotice = document.getElementById('productoSuccessNotice');
+  if(formContent) formContent.style.display = 'block';
+  if(successNotice) successNotice.style.display = 'none';
+
   document.getElementById('productoFormBg').classList.add('show');
   if(!document.getElementById('p-imagen-wrap').innerHTML){
     document.getElementById('p-imagen-wrap').innerHTML = multiImageUploadHTML('p', []);
@@ -4044,9 +4314,19 @@ function abrirFormProducto(){
     document.getElementById('p-destacado-wrap').innerHTML = destacadoBoxHTML('p', { mostrarAuspicio:false });
   }
 }
+
 function cerrarFormProducto(){
   document.getElementById('productoFormBg').classList.remove('show');
+  const form = document.getElementById('productoForm');
+  if(form) form.reset();
+  mimgSetArr('p', []);
+  toggleDestacadoPago('p');
+  const formContent = document.getElementById('productoFormContent');
+  const successNotice = document.getElementById('productoSuccessNotice');
+  if(formContent) formContent.style.display = 'block';
+  if(successNotice) successNotice.style.display = 'none';
 }
+
 async function submitProducto(e){
   e.preventDefault();
   const nombre = document.getElementById('p-nombre').value.trim();
@@ -4070,10 +4350,16 @@ async function submitProducto(e){
     document.getElementById('productoForm').reset();
     mimgSetArr('p', []);
     toggleDestacadoPago('p');
-    const ok = document.getElementById('productoOk');
-    ok.innerHTML = `${ICON_CHECK} ¡Listo! Tu publicación fue enviada y está pendiente de aprobación por el administrador.${resp && resp.codigo ? ` Código: <b>${resp.codigo}</b>.` : ''}`;
-    ok.classList.add('show');
-    setTimeout(()=>{ ok.classList.remove('show'); cerrarFormProducto(); }, 3500);
+
+    const formContent = document.getElementById('productoFormContent');
+    const successNotice = document.getElementById('productoSuccessNotice');
+    const codeEl = document.getElementById('productoSuccessCode');
+
+    if(codeEl){
+      codeEl.innerHTML = resp && resp.codigo ? `Código de publicación: <b style="color:#1E293B;">${resp.codigo}</b>` : '';
+    }
+    if(formContent) formContent.style.display = 'none';
+    if(successNotice) successNotice.style.display = 'block';
   }catch(err){
     alert('No se pudo publicar: ' + err.message);
   }finally{
