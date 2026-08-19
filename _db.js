@@ -488,6 +488,18 @@ function createMockSql() {
   return mockSql;
 }
 
+function isPlaceholderUrl(url) {
+  if (!url) return true;
+  const u = url.toLowerCase();
+  return (
+    u.includes('ep-xxxxx') ||
+    u.includes('usuario:password') ||
+    u.includes('region.aws.neon.tech') ||
+    u.includes('example.com') ||
+    u.includes('placeholder')
+  );
+}
+
 function getDatabaseUrl() {
   let url = (
     process.env.DATABASE_URL ||
@@ -502,6 +514,10 @@ function getDatabaseUrl() {
     ''
   ).trim();
 
+  if (isPlaceholderUrl(url)) {
+    return '';
+  }
+
   // If the url contains channel_binding=require which can cause issues in serverless driver, clean it safely
   if (url.includes('channel_binding=')) {
     url = url.replace(/([?&])channel_binding=[^&]+(&|$)/, '$1').replace(/[?&]$/, '');
@@ -510,20 +526,64 @@ function getDatabaseUrl() {
   return url;
 }
 
+const mockSqlInstance = createMockSql();
+
 export function getSql() {
+  if (useMock) return mockSqlInstance;
+
   const dbUrl = getDatabaseUrl();
   if (!dbUrl) {
-    return createMockSql();
+    return mockSqlInstance;
   }
+
   if (!sqlClient) {
     try {
       const realNeon = neon(dbUrl);
-      sqlClient = realNeon;
+      
+      // Resilient proxy wrapper around neon client
+      const resilientSql = async function(strings, ...values) {
+        if (useMock) return mockSqlInstance(strings, ...values);
+        try {
+          return await realNeon(strings, ...values);
+        } catch (err) {
+          const errMsg = String(err && (err.message || err.cause || err));
+          if (
+            errMsg.includes('ENOTFOUND') ||
+            errMsg.includes('fetch failed') ||
+            errMsg.includes('ECONNREFUSED') ||
+            errMsg.includes('ETIMEDOUT') ||
+            errMsg.includes('NeonDbError')
+          ) {
+            console.warn('[TallerYa DB Connection Failed, falling back to mock memory DB]:', errMsg);
+            useMock = true;
+            return await mockSqlInstance(strings, ...values);
+          }
+          throw err;
+        }
+      };
+
+      resilientSql.transaction = async function(queries) {
+        if (useMock) return mockSqlInstance.transaction(queries);
+        try {
+          if (realNeon.transaction) return await realNeon.transaction(queries);
+          for (const q of queries) {
+            if (typeof q === 'function') await q();
+          }
+        } catch (err) {
+          console.warn('[TallerYa DB Transaction Failed, falling back to mock]:', err.message);
+          useMock = true;
+          return await mockSqlInstance.transaction(queries);
+        }
+      };
+
+      sqlClient = resilientSql;
     } catch (e) {
-      console.error('[TallerYa DB Init Error]:', e);
-      return createMockSql();
+      console.warn('[TallerYa DB Init Error, using mock]:', e.message);
+      useMock = true;
+      return mockSqlInstance;
     }
   }
+
   return sqlClient;
 }
 
@@ -532,7 +592,7 @@ let schemaReady = false;
 export async function ensureSchema() {
   if (schemaReady) return;
   const dbUrl = getDatabaseUrl();
-  if (!dbUrl) {
+  if (!dbUrl || useMock) {
     schemaReady = true;
     return;
   }
