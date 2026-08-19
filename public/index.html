@@ -21,6 +21,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#101B33">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -243,6 +244,17 @@
     position:absolute;bottom:10px;left:10px;
     background:rgba(255,255,255,.94);color:var(--orange-dark);
     font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:999px;
+  }
+  .sello-vendido{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%, -50%) rotate(-12deg);
+    background:rgba(220,38,38,.94);color:#FFFFFF;
+    font-family:'Space Grotesk', system-ui, sans-serif;
+    font-weight:900;font-size:22px;letter-spacing:3px;
+    padding:6px 20px;border:3.5px dashed #FFFFFF;border-radius:8px;
+    text-transform:uppercase;box-shadow:0 4px 18px rgba(0,0,0,.45);
+    pointer-events:none;z-index:6;text-shadow:0 2px 4px rgba(0,0,0,.5);
+    white-space:nowrap;
   }
   .card-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;flex:1;}
   .card-body h3{font-size:17.5px;margin:0;}
@@ -1046,7 +1058,7 @@
   <div class="header-inner">
     <button type="button" class="brand" onclick="go('home')">
       <span class="brand-icon">
-        <img src="/logo.png" alt="TallerYa">
+        <img src="/Logo.png" onerror="if(this.src.indexOf('LogoTallerYa')===-1){this.src='/LogoTallerYa.png'}else{this.src='/logo.png'}" alt="TallerYa">
       </span>
       TallerYa
     </button>
@@ -1648,7 +1660,7 @@
 
 <div class="install-banner" id="installBanner">
   <div class="install-banner-inner">
-    <img src="/logo.png" alt="TallerYa" class="install-icon">
+    <img src="/Logo.png" onerror="this.src='/LogoTallerYa.png'" alt="TallerYa" class="install-icon">
     <div class="install-text">
       <b>Instalar TallerYa</b>
       <span>Agregala a tu pantalla de inicio para acceder más rápido.</span>
@@ -1907,7 +1919,7 @@
 <footer>
   <div class="footer-inner">
     <span class="brand" style="display:flex;align-items:center;gap:10px;">
-      <span class="brand-icon" style="width:30px;height:30px;"><img src="/logo.png" alt="TallerYa"></span>
+      <span class="brand-icon" style="width:30px;height:30px;"><img src="/Logo.png" onerror="this.src='/LogoTallerYa.png'" alt="TallerYa"></span>
       TallerYa
     </span>
     <div class="footer-stats" style="text-align:center;background:rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#E2E8F0;">
@@ -3869,26 +3881,33 @@ function productoCard(p){
   const fotos = (p.imagenes && p.imagenes.length ? p.imagenes : (p.imagen ? [p.imagen] : []));
   const primeraFoto = fotos[0] || p.imagen || '';
   const bannerInner = primeraFoto
-    ? `<img src="${escapeAttr(primeraFoto)}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;">`
+    ? `<img src="${escapeAttr(primeraFoto)}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;${p.vendido ? 'filter:brightness(0.85);' : ''}">`
     : ICON_WRENCH;
   const fotoCountBadge = fotos.length > 1
     ? `<span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.72);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;backdrop-filter:blur(4px);display:flex;align-items:center;gap:4px;">📷 ${fotos.length}</span>`
     : '';
 
+  const selloVendidoHTML = p.vendido ? `<div class="sello-vendido">VENDIDO</div>` : '';
+  const badgeVendidoCard = p.vendido ? `<span style="background:#FEE2E2;color:#991B1B;border:1.5px solid #EF4444;font-weight:800;font-size:11px;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;">🔴 VENDIDO</span>` : '';
+
   return `
-  <div class="card">
-    <div class="card-banner" style="background:${gradFor(p.id)}">
+  <div class="card" style="${p.vendido ? 'border-color:#FCA5A5;' : ''}">
+    <div class="card-banner" style="background:${gradFor(p.id)};position:relative;overflow:hidden;">
       ${bannerInner}
+      ${selloVendidoHTML}
       ${p.destacado ? `<span class="badge-destacado">${ICON_STAR} Destacado</span>` : ''}
       <span class="card-cat">${escapeHtml(p.categoria||'Repuestos')}</span>
       ${fotoCountBadge}
     </div>
     <div class="card-body">
-      <h3>${escapeHtml(p.nombre)}</h3>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <h3 style="margin:0;flex:1;">${escapeHtml(p.nombre)}</h3>
+        ${badgeVendidoCard}
+      </div>
       ${p.precio ? `<div class="pago-precio" style="font-size:18px;text-align:left;color:var(--blue);">${escapeHtml(p.precio)}</div>` : ''}
       ${p.descripcion ? `<p style="color:var(--gray);font-size:13px;line-height:1.4;margin:4px 0 0;">${escapeHtml(p.descripcion)}</p>` : ''}
       <div class="card-actions" style="margin-top:12px;">
-        <a class="wa-btn" href="${waLink}" target="_blank" rel="noopener">${ICON_WA} WhatsApp</a>
+        <a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" style="${p.vendido ? 'background:#64748B;' : ''}">${ICON_WA} ${p.vendido ? 'Consultar (Vendido)' : 'WhatsApp'}</a>
         ${p.contacto ? `<a href="tel:${escapeAttr(p.contacto.replace(/[^0-9+]/g,''))}" class="icon-btn" aria-label="Llamar">${ICON_PHONE}</a>` : ''}
         <button type="button" class="verlink" onclick="openProductoDetail('${p.id}')">Ver más →</button>
       </div>
@@ -3920,18 +3939,22 @@ function openProductoDetail(id){
   currentDetailFotos = fotos;
   currentProductoActiveFotoIdx = 0;
 
+  const selloModalHTML = p.vendido ? `<div class="sello-vendido">VENDIDO</div>` : '';
+
   let galeriaHTML = '';
   if(fotos.length===1){
     galeriaHTML = `
-      <div style="position:relative;margin-bottom:16px;">
-        <img src="${escapeAttr(fotos[0])}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:250px;object-fit:contain;background:var(--bg);border-radius:12px;display:block;cursor:zoom-in;border:1px solid var(--line);" onclick="openLightbox(currentDetailFotos,0)">
+      <div style="position:relative;margin-bottom:16px;overflow:hidden;border-radius:12px;">
+        <img src="${escapeAttr(fotos[0])}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:250px;object-fit:contain;background:var(--bg);border-radius:12px;display:block;cursor:zoom-in;border:1px solid var(--line);${p.vendido ? 'filter:brightness(0.85);' : ''}" onclick="openLightbox(currentDetailFotos,0)">
+        ${selloModalHTML}
         <div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;pointer-events:none;">🔍 Clic para ampliar</div>
       </div>`;
   }else if(fotos.length>1){
     galeriaHTML = `
       <div style="margin-bottom:16px;">
-        <div style="position:relative;margin-bottom:8px;">
-          <img id="producto-detail-main-img" src="${escapeAttr(fotos[0])}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:250px;object-fit:contain;background:var(--bg);border-radius:12px;display:block;cursor:zoom-in;border:1px solid var(--line);" onclick="openLightbox(currentDetailFotos,0)">
+        <div style="position:relative;margin-bottom:8px;overflow:hidden;border-radius:12px;">
+          <img id="producto-detail-main-img" src="${escapeAttr(fotos[0])}" alt="${escapeAttr(p.nombre)}" style="width:100%;height:250px;object-fit:contain;background:var(--bg);border-radius:12px;display:block;cursor:zoom-in;border:1px solid var(--line);${p.vendido ? 'filter:brightness(0.85);' : ''}" onclick="openLightbox(currentDetailFotos,0)">
+          ${selloModalHTML}
           <div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;pointer-events:none;">🔍 Clic para ampliar</div>
         </div>
         <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;align-items:center;">
@@ -3946,14 +3969,15 @@ function openProductoDetail(id){
   document.getElementById('modalTitle').textContent = p.nombre;
   document.getElementById('modalBody').innerHTML = `
     ${galeriaHTML}
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center;">
       <span class="cat-pill">${escapeHtml(p.categoria||'Otros')}</span>
       ${p.destacado ? `<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">${ICON_STAR} Destacado</span>` : ''}
+      ${p.vendido ? `<span class="cat-pill" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #EF4444;font-weight:800;">🔴 VENDIDO</span>` : ''}
     </div>
     ${p.precio ? `<div class="pago-precio" style="font-size:22px;text-align:left;color:var(--blue);margin-bottom:12px;">${escapeHtml(p.precio)}</div>` : ''}
     ${p.descripcion ? `<p style="color:var(--gray);font-size:14.5px;line-height:1.6;margin:0 0 16px;">${escapeHtml(p.descripcion)}</p>` : ''}
     ${p.contacto ? `<a href="tel:${escapeAttr(p.contacto.replace(/[^0-9+]/g,''))}" class="row-icon" style="text-decoration:none;font-size:14px;margin-bottom:16px;">${ICON_PHONE}<span style="text-decoration:underline;">${escapeHtml(p.contacto)}</span></a>` : ''}
-    ${waLink ? `<a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" style="width:100%;box-sizing:border-box;">${ICON_WA} Contactar por WhatsApp</a>` : ''}
+    ${waLink ? `<a class="wa-btn" href="${waLink}" target="_blank" rel="noopener" style="width:100%;box-sizing:border-box;${p.vendido ? 'background:#64748B;' : ''}">${ICON_WA} ${p.vendido ? 'Consultar (Marcado como vendido)' : 'Contactar por WhatsApp'}</a>` : ''}
   `;
   document.getElementById('editModalBg').classList.add('show');
 }
@@ -4061,14 +4085,22 @@ async function renderProductosAdmin(fetchFirst = true){
       ? `<span class="cat-pill" style="background:#FEF3C7;color:#B45309;border:1.5px solid #F59E0B;font-weight:800;font-size:11.5px;padding:3px 10px;">🌟 DESTACADO ACTIVO</span>`
       : (p.destacadoSolicitado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió destacado</span>' : '');
 
+    const vendidoBadge = p.vendido
+      ? `<span class="cat-pill" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #EF4444;font-weight:800;font-size:11.5px;padding:3px 10px;">🔴 VENDIDO</span>`
+      : '';
+
     const destacadoBtnHTML = p.destacado
       ? `<button class="abtn feature on" onclick="toggleDestacadoProducto('${p.id}')" style="background:#D97706 !important;color:#FFFFFF !important;border:2px solid #92400E !important;font-weight:800;box-shadow:0 3px 8px rgba(217,119,6,0.45);">⭐ DESTACADO (SÍ)</button>`
       : `<button class="abtn feature" onclick="toggleDestacadoProducto('${p.id}')" style="background:#F1F5F9 !important;color:#475569 !important;border:1.5px solid #CBD5E1 !important;font-weight:600;">☆ Sin destacar (NO)</button>`;
 
+    const vendidoBtnHTML = p.vendido
+      ? `<button class="abtn feature on" onclick="toggleVendidoProducto('${p.id}')" style="background:#DC2626 !important;color:#FFFFFF !important;border:2px solid #991B1B !important;font-weight:800;box-shadow:0 3px 8px rgba(220,38,38,0.45);">🔴 VENDIDO (SÍ)</button>`
+      : `<button class="abtn feature" onclick="toggleVendidoProducto('${p.id}')" style="background:#F1F5F9 !important;color:#475569 !important;border:1.5px solid #CBD5E1 !important;font-weight:600;">⭕ Marcar Vendido</button>`;
+
     return `
-    <div class="admin-row">
+    <div class="admin-row" style="${p.vendido ? 'border-left:4px solid #DC2626;' : ''}">
       <div class="info">
-        <h4>${escapeHtml(p.nombre)} <span class="cat-pill">${escapeHtml(p.categoria||'Repuestos')}</span> ${destacadoBadge}</h4>
+        <h4>${escapeHtml(p.nombre)} <span class="cat-pill">${escapeHtml(p.categoria||'Repuestos')}</span> ${destacadoBadge} ${vendidoBadge}</h4>
         ${p.codigo ? `<div class="meta" style="font-weight:700;color:var(--ink);">🧾 Código: ${escapeHtml(p.codigo)}</div>` : ''}
         ${p.precio ? `<div class="meta">💲 ${escapeHtml(p.precio)}</div>` : ''}
         <div class="meta">📞 ${escapeHtml(p.whatsapp||p.contacto||'—')}</div>
@@ -4080,6 +4112,7 @@ async function renderProductosAdmin(fetchFirst = true){
         ${p.estado!=='aprobado' ? `<button class="abtn approve" onclick="setEstadoProducto('${p.id}','aprobado')">${ICON_CHECK} Aprobar</button>` : ''}
         ${p.estado!=='rechazado' ? `<button class="abtn reject" onclick="setEstadoProducto('${p.id}','rechazado')">${ICON_X} Rechazar</button>` : ''}
         ${destacadoBtnHTML}
+        ${vendidoBtnHTML}
         <button class="abtn edit" onclick="openEditProductoModal('${p.id}')">${ICON_EDIT} Editar</button>
         <button class="abtn delete" onclick="deleteProducto('${p.id}')">${ICON_TRASH}</button>
       </div>
@@ -4126,6 +4159,25 @@ async function toggleDestacadoProducto(id, event){
   }
 }
 
+async function toggleVendidoProducto(id, event){
+  if(event) event.stopPropagation();
+  const p = productos.find(x=>x.id===id);
+  if(!p) return;
+  const nuevoVal = !Boolean(p.vendido);
+  p.vendido = nuevoVal;
+  renderProductosAdmin(false);
+  try{
+    await apiSend('/api/productos/'+id, 'PATCH', { vendido: nuevoVal });
+    await renderProductosAdmin(true);
+    showToast(nuevoVal ? '🔴 Publicación marcada como VENDIDA' : '⭕ Publicación desmarcada (Disponible)');
+  }catch(err){
+    console.error('[toggleVendidoProducto Error]:', err);
+    p.vendido = !nuevoVal;
+    renderProductosAdmin(false);
+    alert('No se pudo actualizar: ' + err.message);
+  }
+}
+
 async function deleteProducto(id){
   const p = productos.find(x=>x.id===id);
   const nombre = p ? p.nombre : 'esta publicación';
@@ -4167,6 +4219,12 @@ function openEditProductoModal(id){
         🌟 <b>Destacado ACTIVO</b> <span class="hint">(se muestra destacado en la lista)</span>
       </label>
     </div>
+    <div class="field" style="margin-top:10px;background:#FEF2F2;padding:12px 14px;border-radius:10px;border:1.5px solid #FECACA;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14.5px;color:#991B1B;font-weight:700;">
+        <input type="checkbox" id="ep-vendido-check" ${p.vendido ? 'checked' : ''} style="width:18px;height:18px;flex-shrink:0;">
+        🔴 <b>Marcar como VENDIDO</b> <span class="hint" style="color:#7F1D1D;font-weight:normal;">(Muestra el sello rojo "VENDIDO" sobre la foto en la web)</span>
+      </label>
+    </div>
     <button class="submit-btn" id="ep-save-btn" onclick="saveEditProducto('${p.id}')">Guardar cambios</button>
   `;
   document.getElementById('editModalBg').classList.add('show');
@@ -4176,6 +4234,7 @@ function openEditProductoModal(id){
 async function saveEditProducto(id){
   const p = productos.find(x=>x.id===id);
   const epCheck = document.getElementById('ep-destacado-activo-check');
+  const epVendidoCheck = document.getElementById('ep-vendido-check');
   const nombreInput = document.getElementById('ep-nombre');
   const whatsappInput = document.getElementById('ep-whatsapp');
 
@@ -4207,7 +4266,8 @@ async function saveEditProducto(id){
     contacto: document.getElementById('ep-contacto') ? document.getElementById('ep-contacto').value.trim() : '',
     whatsapp,
     imagenes: mimgGetArr('ep'),
-    destacado: epCheck ? epCheck.checked : (p ? Boolean(p.destacado) : false)
+    destacado: epCheck ? epCheck.checked : (p ? Boolean(p.destacado) : false),
+    vendido: epVendidoCheck ? epVendidoCheck.checked : (p ? Boolean(p.vendido) : false)
   };
 
   const btn = document.getElementById('ep-save-btn');
