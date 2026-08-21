@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Sombra base -->
+  <defs>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Moneda Verde Principal -->
+  <g filter="url(#soft-shadow)">
+    <!-- Círculo Verde Exterior -->
+    <circle cx="230" cy="230" r="200" fill="#58BA2C" stroke="#111111" stroke-width="18" stroke-linejoin="round"/>
+    
+    <!-- Costura Punteada Negra Interna -->
+    <circle cx="230" cy="230" r="165" fill="none" stroke="#111111" stroke-width="13" stroke-linecap="round" stroke-dasharray="20 20"/>
+
+    <!-- Signo de Dólar Blanco con Borde Negro Grueso -->
+    <!-- Línea vertical del dólar -->
+    <path d="M230 75 L230 385" stroke="#111111" stroke-width="38" stroke-linecap="round"/>
+    <path d="M230 75 L230 385" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"/>
+
+    <!-- S del Dólar (Cuerpo) -->
+    <!-- Contorno exterior S -->
+    <path d="M295 160 C295 125 265 110 230 110 C185 110 160 135 160 170 C160 215 200 225 230 235 C275 248 305 262 305 305 C305 350 270 375 230 375 C180 375 155 345 155 305" 
+          fill="none" stroke="#111111" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Relleno Blanco S -->
+    <path d="M295 160 C295 125 265 110 230 110 C185 110 160 135 160 170 C160 215 200 225 230 235 C275 248 305 262 305 305 C305 350 270 375 230 375 C180 375 155 345 155 305" 
+          fill="none" stroke="#FFFFFF" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Bolsa de Compras Roja (Esquina Inferior Derecha) -->
+  <g filter="url(#soft-shadow)">
+    <!-- Asas de la bolsa (Negro) -->
+    <!-- Asa izquierda -->
+    <path d="M345 285 C345 235 415 235 415 285" fill="none" stroke="#111111" stroke-width="20" stroke-linecap="round"/>
+    <!-- Asa derecha/detrás opcional sincronizada -->
+    <path d="M375 265 C375 220 445 220 445 265" fill="none" stroke="#111111" stroke-width="16" stroke-linecap="round"/>
+
+    <!-- Cuerpo de la Bolsa Roja -->
+    <path d="M310 280 L450 280 L485 460 C488 475 476 488 460 488 L300 488 C284 488 272 475 275 460 Z" 
+          fill="#FF3B30" stroke="#111111" stroke-width="18" stroke-linejoin="round"/>
+
+    <!-- Brillo / Sombra estilizada en la bolsa -->
+    <path d="M300 295 L440 295 L465 470 L285 470 Z" fill="#FF5247" opacity="0.4"/>
+
+    <!-- Remaches / Círculos de sujeción de asas -->
+    <circle cx="345" cy="325" r="16" fill="#D32F2F" stroke="#111111" stroke-width="12"/>
+    <circle cx="415" cy="325" r="16" fill="#D32F2F" stroke="#111111" stroke-width="12"/>
+  </g>
+</svg>

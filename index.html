@@ -20,9 +20,15 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
-<link rel="manifest" href="/site.webmanifest">
 <link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#101B33">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallerYa">
+<meta name="application-name" content="TallerYa">
+<meta name="msapplication-TileColor" content="#101B33">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -136,6 +142,12 @@
     display:inline-block;
     vertical-align:middle;
     flex-shrink:0;
+  }
+  .svg-icon-ventas{
+    display:inline-block;
+    vertical-align:middle;
+    flex-shrink:0;
+    pointer-events:none;
   }
   .nav-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
   .burger{display:none;background:none;padding:8px;}
@@ -471,6 +483,109 @@
   }
   .admin-nav-btn.btn-salir{background:#FEF3F2;color:#D92D20;border-color:#FEE4E2;}
   .admin-nav-btn.btn-salir:hover{background:#FEE4E2;border-color:#FECDCA;}
+  .admin-nav-btn.btn-notificaciones{background:#EFF6FF;color:#1D4ED8;border-color:#BFDBFE;font-weight:700;}
+  .admin-nav-btn.btn-notificaciones:hover{background:#DBEAFE;border-color:#93C5FD;}
+
+  /* --- Badges de Notificación --- */
+  .admin-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:#DC2626;color:#FFFFFF;font-size:11px;font-weight:800;
+    line-height:1;min-width:18px;height:18px;padding:0 5px;border-radius:999px;
+    box-shadow:0 2px 5px rgba(220,38,38,0.35);margin-left:4px;
+    animation:adminBadgePulse 2s infinite ease-in-out;
+  }
+  @keyframes adminBadgePulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.12);}
+  }
+  .header-admin-dot{
+    display:inline-block;width:9px;height:9px;background:#EF4444;
+    border-radius:50%;border:1.5px solid #FFFFFF;margin-left:4px;
+    box-shadow:0 0 6px rgba(239,68,68,0.8);animation:adminBadgePulse 1.5s infinite;
+  }
+
+  /* --- Banner de Alertas en Dashboard de Administrador --- */
+  .admin-alert-banner{
+    background:linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%);
+    border:1.5px solid #F59E0B;border-radius:14px;padding:16px 20px;
+    margin:16px 0 20px;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:14px;box-shadow:0 4px 12px rgba(245,158,11,0.12);
+  }
+  .admin-alert-banner-content{display:flex;align-items:center;gap:14px;}
+  .admin-alert-icon{
+    font-size:26px;width:44px;height:44px;background:#FDE68A;
+    border-radius:12px;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;box-shadow:0 2px 6px rgba(217,119,6,0.2);
+  }
+  .admin-alert-text h4{margin:0 0 3px;font-size:15.5px;color:#92400E;font-weight:800;}
+  .admin-alert-text p{margin:0;font-size:13px;color:#B45309;line-height:1.4;}
+  .admin-alert-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .admin-alert-btn{
+    padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:700;
+    cursor:pointer;transition:all .18s ease;border:none;display:inline-flex;
+    align-items:center;gap:6px;user-select:none;white-space:nowrap;
+  }
+  .admin-alert-btn.primary{background:#D97706;color:#FFFFFF;box-shadow:0 2px 6px rgba(217,119,6,0.3);}
+  .admin-alert-btn.primary:hover{background:#B45309;}
+  .admin-alert-btn.secondary{background:#FFFFFF;color:#92400E;border:1px solid #FCD34D;}
+  .admin-alert-btn.secondary:hover{background:#FEF3C7;}
+
+  /* --- Modal de Notificaciones del Administrador --- */
+  .notif-filter-tabs{display:flex;gap:6px;margin:12px 0 16px;border-bottom:1px solid var(--line);padding-bottom:8px;flex-wrap:wrap;}
+  .notif-filter-tab{
+    padding:6px 14px;border-radius:20px;font-size:12.5px;font-weight:600;
+    background:#F1F5F9;color:var(--gray);border:1px solid var(--line);
+    cursor:pointer;transition:all .15s ease;
+  }
+  .notif-filter-tab:hover{background:#E2E8F0;color:var(--ink);}
+  .notif-filter-tab.active{background:var(--blue);color:#FFF;border-color:var(--blue);font-weight:700;}
+  .notif-list-container{display:flex;flex-direction:column;gap:10px;max-height:55vh;overflow-y:auto;padding-right:4px;}
+  .notif-card{
+    background:#FFFFFF;border:1.5px solid var(--line);border-radius:12px;
+    padding:14px 16px;transition:all .2s ease;display:flex;justify-content:space-between;
+    align-items:flex-start;gap:12px;
+  }
+  .notif-card.unread{border-color:#93C5FD;background:#F8FAFC;}
+  .notif-card:hover{border-color:#60A5FA;box-shadow:0 3px 10px rgba(37,99,235,0.08);}
+  .notif-card-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+  .notif-card-body{flex:1;}
+  .notif-card-title{font-size:14px;font-weight:800;color:var(--ink);margin:0 0 3px;display:flex;align-items:center;gap:6px;}
+  .notif-card-desc{font-size:13px;color:var(--gray);margin:0 0 6px;line-height:1.4;}
+  .notif-card-meta{font-size:11.5px;color:#94A3B8;display:flex;align-items:center;gap:8px;}
+  .notif-card-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;}
+  .notif-btn-action{
+    padding:5px 11px;border-radius:6px;font-size:12px;font-weight:700;
+    cursor:pointer;border:none;display:inline-flex;align-items:center;gap:4px;
+  }
+  .notif-btn-action.approve{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;}
+  .notif-btn-action.approve:hover{background:#D1FAE5;}
+  .notif-btn-action.view{background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE;}
+  .notif-btn-action.view:hover{background:#DBEAFE;}
+
+  /* --- Alerta Flotante en Vivo (Live Toast Alert) --- */
+  .live-notif-toast{
+    position:fixed;bottom:24px;right:24px;z-index:99999;
+    background:#1E293B;color:#FFFFFF;border-radius:14px;padding:16px 20px;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);max-width:380px;display:flex;
+    align-items:flex-start;gap:12px;border:1px solid rgba(255,255,255,0.15);
+    animation:slideUpNotif .35s ease-out;
+  }
+  @keyframes slideUpNotif{
+    from{transform:translateY(30px);opacity:0;}
+    to{transform:translateY(0);opacity:1;}
+  }
+  .live-notif-toast h5{margin:0 0 4px;font-size:14px;color:#60A5FA;font-weight:800;}
+  .live-notif-toast p{margin:0 0 8px;font-size:12.5px;color:#CBD5E1;line-height:1.4;}
+  .live-notif-toast-btn{
+    padding:5px 12px;border-radius:6px;background:var(--blue);color:#FFF;
+    border:none;font-size:12px;font-weight:700;cursor:pointer;
+  }
+  .live-notif-toast-close{
+    background:none;border:none;color:#94A3B8;font-size:18px;cursor:pointer;
+    padding:0;line-height:1;margin-left:auto;
+  }
+  .live-notif-toast-close:hover{color:#FFF;}
+
 
   .tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin:22px 0;padding-bottom:12px;flex-wrap:wrap;}
   .tab{
@@ -1200,6 +1315,28 @@
 </head>
 <body>
 
+<!-- SVG SYMBOLS (0 HTTP Requests, universally supported) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id="icon-logoventas" viewBox="0 0 512 512">
+    <g>
+      <circle cx="230" cy="230" r="200" fill="#58BA2C" stroke="#111111" stroke-width="18" stroke-linejoin="round"/>
+      <circle cx="230" cy="230" r="165" fill="none" stroke="#111111" stroke-width="13" stroke-linecap="round" stroke-dasharray="20 20"/>
+      <path d="M230 75 L230 385" stroke="#111111" stroke-width="38" stroke-linecap="round"/>
+      <path d="M230 75 L230 385" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"/>
+      <path d="M295 160 C295 125 265 110 230 110 C185 110 160 135 160 170 C160 215 200 225 230 235 C275 248 305 262 305 305 C305 350 270 375 230 375 C180 375 155 345 155 305" fill="none" stroke="#111111" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M295 160 C295 125 265 110 230 110 C185 110 160 135 160 170 C160 215 200 225 230 235 C275 248 305 262 305 305 C305 350 270 375 230 375 C180 375 155 345 155 305" fill="none" stroke="#FFFFFF" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <g>
+      <path d="M345 285 C345 235 415 235 415 285" fill="none" stroke="#111111" stroke-width="20" stroke-linecap="round"/>
+      <path d="M375 265 C375 220 445 220 445 265" fill="none" stroke="#111111" stroke-width="16" stroke-linecap="round"/>
+      <path d="M310 280 L450 280 L485 460 C488 475 476 488 460 488 L300 488 C284 488 272 475 275 460 Z" fill="#FF3B30" stroke="#111111" stroke-width="18" stroke-linejoin="round"/>
+      <path d="M300 295 L440 295 L465 470 L285 470 Z" fill="#FF5247" opacity="0.4"/>
+      <circle cx="345" cy="325" r="16" fill="#D32F2F" stroke="#111111" stroke-width="12"/>
+      <circle cx="415" cy="325" r="16" fill="#D32F2F" stroke="#111111" stroke-width="12"/>
+    </g>
+  </symbol>
+</svg>
+
 <!-- ======================= HEADER ======================= -->
 <header>
   <div class="header-inner">
@@ -1220,11 +1357,11 @@
       </div>
       <div class="nav-row nav-row-2">
         <button type="button" class="nav-btn btn-ventas-highlight" id="nav-productos" onclick="go('productos')">
-          <img src="/logoventas.svg?v=20260821" alt="Ventas" class="nav-ventas-icon" onerror="this.onerror=null;this.src='/logoventas.png'">
+          <svg class="svg-icon-ventas" style="width:20px;height:20px;" aria-hidden="true"><use href="#icon-logoventas"/></svg>
           <span>Ventas y Ofertas</span>
         </button>
         <button type="button" class="nav-btn" id="nav-opiniones" onclick="clickNavOpiniones()"><span style="color:#F59E0B;">⭐</span> Opiniones</button>
-        <button type="button" class="nav-btn" id="nav-admin" onclick="go('admin')">Administrador</button>
+        <button type="button" class="nav-btn" id="nav-admin" onclick="go('admin')">Administrador <span class="header-admin-dot" id="headerAdminDot" style="display:none;"></span></button>
       </div>
     </nav>
   </div>
@@ -1551,13 +1688,13 @@
     <div class="block-head">
       <div>
         <h1 style="font-size:28px;margin:0 0 8px;display:flex;align-items:center;gap:10px;">
-          <img src="/logoventas.svg?v=20260821" alt="Logo Ventas" style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));" onerror="this.onerror=null;this.src='/logoventas.png'">
+          <svg class="svg-icon-ventas" style="width:36px;height:36px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));" aria-hidden="true"><use href="#icon-logoventas"/></svg>
           <span>Ventas y Ofertas</span>
         </h1>
         <p style="color:var(--gray);font-size:14.5px;">Venta de Repuestos, Accesorios, Autos, Cubiertas y Ofertas Mecánicas.</p>
       </div>
       <button class="submit-btn" style="width:auto;padding:12px 22px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;" onclick="abrirFormProducto()">
-        <img src="/logoventas.svg?v=20260821" style="width:18px;height:18px;vertical-align:middle;" alt=""> Vender / Ofertar
+        <svg class="svg-icon-ventas" style="width:20px;height:20px;" aria-hidden="true"><use href="#icon-logoventas"/></svg> <span>Vender / Ofertar</span>
       </button>
     </div>
     <div class="grid" id="productosGrid" style="margin-top:26px;"></div>
@@ -1698,14 +1835,30 @@
     <div class="admin-topbar">
       <h1>Gestión de talleres</h1>
       <div class="admin-links">
-        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres <span class="admin-badge badge-nav-talleres" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><svg class="svg-icon-ventas" style="width:16px;height:16px;margin-right:4px;" aria-hidden="true"><use href="#icon-logoventas"/></svg> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas <span class="admin-badge badge-nav-feedbacks" style="display:none;">0</span></button>
+        <button type="button" class="admin-nav-btn btn-notificaciones" onclick="openAdminNotifModal()" title="Centro de Notificaciones">🔔 Notificaciones <span class="admin-badge badge-total-notif" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
+
+    <!-- BANNER DE ALERTAS / NOTIFICACIONES -->
+    <div id="adminNotifAlertBanner" class="admin-alert-banner" style="display:none;">
+      <div class="admin-alert-banner-content">
+        <div class="admin-alert-icon">🔔</div>
+        <div class="admin-alert-text">
+          <h4 id="adminAlertTitle">¡Nuevas postulaciones y opiniones pendientes!</h4>
+          <p id="adminAlertSubtitle">Tienes solicitudes de talleres y opiniones esperando tu revisión.</p>
+        </div>
+      </div>
+      <div class="admin-alert-actions" id="adminAlertActions">
+        <button type="button" class="admin-alert-btn primary" onclick="openAdminNotifModal()">🔔 Ver Centro de Alertas</button>
+      </div>
+    </div>
+
     <div class="tabs" id="adminTabs">
       <div class="tab active" data-tab="pendiente" onclick="setAdminTab('pendiente')">Pendientes (<span id="count-pendiente">0</span>)</div>
       <div class="tab" data-tab="aprobado" onclick="setAdminTab('aprobado')">Aprobados (<span id="count-aprobado">0</span>)</div>
@@ -1721,11 +1874,12 @@
     <div class="admin-topbar">
       <h1>Auspicios</h1>
       <div class="admin-links">
-        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres <span class="admin-badge badge-nav-talleres" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><svg class="svg-icon-ventas" style="width:16px;height:16px;margin-right:4px;" aria-hidden="true"><use href="#icon-logoventas"/></svg> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas <span class="admin-badge badge-nav-feedbacks" style="display:none;">0</span></button>
+        <button type="button" class="admin-nav-btn btn-notificaciones" onclick="openAdminNotifModal()" title="Centro de Notificaciones">🔔 Notificaciones <span class="admin-badge badge-total-notif" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
@@ -1742,11 +1896,12 @@
     <div class="admin-topbar">
       <h1>Ventas y Ofertas</h1>
       <div class="admin-links">
-        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres <span class="admin-badge badge-nav-talleres" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><svg class="svg-icon-ventas" style="width:16px;height:16px;margin-right:4px;" aria-hidden="true"><use href="#icon-logoventas"/></svg> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas <span class="admin-badge badge-nav-feedbacks" style="display:none;">0</span></button>
+        <button type="button" class="admin-nav-btn btn-notificaciones" onclick="openAdminNotifModal()" title="Centro de Notificaciones">🔔 Notificaciones <span class="admin-badge badge-total-notif" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
@@ -1765,11 +1920,12 @@
     <div class="admin-topbar">
       <h1>Categorías</h1>
       <div class="admin-links">
-        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres <span class="admin-badge badge-nav-talleres" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><svg class="svg-icon-ventas" style="width:16px;height:16px;margin-right:4px;" aria-hidden="true"><use href="#icon-logoventas"/></svg> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas <span class="admin-badge badge-nav-feedbacks" style="display:none;">0</span></button>
+        <button type="button" class="admin-nav-btn btn-notificaciones" onclick="openAdminNotifModal()" title="Centro de Notificaciones">🔔 Notificaciones <span class="admin-badge badge-total-notif" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
@@ -1790,11 +1946,12 @@
     <div class="admin-topbar">
       <h1>Valoraciones, Sugerencias y Quejas</h1>
       <div class="admin-links">
-        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
+        <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres <span class="admin-badge badge-nav-talleres" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><svg class="svg-icon-ventas" style="width:16px;height:16px;margin-right:4px;" aria-hidden="true"><use href="#icon-logoventas"/></svg> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas <span class="admin-badge badge-nav-feedbacks" style="display:none;">0</span></button>
+        <button type="button" class="admin-nav-btn btn-notificaciones" onclick="openAdminNotifModal()" title="Centro de Notificaciones">🔔 Notificaciones <span class="admin-badge badge-total-notif" style="display:none;">0</span></button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
       </div>
     </div>
@@ -1809,6 +1966,40 @@
       <div class="tab" data-tab="todas" onclick="setAdminFeedbacksTab('todas')">Todas (<span id="count-fb-todas">0</span>)</div>
     </div>
     <div id="adminFeedbacksList" style="margin-top:20px;"></div>
+  </div>
+</div>
+
+<!-- ======================= MODAL DE NOTIFICACIONES Y ALERTAS ======================= -->
+<div class="modal-bg" id="adminNotifModalBg" onclick="if(event.target===this)closeAdminNotifModal()">
+  <div class="modal modal-wide" style="max-width:680px;">
+    <button class="close-x" onclick="closeAdminNotifModal()">&times;</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:10px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:24px;">🔔</span>
+        <h3 style="margin:0;font-size:20px;">Centro de Notificaciones y Alertas</h3>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="notif-btn-action view" id="btnToggleSound" onclick="toggleAdminNotifSound()">
+          🔊 Sonido: ON
+        </button>
+        <button type="button" class="notif-btn-action view" onclick="markAllNotificationsAsRead()">
+          ✓ Marcar todo como visto
+        </button>
+      </div>
+    </div>
+    <p style="color:var(--gray);font-size:13px;margin:0 0 14px;">
+      Alertas en vivo cuando un nuevo taller se postula o cuando un cliente envía una nueva opinión o queja.
+    </p>
+
+    <div class="notif-filter-tabs">
+      <button type="button" class="notif-filter-tab active" data-filter="all" onclick="filterAdminNotifList('all')">Todas (<span id="notif-count-all">0</span>)</button>
+      <button type="button" class="notif-filter-tab" data-filter="taller" onclick="filterAdminNotifList('taller')">🏢 Talleres Nuevos (<span id="notif-count-taller">0</span>)</button>
+      <button type="button" class="notif-filter-tab" data-filter="feedback" onclick="filterAdminNotifList('feedback')">⭐ Opiniones / Quejas (<span id="notif-count-feedback">0</span>)</button>
+    </div>
+
+    <div class="notif-list-container" id="adminNotifList">
+      <!-- Contenido renderizado dinámicamente -->
+    </div>
   </div>
 </div>
 
@@ -3792,6 +3983,7 @@ async function renderAdmin(fetchFirst = true){
   document.getElementById('count-pendiente').textContent = talleres.filter(t=>t.estado==='pendiente').length;
   document.getElementById('count-aprobado').textContent = talleres.filter(t=>t.estado==='aprobado').length;
   document.getElementById('count-rechazado').textContent = talleres.filter(t=>t.estado==='rechazado').length;
+  updateAdminNotificationBadges();
 
   const list = talleres.filter(t=>t.estado===adminTab);
   const wrap = document.getElementById('adminList');
@@ -5370,6 +5562,7 @@ async function renderAdminFeedbacks() {
   const cr = document.getElementById('count-fb-resuelto'); if(cr) cr.textContent = rCount;
   const crej = document.getElementById('count-fb-rechazado'); if(crej) crej.textContent = rejCount;
   const ctot = document.getElementById('count-fb-todas'); if(ctot) ctot.textContent = feedbacks.length;
+  updateAdminNotificationBadges();
 
   let filtered = feedbacks;
   if(adminFeedbacksTab === 'pendiente') filtered = feedbacks.filter(f => f.estado === 'pendiente');
@@ -5436,9 +5629,473 @@ async function eliminarFeedback(id) {
     await fetchFeedbacksList();
     renderAdminFeedbacks();
     renderHomeFeedbacks();
+    updateAdminNotificationBadges();
   } catch(e) {
     alert('Error al eliminar: ' + e.message);
   }
+}
+
+/* ============================================================
+   SISTEMA DE NOTIFICACIONES Y ALERTAS EN TIEMPO REAL (ADMIN)
+============================================================ */
+let readNotificationIds = new Set(JSON.parse(localStorage.getItem('tallerya_read_notifs') || '[]'));
+let notifSoundEnabled = localStorage.getItem('tallerya_notif_sound') !== 'false';
+let adminNotifFilter = 'all';
+let adminNotifPollTimer = null;
+let lastKnownTallerIds = new Set();
+let lastKnownFeedbackIds = new Set();
+let initialPollDone = false;
+
+// Sintetizador Web Audio API para timbre / chime de notificación
+function playAdminNotificationSound(type = 'chime') {
+  if (!notifSoundEnabled) return;
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    if (ctx.state === 'suspended') {
+      ctx.resume().catch(()=>{});
+    }
+
+    const now = ctx.currentTime;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    osc1.type = 'sine';
+    osc2.type = 'sine';
+
+    if (type === 'taller') {
+      // Tono brillante de bienvenida / nueva postulación (E5 -> B5)
+      osc1.frequency.setValueAtTime(659.25, now);
+      osc1.frequency.exponentialRampToValueAtTime(987.77, now + 0.18);
+      osc2.frequency.setValueAtTime(1318.51, now + 0.05);
+    } else {
+      // Tono suave armónico de opinión (D5 -> A5)
+      osc1.frequency.setValueAtTime(587.33, now);
+      osc1.frequency.exponentialRampToValueAtTime(880.00, now + 0.16);
+      osc2.frequency.setValueAtTime(1174.66, now + 0.06);
+    }
+
+    gainNode.gain.setValueAtTime(0.01, now);
+    gainNode.gain.linearRampToValueAtTime(0.18, now + 0.04);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    osc1.connect(gainNode);
+    osc2.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    osc1.start(now);
+    osc2.start(now + 0.05);
+    osc1.stop(now + 0.48);
+    osc2.stop(now + 0.48);
+
+    setTimeout(() => { ctx.close().catch(()=>{}); }, 600);
+  } catch(e) {
+    console.log('[Notification Audio]:', e);
+  }
+}
+
+function toggleAdminNotifSound() {
+  notifSoundEnabled = !notifSoundEnabled;
+  localStorage.setItem('tallerya_notif_sound', notifSoundEnabled ? 'true' : 'false');
+  const btn = document.getElementById('btnToggleSound');
+  if (btn) btn.textContent = notifSoundEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
+  showToast(notifSoundEnabled ? '🔊 Sonido de alertas activado' : '🔇 Sonido de alertas silenciado');
+  if (notifSoundEnabled) playAdminNotificationSound('feedback');
+}
+
+function showBrowserDesktopNotification(title, body, onClickCallback) {
+  try {
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'granted') {
+      const notif = new Notification(title, {
+        body,
+        icon: '/LogoTallerYa.png',
+        badge: '/LogoTallerYa.png'
+      });
+      if (onClickCallback) {
+        notif.onclick = () => {
+          window.focus();
+          onClickCallback();
+          notif.close();
+        };
+      }
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
+  } catch(e) {}
+}
+
+function showLiveToastAlert(title, message, onClickCallback, type = 'taller') {
+  const existing = document.getElementById('liveNotifToast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'liveNotifToast';
+  toast.className = 'live-notif-toast';
+  toast.innerHTML = `
+    <div style="font-size:24px;flex-shrink:0;">${type === 'taller' ? '🏢' : '⭐'}</div>
+    <div style="flex:1;">
+      <h5>${escapeHtml(title)}</h5>
+      <p>${escapeHtml(message)}</p>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" class="live-notif-toast-btn" id="btnToastAction">Ver en Administrador</button>
+      </div>
+    </div>
+    <button type="button" class="live-notif-toast-close" onclick="this.parentElement.remove()">&times;</button>
+  `;
+
+  document.body.appendChild(toast);
+
+  const actionBtn = toast.querySelector('#btnToastAction');
+  if (actionBtn) {
+    actionBtn.onclick = () => {
+      toast.remove();
+      if (onClickCallback) onClickCallback();
+    };
+  }
+
+  setTimeout(() => {
+    if (toast.parentElement) toast.remove();
+  }, 10000);
+}
+
+function updateAdminNotificationBadges() {
+  const pendingTalleres = (talleres || []).filter(t => t.estado === 'pendiente');
+  const pendingFeedbacks = (feedbacks || []).filter(f => f.estado === 'pendiente');
+
+  // Unread count: items that haven't been marked as read in this browser session
+  const unreadTalleres = pendingTalleres.filter(t => !readNotificationIds.has('taller_' + t.id));
+  const unreadFeedbacks = (feedbacks || []).filter(f => (f.estado === 'pendiente' || !f.estado) && !readNotificationIds.has('fb_' + f.id));
+  const totalUnread = unreadTalleres.length + unreadFeedbacks.length;
+
+  // 1. Update talller badges
+  document.querySelectorAll('.badge-nav-talleres').forEach(el => {
+    el.textContent = pendingTalleres.length;
+    el.style.display = pendingTalleres.length > 0 ? 'inline-flex' : 'none';
+  });
+
+  // 2. Update feedback badges
+  document.querySelectorAll('.badge-nav-feedbacks').forEach(el => {
+    el.textContent = pendingFeedbacks.length;
+    el.style.display = pendingFeedbacks.length > 0 ? 'inline-flex' : 'none';
+  });
+
+  // 3. Update total notification bell badges
+  document.querySelectorAll('.badge-total-notif').forEach(el => {
+    el.textContent = totalUnread;
+    el.style.display = totalUnread > 0 ? 'inline-flex' : 'none';
+  });
+
+  // 4. Update Header dot
+  const headerDot = document.getElementById('headerAdminDot');
+  if (headerDot) {
+    headerDot.style.display = (pendingTalleres.length > 0 || pendingFeedbacks.length > 0) ? 'inline-block' : 'none';
+  }
+
+  // 5. Update Alert Banner in Admin View
+  const alertBanner = document.getElementById('adminNotifAlertBanner');
+  const alertTitle = document.getElementById('adminAlertTitle');
+  const alertSubtitle = document.getElementById('adminAlertSubtitle');
+  const alertActions = document.getElementById('adminAlertActions');
+
+  if (alertBanner && alertTitle && alertSubtitle) {
+    if (pendingTalleres.length > 0 || pendingFeedbacks.length > 0) {
+      alertBanner.style.display = 'flex';
+      const parts = [];
+      if (pendingTalleres.length > 0) parts.push(`🏢 <b>${pendingTalleres.length}</b> taller${pendingTalleres.length > 1 ? 'es' : ''} pendiente${pendingTalleres.length > 1 ? 's' : ''}`);
+      if (pendingFeedbacks.length > 0) parts.push(`⭐ <b>${pendingFeedbacks.length}</b> opinión${pendingFeedbacks.length > 1 ? 'es' : ''} / queja${pendingFeedbacks.length > 1 ? 's' : ''}`);
+
+      alertTitle.innerHTML = `⚠️ Atención requerida: ${parts.join(' y ')}`;
+      alertSubtitle.textContent = 'Hay postulaciones u opiniones nuevas recibidas que esperan tu aprobación para estar públicas.';
+      
+      if (alertActions) {
+        alertActions.innerHTML = `
+          <button type="button" class="admin-alert-btn primary" onclick="openAdminNotifModal()">🔔 Abrir Notificaciones (${totalUnread})</button>
+          ${pendingTalleres.length > 0 ? `<button type="button" class="admin-alert-btn secondary" onclick="go('admin');setAdminTab('pendiente');">🏢 Ver Talleres (${pendingTalleres.length})</button>` : ''}
+          ${pendingFeedbacks.length > 0 ? `<button type="button" class="admin-alert-btn secondary" onclick="go('adminFeedbacks');setAdminFeedbacksTab('pendiente');">⭐ Ver Opiniones (${pendingFeedbacks.length})</button>` : ''}
+        `;
+      }
+    } else {
+      alertBanner.style.display = 'none';
+    }
+  }
+
+  // Update counts inside notification modal if open
+  const countAll = document.getElementById('notif-count-all');
+  const countTaller = document.getElementById('notif-count-taller');
+  const countFb = document.getElementById('notif-count-feedback');
+  if (countAll) countAll.textContent = pendingTalleres.length + pendingFeedbacks.length;
+  if (countTaller) countTaller.textContent = pendingTalleres.length;
+  if (countFb) countFb.textContent = pendingFeedbacks.length;
+}
+
+function openAdminNotifModal() {
+  const bg = document.getElementById('adminNotifModalBg');
+  if (!bg) return;
+  bg.classList.add('show');
+
+  const btnSound = document.getElementById('btnToggleSound');
+  if (btnSound) btnSound.textContent = notifSoundEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
+
+  renderAdminNotifList();
+}
+
+function closeAdminNotifModal() {
+  const bg = document.getElementById('adminNotifModalBg');
+  if (bg) bg.classList.remove('show');
+}
+
+function filterAdminNotifList(filter) {
+  adminNotifFilter = filter;
+  document.querySelectorAll('.notif-filter-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.filter === filter);
+  });
+  renderAdminNotifList();
+}
+
+function renderAdminNotifList() {
+  const container = document.getElementById('adminNotifList');
+  if (!container) return;
+
+  const pendingTalleres = (talleres || []).filter(t => t.estado === 'pendiente');
+  const pendingFeedbacks = (feedbacks || []).filter(f => f.estado === 'pendiente' || !f.estado);
+
+  let items = [];
+
+  if (adminNotifFilter === 'all' || adminNotifFilter === 'taller') {
+    pendingTalleres.forEach(t => {
+      items.push({
+        id: 'taller_' + t.id,
+        rawId: t.id,
+        tipo: 'taller',
+        titulo: t.nombre,
+        categoria: t.categoria || 'Mecánica General',
+        detalle: `${t.ciudad || t.direccion || 'Sin ubicación'} · 📞 ${t.whatsapp || t.telefono || 'Sin teléfono'}`,
+        fecha: t.creado || new Date().toISOString(),
+        unread: !readNotificationIds.has('taller_' + t.id),
+        destacado: Boolean(t.destacadoSolicitado || t.destacado),
+        auspicio: Boolean(t.auspicioSolicitado)
+      });
+    });
+  }
+
+  if (adminNotifFilter === 'all' || adminNotifFilter === 'feedback') {
+    pendingFeedbacks.forEach(f => {
+      items.push({
+        id: 'fb_' + f.id,
+        rawId: f.id,
+        tipo: 'feedback',
+        titulo: f.titulo || (f.tipo ? f.tipo.toUpperCase() : 'OPINIÓN'),
+        categoria: f.tipo === 'queja' ? '🚨 Queja' : (f.tipo === 'opinion' ? '💬 Opinión' : '⭐ Valoración'),
+        detalle: `Para: ${f.tallerNombre ? '🏢 ' + f.tallerNombre : '🌐 Plataforma'} · Cliente: ${f.clienteNombre || 'Anónimo'} · ⭐ ${f.calificacion || 5}/5\n"${f.mensaje || ''}"`,
+        fecha: f.creado || f.created_at || new Date().toISOString(),
+        unread: !readNotificationIds.has('fb_' + f.id)
+      });
+    });
+  }
+
+  // Sort newest first
+  items.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:44px 20px;color:var(--gray);">
+        <div style="font-size:36px;margin-bottom:10px;">🎉</div>
+        <h4 style="margin:0 0 6px;color:var(--ink);font-size:16px;">¡Todo al día!</h4>
+        <p style="margin:0;font-size:13.5px;">No hay alertas pendientes de revisión en este momento.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = items.map(item => {
+    const isTaller = item.tipo === 'taller';
+    return `
+      <div class="notif-card ${item.unread ? 'unread' : ''}" id="notif-card-${item.id}">
+        <div class="notif-card-icon">${isTaller ? '🏢' : (item.categoria.includes('Queja') ? '🚨' : '⭐')}</div>
+        <div class="notif-card-body">
+          <div class="notif-card-title">
+            <span>${escapeHtml(item.titulo)}</span>
+            <span class="cat-pill" style="font-size:11px;font-weight:700;">${escapeHtml(item.categoria)}</span>
+            ${item.unread ? '<span style="background:#EF4444;color:#FFF;font-size:10px;font-weight:800;padding:2px 6px;border-radius:999px;">NUEVO</span>' : ''}
+            ${item.destacado ? '<span class="cat-pill" style="background:#FFF4E5;color:var(--orange-dark);">⭐ Pidió Destacado</span>' : ''}
+            ${item.auspicio ? '<span class="cat-pill" style="background:#EAF0FD;color:var(--blue);">📢 Pidió Auspicio</span>' : ''}
+          </div>
+          <div class="notif-card-desc" style="white-space:pre-line;">${escapeHtml(item.detalle)}</div>
+          <div class="notif-card-meta">
+            <span>🗓️ ${formatFechaAlta(item.fecha)}</span>
+          </div>
+          <div class="notif-card-actions">
+            ${isTaller ? `
+              <button type="button" class="notif-btn-action approve" onclick="quickApproveTallerFromNotif('${item.rawId}', '${item.id}')">✅ Aprobar Taller</button>
+              <button type="button" class="notif-btn-action view" onclick="goToTallerInAdmin('${item.rawId}', '${item.id}')">👁️ Ver Detalles</button>
+            ` : `
+              <button type="button" class="notif-btn-action approve" onclick="quickApproveFeedbackFromNotif('${item.rawId}', '${item.id}')">✅ Publicar Opinión</button>
+              <button type="button" class="notif-btn-action view" onclick="goToFeedbackInAdmin('${item.rawId}', '${item.id}')">👁️ Moderar en Panel</button>
+            `}
+            <button type="button" class="notif-btn-action" style="background:#F1F5F9;color:#64748B;" onclick="markNotificationAsRead('${item.id}')">✓ Visto</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function markNotificationAsRead(id) {
+  readNotificationIds.add(id);
+  localStorage.setItem('tallerya_read_notifs', JSON.stringify(Array.from(readNotificationIds)));
+  const card = document.getElementById('notif-card-' + id);
+  if (card) card.classList.remove('unread');
+  updateAdminNotificationBadges();
+}
+
+function markAllNotificationsAsRead() {
+  (talleres || []).forEach(t => readNotificationIds.add('taller_' + t.id));
+  (feedbacks || []).forEach(f => readNotificationIds.add('fb_' + f.id));
+  localStorage.setItem('tallerya_read_notifs', JSON.stringify(Array.from(readNotificationIds)));
+  updateAdminNotificationBadges();
+  renderAdminNotifList();
+  showToast('Todas las notificaciones marcadas como vistas');
+}
+
+async function quickApproveTallerFromNotif(tallerId, notifId) {
+  markNotificationAsRead(notifId);
+  await setEstado(tallerId, 'aprobado');
+  renderAdminNotifList();
+}
+
+async function quickApproveFeedbackFromNotif(feedbackId, notifId) {
+  markNotificationAsRead(notifId);
+  await moderarFeedback(feedbackId, 'aprobado');
+  renderAdminNotifList();
+}
+
+function goToTallerInAdmin(tallerId, notifId) {
+  markNotificationAsRead(notifId);
+  closeAdminNotifModal();
+  go('admin');
+  setAdminTab('pendiente');
+  setTimeout(() => {
+    const list = document.getElementById('adminList');
+    if (list) {
+      const rows = list.querySelectorAll('.admin-row');
+      rows.forEach(r => {
+        if (r.textContent.includes(tallerId)) {
+          r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          r.style.boxShadow = '0 0 0 3px #2563EB';
+          setTimeout(() => { r.style.boxShadow = ''; }, 3000);
+        }
+      });
+    }
+  }, 400);
+}
+
+function goToFeedbackInAdmin(feedbackId, notifId) {
+  markNotificationAsRead(notifId);
+  closeAdminNotifModal();
+  go('adminFeedbacks');
+  setAdminFeedbacksTab('pendiente');
+  setTimeout(() => {
+    const list = document.getElementById('adminFeedbacksList');
+    if (list) {
+      const cards = list.querySelectorAll('.admin-card');
+      if (cards.length) {
+        cards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        cards[0].style.boxShadow = '0 0 0 3px #2563EB';
+        setTimeout(() => { cards[0].style.boxShadow = ''; }, 3000);
+      }
+    }
+  }, 400);
+}
+
+async function checkAndPollAdminNotifications() {
+  try {
+    // 1. Fetch workshops in admin mode to get pending ones
+    const rTalleres = await fetch('/api/talleres?all=1');
+    if (rTalleres.ok) {
+      const dataTalleres = await rTalleres.json();
+      if (Array.isArray(dataTalleres)) {
+        talleres = dataTalleres;
+        const currentPending = talleres.filter(t => t.estado === 'pendiente');
+
+        if (initialPollDone) {
+          currentPending.forEach(t => {
+            if (!lastKnownTallerIds.has(t.id)) {
+              // Brand new workshop postulation detected!
+              playAdminNotificationSound('taller');
+              showLiveToastAlert(
+                '🏢 ¡Nuevo taller postulado!',
+                `"${t.nombre}" (${t.categoria || 'Mecánica'}) se ha registrado y espera tu aprobación.`,
+                () => { go('admin'); setAdminTab('pendiente'); },
+                'taller'
+              );
+              showBrowserDesktopNotification(
+                '🏢 ¡Nuevo taller postulado!',
+                `"${t.nombre}" se postuló en TallerYa.`,
+                () => { go('admin'); setAdminTab('pendiente'); }
+              );
+            }
+          });
+        }
+
+        lastKnownTallerIds = new Set(talleres.map(t => t.id));
+      }
+    }
+
+    // 2. Fetch feedbacks
+    const rFeedbacks = await fetch('/api/feedbacks');
+    if (rFeedbacks.ok) {
+      const dataFeedbacks = await rFeedbacks.json();
+      if (Array.isArray(dataFeedbacks)) {
+        feedbacks = dataFeedbacks;
+        const currentPendingFb = feedbacks.filter(f => f.estado === 'pendiente' || !f.estado);
+
+        if (initialPollDone) {
+          currentPendingFb.forEach(f => {
+            if (!lastKnownFeedbackIds.has(f.id)) {
+              // Brand new feedback detected!
+              playAdminNotificationSound('feedback');
+              showLiveToastAlert(
+                '⭐ ¡Nueva opinión recibida!',
+                `${f.clienteNombre || 'Un cliente'} dejó una ${f.tipo || 'opinión'} para ${f.tallerNombre ? 'el taller ' + f.tallerNombre : 'TallerYa'}.`,
+                () => { go('adminFeedbacks'); setAdminFeedbacksTab('pendiente'); },
+                'feedback'
+              );
+              showBrowserDesktopNotification(
+                '⭐ ¡Nueva opinión recibida!',
+                `${f.clienteNombre || 'Un cliente'} dejó una opinión en TallerYa.`,
+                () => { go('adminFeedbacks'); setAdminFeedbacksTab('pendiente'); }
+              );
+            }
+          });
+        }
+
+        lastKnownFeedbackIds = new Set(feedbacks.map(f => f.id));
+      }
+    }
+
+    initialPollDone = true;
+    updateAdminNotificationBadges();
+
+    // Re-render current admin views if active
+    const activeAdminView = document.querySelector('.view.active');
+    if (activeAdminView && activeAdminView.id === 'view-admin') {
+      renderAdmin(false);
+    } else if (activeAdminView && activeAdminView.id === 'view-adminFeedbacks') {
+      renderAdminFeedbacks();
+    }
+  } catch(e) {
+    console.error('[Polling Admin Notif Error]:', e);
+  }
+}
+
+function startAdminNotificationPolling() {
+  if (adminNotifPollTimer) clearInterval(adminNotifPollTimer);
+  checkAndPollAdminNotifications();
+  // Poll every 15 seconds
+  adminNotifPollTimer = setInterval(checkAndPollAdminNotifications, 15000);
 }
 
 /* ============================================================
@@ -5651,7 +6308,23 @@ let deferredInstallPrompt = null;
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
-    navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then((registration) => {
+        // Detectar actualizaciones de la PWA
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('[PWA] Nueva versión disponible en TallerYa.');
+              }
+            });
+          }
+        });
+      })
+      .catch((err) => {
+        console.warn('[PWA Service Worker Error]:', err);
+      });
   });
 }
 
@@ -5700,6 +6373,7 @@ window.addEventListener('appinstalled', ()=>{
   document.getElementById('f-imagen-wrap').innerHTML = multiImageUploadHTML('f', [], 5);
   setupMultiImageUpload('f', [], 5);
   go('home');
+  startAdminNotificationPolling();
 })();
 </script>
 </body>
