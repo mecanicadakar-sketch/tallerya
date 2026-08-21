@@ -1,6 +1,7 @@
 import { getSql, ensureSchema } from '../_db.js';
 import { isAuthorized } from '../_auth.js';
 import { getClientIp, checkRateLimit, sanitizeText } from '../_security.js';
+import { notifyTallerAprobado, buildTallerAprobadoWhatsAppMsg, formatWhatsAppNumber } from '../_notify.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -50,8 +51,48 @@ export default async function handler(req, res) {
     // acciones rápidas: solo cambiar estado o destacado
     if (keys.length === 1 && keys[0] === 'estado') {
       const estado = sanitizeText(b.estado, 20);
+      const prevRows = await sql`SELECT * FROM talleres WHERE id = ${id}`;
+      const prevTaller = prevRows && prevRows[0] ? prevRows[0] : null;
+
       await sql`UPDATE talleres SET estado = ${estado} WHERE id = ${id}`;
-      res.status(200).json({ ok: true });
+
+      let waData = null;
+      // Si pasa a estado 'aprobado', notificar automáticamente al postulante
+      if (estado === 'aprobado' && prevTaller) {
+        const host = req.headers ? (req.headers['x-forwarded-host'] || req.headers.host) : '';
+        const proto = req.headers ? (req.headers['x-forwarded-proto'] || 'https') : 'https';
+        const appUrl = host ? `${proto}://${host}` : '';
+        const codigo = 'TY-T-' + String(prevTaller.folio || '').padStart(6, '0');
+
+        const { texto, tallerUrl } = buildTallerAprobadoWhatsAppMsg({
+          nombre: prevTaller.nombre,
+          ciudad: prevTaller.ciudad,
+          direccion: prevTaller.direccion,
+          id: prevTaller.id,
+          codigo,
+          appUrl
+        });
+
+        const waTarget = formatWhatsAppNumber(prevTaller.whatsapp || prevTaller.telefono);
+        const waLink = waTarget ? `https://wa.me/${waTarget}?text=${encodeURIComponent(texto)}` : null;
+
+        waData = {
+          waTarget,
+          waLink,
+          texto,
+          tallerUrl,
+          tallerNombre: prevTaller.nombre,
+          tallerWhatsapp: prevTaller.whatsapp
+        };
+
+        // Disparo asíncrono
+        notifyTallerAprobado({
+          taller: { ...prevTaller, codigo },
+          appUrl
+        }).catch(err => console.error('[notifyTallerAprobado Async Error]:', err));
+      }
+
+      res.status(200).json({ ok: true, whatsapp: waData });
       return;
     }
     if (keys.length === 1 && keys[0] === 'destacado') {
