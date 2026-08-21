@@ -198,3 +198,143 @@ export async function sendOtpNotification({ user, code, expiresInMinutes = 5, ip
     smsSent
   };
 }
+
+/**
+ * Notificación al Administrador cuando un nuevo taller se postula
+ */
+export async function notifyAdminNewTaller({ taller, ip = '' }) {
+  const targetEmail = getAuthorizedEmail();
+  const timestamp = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
+
+  console.log(`\n======================================================`);
+  console.log(`[🏢 NUEVO TALLER POSTULADO]`);
+  console.log(`Nombre: ${taller.nombre}`);
+  console.log(`Ciudad: ${taller.ciudad} | WhatsApp: ${taller.whatsapp}`);
+  console.log(`Categoría: ${taller.categoria}`);
+  console.log(`Destacado Solicitado: ${taller.destacadoSolicitado ? 'SÍ ⭐' : 'No'}`);
+  console.log(`Hora (PY): ${timestamp}`);
+  console.log(`======================================================\n`);
+
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const fromAddress = process.env.RESEND_FROM || 'TallerYa <onboarding@resend.dev>';
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY.trim()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: fromAddress,
+          to: [targetEmail],
+          subject: `🏢 ¡Nueva postulación de Taller! - ${taller.nombre} (${taller.ciudad})`,
+          html: `
+            <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:560px;margin:0 auto;padding:24px;border:1px solid #E2E8F0;border-radius:14px;background:#fff;color:#1E293B;">
+              <h2 style="color:#1E3A8A;margin:0 0 12px;font-size:20px;">🏢 Nueva Postulación de Taller en TallerYa</h2>
+              <p style="font-size:14.5px;line-height:1.5;margin:0 0 16px;color:#334155;">
+                Se ha registrado una nueva solicitud de taller mecánico pendiente de revisión y aprobación en el panel de administrador:
+              </p>
+              <div style="background:#F8FAFC;border:1px solid #CBD5E1;border-radius:10px;padding:16px;margin-bottom:18px;">
+                <p style="margin:4px 0;"><b>Taller:</b> ${taller.nombre}</p>
+                <p style="margin:4px 0;"><b>Ciudad:</b> ${taller.ciudad}</p>
+                <p style="margin:4px 0;"><b>Dirección:</b> ${taller.direccion}</p>
+                <p style="margin:4px 0;"><b>WhatsApp:</b> ${taller.whatsapp}</p>
+                <p style="margin:4px 0;"><b>Categoría:</b> ${taller.categoria}</p>
+                <p style="margin:4px 0;"><b>Destacado:</b> ${taller.destacadoSolicitado ? '⭐ Solicitó Destacado' : 'Estándar'}</p>
+              </div>
+              <p style="font-size:13px;color:#64748B;margin:0;">Ingresá al panel de administración para aprobar o rechazar esta solicitud.</p>
+            </div>
+          `
+        })
+      });
+    } catch (e) {
+      console.error('[notifyAdminNewTaller Error]:', e.message);
+    }
+  }
+
+  if (process.env.NOTIF_WEBHOOK_URL || process.env.OTP_WEBHOOK_URL) {
+    try {
+      const webhookUrl = process.env.NOTIF_WEBHOOK_URL || process.env.OTP_WEBHOOK_URL;
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'nuevo_taller_postulado',
+          taller,
+          timestamp,
+          ip
+        })
+      });
+    } catch (e) {
+      console.error('[notifyAdminNewTaller Webhook Error]:', e.message);
+    }
+  }
+}
+
+/**
+ * Notificación al Administrador cuando se recibe una nueva opinión o queja
+ */
+export async function notifyAdminNewFeedback({ feedback, ip = '' }) {
+  const targetEmail = getAuthorizedEmail();
+  const timestamp = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
+
+  console.log(`\n======================================================`);
+  console.log(`[⭐ NUEVA OPINIÓN / VALORACIÓN RECIBIDA]`);
+  console.log(`Cliente: ${feedback.clienteNombre}`);
+  console.log(`Tipo: ${feedback.tipo} | Calificación: ${feedback.calificacion}★`);
+  console.log(`Taller Destino: ${feedback.tallerNombre || 'General Plataforma'}`);
+  console.log(`Mensaje: "${feedback.mensaje}"`);
+  console.log(`Hora (PY): ${timestamp}`);
+  console.log(`======================================================\n`);
+
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const fromAddress = process.env.RESEND_FROM || 'TallerYa <onboarding@resend.dev>';
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY.trim()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: fromAddress,
+          to: [targetEmail],
+          subject: `⭐ Nueva Opinión (${feedback.calificacion}★) - ${feedback.clienteNombre}`,
+          html: `
+            <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:560px;margin:0 auto;padding:24px;border:1px solid #E2E8F0;border-radius:14px;background:#fff;color:#1E293B;">
+              <h2 style="color:#1E3A8A;margin:0 0 12px;font-size:20px;">⭐ Nueva Opinión Recibida</h2>
+              <div style="background:#F8FAFC;border:1px solid #CBD5E1;border-radius:10px;padding:16px;margin-bottom:18px;">
+                <p style="margin:4px 0;"><b>Cliente:</b> ${feedback.clienteNombre} (${feedback.clienteContacto || 'Sin contacto'})</p>
+                <p style="margin:4px 0;"><b>Calificación:</b> ${'★'.repeat(feedback.calificacion || 5)} (${feedback.calificacion}/5)</p>
+                <p style="margin:4px 0;"><b>Destino:</b> ${feedback.tallerNombre || 'Plataforma TallerYa'}</p>
+                <p style="margin:4px 0;"><b>Título:</b> ${feedback.titulo || '-'}</p>
+                <p style="margin:4px 0;"><b>Mensaje:</b> "${feedback.mensaje}"</p>
+              </div>
+              <p style="font-size:13px;color:#64748B;margin:0;">Ingresá al panel de administración para moderar esta opinión.</p>
+            </div>
+          `
+        })
+      });
+    } catch (e) {
+      console.error('[notifyAdminNewFeedback Error]:', e.message);
+    }
+  }
+
+  if (process.env.NOTIF_WEBHOOK_URL || process.env.OTP_WEBHOOK_URL) {
+    try {
+      const webhookUrl = process.env.NOTIF_WEBHOOK_URL || process.env.OTP_WEBHOOK_URL;
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'nueva_opinion_recibida',
+          feedback,
+          timestamp,
+          ip
+        })
+      });
+    } catch (e) {
+      console.error('[notifyAdminNewFeedback Webhook Error]:', e.message);
+    }
+  }
+}

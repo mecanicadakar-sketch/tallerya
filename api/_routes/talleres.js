@@ -1,6 +1,7 @@
 import { getSql, ensureSchema } from '../_db.js';
 import { isAuthorized } from '../_auth.js';
 import { getClientIp, checkRateLimit, sanitizeText } from '../_security.js';
+import { notifyAdminNewTaller } from '../_notify.js';
 
 function rowToTaller(r) {
   const imagenes = Array.isArray(r.imagenes) ? r.imagenes : [];
@@ -127,6 +128,24 @@ export default async function handler(req, res) {
       RETURNING folio
     `;
     const codigo = 'TY-T-' + String(inserted[0].folio).padStart(6, '0');
+
+    // Notify administrator asynchronously
+    notifyAdminNewTaller({
+      taller: {
+        id,
+        nombre,
+        categoria,
+        ciudad,
+        direccion,
+        whatsapp,
+        telefono,
+        email,
+        destacadoSolicitado: Boolean(b.destacadoSolicitado),
+        auspicioSolicitado: Boolean(b.auspicioSolicitado)
+      },
+      ip
+    }).catch(err => console.error('[notifyAdminNewTaller Async Error]:', err));
+
     res.status(201).json({ ok: true, id, codigo });
     return;
   }

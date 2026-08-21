@@ -1,6 +1,7 @@
 import { getSql, ensureSchema } from '../_db.js';
 import { isAuthorized } from '../_auth.js';
 import { getClientIp, checkRateLimit, sanitizeText } from '../_security.js';
+import { notifyAdminNewFeedback } from '../_notify.js';
 
 function rowToFeedback(r) {
   return {
@@ -90,6 +91,23 @@ export default async function handler(req, res) {
       INSERT INTO feedbacks (id, tipo, taller_id, taller_nombre, cliente_nombre, cliente_contacto, calificacion, titulo, mensaje, estado)
       VALUES (${id}, ${tipo}, ${tallerId}, ${tallerNombre}, ${clienteNombre}, ${clienteContacto}, ${calificacion}, ${titulo}, ${mensaje}, ${estado})
     `;
+
+    // Notify administrator asynchronously
+    notifyAdminNewFeedback({
+      feedback: {
+        id,
+        tipo,
+        tallerId,
+        tallerNombre,
+        clienteNombre,
+        clienteContacto,
+        calificacion,
+        titulo,
+        mensaje,
+        estado
+      },
+      ip
+    }).catch(err => console.error('[notifyAdminNewFeedback Async Error]:', err));
 
     res.status(201).json({ ok: true, id, message: 'Comentario recibido con éxito' });
     return;
