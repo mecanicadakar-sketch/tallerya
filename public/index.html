@@ -107,6 +107,36 @@
   .nav-btn.btn-postular-blue:hover{
     background:#1D4ED8;border-color:#1D4ED8;
   }
+  .nav-btn.btn-ventas-highlight{
+    background:linear-gradient(135deg, #059669 0%, #047857 100%);
+    color:#FFFFFF !important;
+    border-color:#047857;
+    font-weight:700;
+    box-shadow:0 2px 8px rgba(5,150,105,.3);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:all .15s ease;
+  }
+  .nav-btn.btn-ventas-highlight:hover{
+    background:linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border-color:#059669;
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(5,150,105,.4);
+  }
+  .nav-btn.btn-ventas-highlight.active{
+    background:#065F46 !important;
+    border-color:#022C22 !important;
+    box-shadow:inset 0 2px 4px rgba(0,0,0,.25);
+  }
+  .nav-ventas-icon{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    display:inline-block;
+    vertical-align:middle;
+    flex-shrink:0;
+  }
   .nav-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
   .burger{display:none;background:none;padding:8px;}
   .burger svg{width:24px;height:24px;}
@@ -521,6 +551,99 @@
   .section-divider::after{
     content:"";display:block;height:1px;
     background:linear-gradient(90deg, transparent, var(--line) 12%, var(--line) 88%, transparent);
+  }
+
+  /* Banner Promocional para Destacados - Celeste / Azul */
+  .destacado-promo-banner{
+    background:linear-gradient(135deg, #F0F7FF 0%, #E0F2FE 100%);
+    border:1.5px solid #93C5FD;
+    border-radius:14px;
+    padding:18px 22px;
+    margin-top:24px;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    box-shadow:0 4px 16px rgba(37, 99, 235, 0.08);
+    flex-wrap:wrap;
+  }
+  .destacado-promo-text{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    flex:1 1 320px;
+  }
+  .destacado-promo-icon{
+    font-size:28px;
+    line-height:1;
+    flex-shrink:0;
+    margin-top:2px;
+  }
+  .destacado-promo-text h3{
+    margin:0 0 4px;
+    font-size:16px;
+    font-weight:800;
+    color:#1E3A8A;
+  }
+  .destacado-promo-text p{
+    margin:0;
+    font-size:13.5px;
+    color:#1E40AF;
+    line-height:1.45;
+  }
+  .destacado-promo-btn{
+    background:linear-gradient(135deg, #2563EB, #1D4ED8);
+    color:#FFFFFF !important;
+    font-weight:700;
+    font-size:13.5px;
+    padding:11px 20px;
+    border-radius:10px;
+    text-decoration:none !important;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    box-shadow:0 3px 10px rgba(37, 99, 235, 0.35);
+    transition:all .18s ease;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .destacado-promo-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 5px 14px rgba(37, 99, 235, 0.45);
+    background:linear-gradient(135deg, #1D4ED8, #1E40AF);
+  }
+
+  /* Separador visual entre Destacados y Estándar */
+  .group-divider{
+    max-width:1180px;
+    margin:10px auto 0;
+    padding:0 24px;
+  }
+  .group-divider-inner{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:16px 0;
+  }
+  .group-divider-line{
+    flex:1;
+    height:1.5px;
+    background:linear-gradient(90deg, transparent, #CBD5E1 15%, #CBD5E1 85%, transparent);
+  }
+  .group-divider-badge{
+    background:#F8FAFC;
+    border:1.5px solid #CBD5E1;
+    color:#1E293B;
+    font-size:13.5px;
+    font-weight:800;
+    padding:7px 18px;
+    border-radius:20px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    letter-spacing:0.2px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.04);
   }
 
   /* ---------- Install app banner ---------- */
@@ -1096,7 +1219,10 @@
         <button type="button" class="nav-btn btn-postular-blue" id="nav-postular" onclick="clickNavPostular()">Postular mi taller</button>
       </div>
       <div class="nav-row nav-row-2">
-        <button type="button" class="nav-btn" id="nav-productos" onclick="go('productos')">Ventas y Ofertas</button>
+        <button type="button" class="nav-btn btn-ventas-highlight" id="nav-productos" onclick="go('productos')">
+          <img src="/logoventas.svg?v=20260821" alt="Ventas" class="nav-ventas-icon" onerror="this.onerror=null;this.src='/logoventas.png'">
+          <span>Ventas y Ofertas</span>
+        </button>
         <button type="button" class="nav-btn" id="nav-opiniones" onclick="clickNavOpiniones()"><span style="color:#F59E0B;">⭐</span> Opiniones</button>
         <button type="button" class="nav-btn" id="nav-admin" onclick="go('admin')">Administrador</button>
       </div>
@@ -1173,20 +1299,44 @@
   <section class="block" id="destacados-section">
     <div class="block-head">
       <div>
-        <h2>Talleres destacados</h2>
-        <p>Talleres verificados que recomendamos por su servicio.</p>
+        <h2 style="display:flex;align-items:center;gap:8px;">
+          <span>⭐ Talleres Destacados</span>
+          <span style="font-size:12px;font-weight:700;color:#1E40AF;background:#DBEAFE;border:1px solid #93C5FD;padding:2px 8px;border-radius:12px;">Primera Plana</span>
+        </h2>
+        <p>Talleres y centros de servicio recomendados por su calidad y atención.</p>
       </div>
     </div>
     <div class="grid" id="destacadosGrid"></div>
+
+    <div class="destacado-promo-banner">
+      <div class="destacado-promo-text">
+        <div class="destacado-promo-icon">⭐</div>
+        <div>
+          <h3>¿Querés que tu taller aparezca en Primera Plana al inicio y sin tener que buscarlo?</h3>
+          <p>Pasá a <b>Taller Destacado</b> para multiplicar tus visitas, destacar sobre la competencia y ser encontrado al instante por cientos de conductores.</p>
+        </div>
+      </div>
+      <a href="https://wa.me/595975635770?text=Hola%20TallerYa%2C%20quiero%20pasar%20mi%20taller%20a%20DESTACADO%20para%20aparecer%20en%20primera%20plana%20⭐" target="_blank" rel="noopener" class="destacado-promo-btn">
+        ⭐ Quiero ser Taller Destacado
+      </a>
+    </div>
   </section>
 
-  <div class="section-divider" id="divider-after-destacados"></div>
+  <div class="group-divider" id="divider-after-destacados" style="display:none;">
+    <div class="group-divider-inner">
+      <div class="group-divider-line"></div>
+      <div class="group-divider-badge">
+        <span id="dividerBadgeText">🔍 Resultados de la Búsqueda</span>
+      </div>
+      <div class="group-divider-line"></div>
+    </div>
+  </div>
 
-  <section class="block" id="listado-section">
+  <section class="block" id="listado-section" style="display:none;">
     <div class="block-head">
       <div>
-        <h2 id="listadoTitle">Talleres encontrados</h2>
-        <p>Todos los talleres aprobados y verificados.</p>
+        <h2 id="listadoTitle">🔍 Talleres encontrados</h2>
+        <p id="listadoSub">Resultados filtrados según tu búsqueda.</p>
       </div>
       <div style="display:flex;gap:10px;">
         <button class="ghost-btn" id="favFilterBtn" onclick="toggleSoloFavoritos()">
@@ -1400,10 +1550,15 @@
   <div class="page-wrap" style="max-width:1180px;">
     <div class="block-head">
       <div>
-        <h1 style="font-size:28px;margin:0 0 8px;">Ventas y Ofertas</h1>
-        <p style="color:var(--gray);font-size:14.5px;">Venta de Repuestos, Accesorios, Autos, Cubiertas, etc.</p>
+        <h1 style="font-size:28px;margin:0 0 8px;display:flex;align-items:center;gap:10px;">
+          <img src="/logoventas.svg?v=20260821" alt="Logo Ventas" style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));" onerror="this.onerror=null;this.src='/logoventas.png'">
+          <span>Ventas y Ofertas</span>
+        </h1>
+        <p style="color:var(--gray);font-size:14.5px;">Venta de Repuestos, Accesorios, Autos, Cubiertas y Ofertas Mecánicas.</p>
       </div>
-      <button class="submit-btn" style="width:auto;padding:12px 22px;white-space:nowrap;" onclick="abrirFormProducto()">Vender/Ofertar</button>
+      <button class="submit-btn" style="width:auto;padding:12px 22px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;" onclick="abrirFormProducto()">
+        <img src="/logoventas.svg?v=20260821" style="width:18px;height:18px;vertical-align:middle;" alt=""> Vender / Ofertar
+      </button>
     </div>
     <div class="grid" id="productosGrid" style="margin-top:26px;"></div>
   </div>
@@ -1545,7 +1700,7 @@
       <div class="admin-links">
         <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
@@ -1568,7 +1723,7 @@
       <div class="admin-links">
         <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
@@ -1589,7 +1744,7 @@
       <div class="admin-links">
         <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
@@ -1612,7 +1767,7 @@
       <div class="admin-links">
         <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
@@ -1637,7 +1792,7 @@
       <div class="admin-links">
         <button type="button" class="admin-nav-btn" data-target-view="admin" onclick="go('admin')">🏢 Talleres</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminAuspicios" onclick="go('adminAuspicios')">📣 Auspicios</button>
-        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')">🔧 Ventas y Ofertas</button>
+        <button type="button" class="admin-nav-btn" data-target-view="adminProductos" onclick="go('adminProductos')"><img src="/logoventas.svg?v=20260821" style="width:16px;height:16px;vertical-align:middle;display:inline-block;margin-right:4px;" alt=""> Ventas y Ofertas</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminCategorias" onclick="go('adminCategorias')">🏷️ Categorías</button>
         <button type="button" class="admin-nav-btn" data-target-view="adminFeedbacks" onclick="go('adminFeedbacks')">⭐ Opiniones y Quejas</button>
         <button type="button" class="admin-nav-btn btn-salir" onclick="logoutAdmin()">Salir</button>
@@ -2214,18 +2369,50 @@ async function checkAdminSession(){
    INIT SELECTS
 ============================================================ */
 function initSelects(){
+  const allKnownCategories = new Set();
+  const defaultCats = [
+    'Mecánica General',
+    'Electricidad Automotriz',
+    'Chapería y Pintura',
+    'Gomería',
+    'Grúa y Auxilio',
+    'Autopartes',
+    'Desarmadero',
+    'Lubricentro',
+    'Refrigeración y Aire Acondicionado',
+    'Otros'
+  ];
+  defaultCats.forEach(c => allKnownCategories.add(c));
+  (CATEGORIES || []).forEach(c => { if(c && typeof c === 'string' && c.trim()) allKnownCategories.add(c.trim()); });
+  (talleres || []).forEach(t => { if(t && t.categoria && typeof t.categoria === 'string' && t.categoria.trim()) allKnownCategories.add(t.categoria.trim()); });
+  
+  const sortedCategories = Array.from(allKnownCategories).sort((a,b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+
   const catFilter = document.getElementById('categoryFilter');
-  catFilter.innerHTML = '<option value="Todas">Todas</option>';
-  CATEGORIES.forEach(c=>{
-    const o = document.createElement('option'); o.value=c; o.textContent=c;
-    catFilter.appendChild(o);
-  });
+  if(catFilter){
+    const currentVal = catFilter.value || 'Todas';
+    catFilter.innerHTML = '<option value="Todas">Todas las categorías</option>';
+    sortedCategories.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c;
+      o.textContent = c;
+      if(c === currentVal) o.selected = true;
+      catFilter.appendChild(o);
+    });
+  }
+
   const fCat = document.getElementById('f-categoria');
-  fCat.innerHTML = '';
-  CATEGORIES.forEach(c=>{
-    const o = document.createElement('option'); o.value=c; o.textContent=c;
-    fCat.appendChild(o);
-  });
+  if(fCat){
+    const currentVal = fCat.value || '';
+    fCat.innerHTML = '';
+    sortedCategories.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c;
+      o.textContent = c;
+      if(c === currentVal) o.selected = true;
+      fCat.appendChild(o);
+    });
+  }
 }
 
 /* ============================================================
@@ -2414,9 +2601,12 @@ let selectedServiceFilters = new Set();
 
 function normalizeSearchText(str){
   return (str || '')
+    .toString()
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
@@ -2568,6 +2758,7 @@ async function renderHome(){
   }catch(e){
     console.error(e);
   }
+  initSelects();
   renderDestacados();
   renderServiceFilterChips();
   renderListado();
@@ -2593,9 +2784,24 @@ function renderDestacados(){
   const grid = document.getElementById('destacadosGrid');
   const section = document.getElementById('destacados-section');
   const divider = document.getElementById('divider-after-destacados');
-  if(list.length===0){ section.style.display='none'; if(divider) divider.style.display='none'; return; }
-  section.style.display='';
-  if(divider) divider.style.display='';
+  if(!section || !grid) return;
+
+  section.style.display = '';
+  if(divider) divider.style.display = '';
+
+  if(list.length === 0){
+    grid.innerHTML = `
+      <div class="empty" style="grid-column:1/-1;padding:26px 20px;background:#F0F7FF;border:1.5px dashed #93C5FD;border-radius:14px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:6px;">⭐</div>
+        <div style="font-weight:800;color:#1E3A8A;font-size:15px;margin-bottom:4px;">Espacio disponible para Talleres Destacados</div>
+        <div style="font-size:13px;color:#1E40AF;margin-bottom:14px;max-width:480px;margin-left:auto;margin-right:auto;">¡Destacá tu taller para aparecer en primera plana al inicio de la página y ser visto primero por todos los conductores!</div>
+        <a href="https://wa.me/595975635770?text=Hola%20TallerYa%2C%20quiero%20pasar%20mi%20taller%20a%20DESTACADO%20para%20aparecer%20en%20primera%20plana%20⭐" target="_blank" rel="noopener" class="destacado-promo-btn" style="padding:9px 18px;font-size:13px;">
+          ⭐ Solicitar Taller Destacado
+        </a>
+      </div>
+    `;
+    return;
+  }
   grid.innerHTML = list.map(t=>tallerCard(t)).join('');
 }
 
@@ -2620,8 +2826,14 @@ function renderListado(){
     if(dividerAfterDestacados) dividerAfterDestacados.style.display = 'none';
     return;
   }
+
   if(listadoSec) listadoSec.style.display = '';
   if(dividerAfterDestacados) dividerAfterDestacados.style.display = '';
+
+  const dividerBadge = document.getElementById('dividerBadgeText');
+  if(dividerBadge){
+    dividerBadge.textContent = soloFavoritos ? '❤️ Talleres Favoritos' : '🔍 Resultados de la Búsqueda';
+  }
 
   let list = talleres.filter(t => t.estado === 'aprobado');
 
@@ -2632,7 +2844,11 @@ function renderListado(){
 
   if(cat && cat !== 'Todas'){
     const normCat = normalizeSearchText(cat);
-    list = list.filter(t => normalizeSearchText(t.categoria) === normCat);
+    list = list.filter(t => {
+      const tCat = normalizeSearchText(t.categoria || '');
+      const tServices = (t.servicios || []).map(s => normalizeSearchText(s));
+      return tCat === normCat || tCat.includes(normCat) || normCat.includes(tCat) || tServices.some(ts => ts.includes(normCat) || normCat.includes(ts));
+    });
   }
 
   if(hasActiveServiceTags){
@@ -2668,10 +2884,18 @@ function renderListado(){
   const detailSuffix = filterDetails.length ? ` · ${filterDetails.join(' | ')}` : '';
 
   const titleEl = document.getElementById('listadoTitle');
+  const subEl = document.getElementById('listadoSub');
   if(titleEl){
-    titleEl.innerHTML = soloFavoritos
-      ? `${list.length} favorito${list.length === 1 ? '' : 's'}`
-      : `${list.length} taller${list.length === 1 ? '' : 'es'} encontrado${list.length === 1 ? '' : 's'} <span style="font-size:12.5px;font-weight:normal;color:var(--gray);">${escapeHtml(detailSuffix)}</span>`;
+    if(soloFavoritos){
+      titleEl.innerHTML = `❤️ ${list.length} favorito${list.length === 1 ? '' : 's'} guardado${list.length === 1 ? '' : 's'}`;
+      if(subEl) subEl.textContent = 'Talleres que guardaste como favoritos.';
+    } else if(isFiltering){
+      titleEl.innerHTML = `🔍 ${list.length} taller${list.length === 1 ? '' : 'es'} encontrado${list.length === 1 ? '' : 's'} <span style="font-size:12.5px;font-weight:normal;color:var(--gray);">${escapeHtml(detailSuffix)}</span>`;
+      if(subEl) subEl.textContent = 'Resultados filtrados según tu búsqueda.';
+    } else {
+      titleEl.innerHTML = `📋 Todos los talleres registrados (${list.length})`;
+      if(subEl) subEl.textContent = 'Catálogo general de talleres y servicios verificados en Paraguay.';
+    }
   }
 
   const grid = document.getElementById('listadoGrid');
@@ -2683,7 +2907,7 @@ function renderListado(){
       : `<div class="empty" style="grid-column:1/-1;">
           ${ICON_INBOX}
           <div style="font-size:15px;font-weight:700;margin-top:8px;">No encontramos talleres con esos filtros combinados.</div>
-          <div style="font-size:13px;color:var(--gray);margin-top:4px;">Probá quitando algunas etiquetas de servicio o buscando por ciudad/zona.</div>
+          <div style="font-size:13px;color:var(--gray);margin-top:4px;">Probá seleccionando "Todas las categorías" o buscando por ciudad/zona.</div>
           <button type="button" onclick="clearAllSearchFilters()" class="submit-btn" style="margin-top:14px;width:auto;padding:8px 18px;font-size:13px;display:inline-flex;align-items:center;gap:6px;">
             ✕ Limpiar todos los filtros
           </button>
