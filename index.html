@@ -2003,6 +2003,56 @@
   </div>
 </div>
 
+<!-- ======================= MODAL AVISO WHATSAPP TALLER APROBADO ======================= -->
+<div class="modal-bg" id="whatsappAprobadoModalBg" onclick="if(event.target===this)closeWhatsAppAprobadoModal()">
+  <div class="modal modal-wide" style="max-width:580px;border-top:6px solid #25D366;">
+    <button class="close-x" onclick="closeWhatsAppAprobadoModal()">&times;</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:46px;height:46px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;color:#16A34A;font-size:24px;flex-shrink:0;">
+        <svg viewBox="0 0 32 32" style="width:28px;height:28px;fill:#25D366;"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.312.66 4.47 1.803 6.303L4 29l7.865-1.762A11.94 11.94 0 0016 27c6.628 0 12-5.373 12-12S22.629 3 16.001 3zm0 21.7c-1.94 0-3.76-.53-5.31-1.45l-.38-.22-4.66 1.04 1.06-4.53-.25-.39A9.66 9.66 0 016.3 15c0-5.35 4.36-9.7 9.7-9.7 5.35 0 9.7 4.35 9.7 9.7 0 5.35-4.35 9.7-9.7 9.7zm5.32-7.27c-.29-.15-1.72-.85-1.99-.95-.27-.1-.46-.15-.66.15-.19.29-.75.95-.92 1.14-.17.2-.34.22-.63.07-.29-.15-1.22-.45-2.32-1.43-.86-.76-1.44-1.71-1.61-2-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.49.1-.19.05-.36-.02-.51-.07-.15-.66-1.6-.91-2.19-.24-.58-.48-.5-.66-.51-.17-.01-.36-.01-.56-.01-.19 0-.51.07-.78.36-.27.29-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.19 3.02.15.19 2.06 3.15 5 4.41.7.3 1.24.48 1.67.61.7.22 1.34.19 1.84.12.56-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34z"/></svg>
+      </div>
+      <div>
+        <h3 style="margin:0;font-size:20px;color:#1E293B;">¡Taller Aprobado y Publicado! 🛠️</h3>
+        <p style="margin:2px 0 0;font-size:13px;color:#64748B;">Aviso automático preparado para el postulante</p>
+      </div>
+    </div>
+
+    <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+      <p style="margin:0 0 6px;font-size:13.5px;color:#166534;font-weight:700;">
+        El taller <span id="waModalTallerNombre" style="color:#15803D;text-decoration:underline;">-</span> ya está visible públicamente en el mapa y listado de TallerYa.
+      </p>
+      <p style="margin:0;font-size:13px;color:#14532D;line-height:1.5;">
+        Podés enviar el aviso oficial por WhatsApp al número proporcionado por el postulante (<b id="waModalTallerTel">-</b>) con el enlace directo para que verifique su ficha online.
+      </p>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <label style="font-size:12.5px;font-weight:700;color:#334155;display:block;margin-bottom:6px;">
+        💬 Mensaje oficial generado para WhatsApp:
+      </label>
+      <textarea id="waModalMensajeTexto" readonly style="width:100%;height:150px;font-family:inherit;font-size:12.5px;line-height:1.5;padding:10px 12px;border:1px solid #CBD5E1;border-radius:10px;background:#F8FAFC;color:#1E293B;resize:none;box-sizing:border-box;"></textarea>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a id="waModalBtnAbrirWA" href="#" target="_blank" rel="noopener" class="submit-btn" style="background:#25D366;color:#FFFFFF;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;font-weight:700;padding:12px 18px;border-radius:10px;box-shadow:0 4px 12px rgba(37,211,102,0.35);">
+        <svg viewBox="0 0 32 32" style="width:20px;height:20px;fill:#FFF;"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.312.66 4.47 1.803 6.303L4 29l7.865-1.762A11.94 11.94 0 0016 27c6.628 0 12-5.373 12-12S22.629 3 16.001 3zm0 21.7c-1.94 0-3.76-.53-5.31-1.45l-.38-.22-4.66 1.04 1.06-4.53-.25-.39A9.66 9.66 0 016.3 15c0-5.35 4.36-9.7 9.7-9.7 5.35 0 9.7 4.35 9.7 9.7 0 5.35-4.35 9.7-9.7 9.7zm5.32-7.27c-.29-.15-1.72-.85-1.99-.95-.27-.1-.46-.15-.66.15-.19.29-.75.95-.92 1.14-.17.2-.34.22-.63.07-.29-.15-1.22-.45-2.32-1.43-.86-.76-1.44-1.71-1.61-2-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.49.1-.19.05-.36-.02-.51-.07-.15-.66-1.6-.91-2.19-.24-.58-.48-.5-.66-.51-.17-.01-.36-.01-.56-.01-.19 0-.51.07-.78.36-.27.29-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.19 3.02.15.19 2.06 3.15 5 4.41.7.3 1.24.48 1.67.61.7.22 1.34.19 1.84.12.56-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34z"/></svg>
+        <span>Enviar Aviso por WhatsApp al Postulante</span>
+      </a>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="ghost-btn" style="flex:1;padding:10px 14px;font-size:13px;justify-content:center;display:flex;align-items:center;gap:6px;" onclick="copiarMensajeWAAlPortapapeles()">
+          📋 Copiar Mensaje
+        </button>
+        <button type="button" class="ghost-btn" style="flex:1;padding:10px 14px;font-size:13px;justify-content:center;display:flex;align-items:center;gap:6px;" id="waModalBtnVerFicha" onclick="abrirFichaDesdeModalWA()">
+          🔍 Ver Publicación en Vivo
+        </button>
+        <button type="button" class="ghost-btn" style="padding:10px 18px;font-size:13px;background:#F1F5F9;color:#64748B;" onclick="closeWhatsAppAprobadoModal()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ======================= EDIT / SPONSOR MODAL ======================= -->
 <div class="modal-bg" id="editModalBg">
   <div class="modal">
@@ -4049,9 +4099,14 @@ async function setEstado(id, estado){
     renderAdmin(false);
   }
   try{
-    await apiSend('/api/talleres/'+id, 'PATCH', { estado });
+    const res = await apiSend('/api/talleres/'+id, 'PATCH', { estado });
     await renderAdmin(true);
-    showToast(estado === 'aprobado' ? '✅ Taller aprobado' : '❌ Taller rechazado');
+    showToast(estado === 'aprobado' ? '✅ Taller aprobado y publicado' : '❌ Taller rechazado');
+
+    // Si fue aprobado, abrir diálogo con el aviso de WhatsApp para el postulante
+    if(estado === 'aprobado'){
+      mostrarModalAvisoWhatsAppAprobado(t, res && res.whatsapp);
+    }
   }catch(err){
     console.error('[setEstado Error]:', err);
     if(t && prevEstado){
@@ -4059,6 +4114,104 @@ async function setEstado(id, estado){
       renderAdmin(false);
     }
     alert('No se pudo actualizar el estado: ' + err.message);
+  }
+}
+
+let currentAprobadoTallerData = null;
+
+function mostrarModalAvisoWhatsAppAprobado(taller, waData){
+  if(!taller && !waData) return;
+  const t = taller || {};
+  const nombre = (waData && waData.tallerNombre) || t.nombre || 'Taller Mecánico';
+  const rawTel = (waData && waData.tallerWhatsapp) || t.whatsapp || t.telefono || 'Sin teléfono';
+  const tallerId = t.id || (waData && waData.id);
+  const tallerUrl = (waData && waData.tallerUrl) || `${window.location.origin}/?taller=${tallerId}`;
+
+  const defaultMsg = 
+`🎉 ¡Felicitaciones de parte de *TallerYa*! 🛠️🇵🇾
+
+Estimado equipo de *${nombre}*, nos complace informarle que su postulación ha sido *APROBADA* y su taller ya se encuentra *ONLINE Y PUBLICADO* en nuestra plataforma para todos los conductores y usuarios de Paraguay.
+
+📋 *Detalles de su Ficha:*
+• *Taller:* ${nombre}
+• *Ciudad:* ${t.ciudad || 'Paraguay'}
+• *Dirección:* ${t.direccion || 'Ubicación verificada'}
+${t.codigo ? `• *Código de Registro:* ${t.codigo}\n` : ''}
+🔗 *Verifique su publicación en vivo y sus datos aquí:*
+${tallerUrl}
+
+✨ *Recomendación:* Ingrese al enlace para comprobar que sus números de teléfono, horarios, servicios y fotos se muestren correctamente.
+
+¡Muchos éxitos y gracias por formar parte de la mayor red de talleres mecánicos de Paraguay! 🚗💨`;
+
+  const textoFinal = (waData && waData.texto) || defaultMsg;
+  
+  // Limpiar y normalizar número para enlace wa.me
+  let waNumber = String(rawTel).replace(/[^0-9+]/g, '');
+  if (waNumber.startsWith('+')) waNumber = waNumber.substring(1);
+  if (waNumber.startsWith('0') && waNumber.length >= 9) waNumber = '595' + waNumber.substring(1);
+  if (waNumber.length === 9 && waNumber.startsWith('9')) waNumber = '595' + waNumber;
+
+  const waLink = (waData && waData.waLink) || (waNumber ? `https://wa.me/${waNumber}?text=${encodeURIComponent(textoFinal)}` : '#');
+
+  currentAprobadoTallerData = {
+    tallerId,
+    tallerUrl,
+    texto: textoFinal,
+    waLink
+  };
+
+  const nombreEl = document.getElementById('waModalTallerNombre');
+  const telEl = document.getElementById('waModalTallerTel');
+  const txtEl = document.getElementById('waModalMensajeTexto');
+  const btnWA = document.getElementById('waModalBtnAbrirWA');
+
+  if(nombreEl) nombreEl.textContent = nombre;
+  if(telEl) telEl.textContent = rawTel;
+  if(txtEl) txtEl.value = textoFinal;
+  if(btnWA) {
+    btnWA.href = waLink;
+    if(!waNumber){
+      btnWA.style.opacity = '0.5';
+      btnWA.title = 'No se registró un número de WhatsApp válido';
+    } else {
+      btnWA.style.opacity = '1';
+      btnWA.title = 'Abrir WhatsApp con mensaje predeterminado';
+    }
+  }
+
+  const modalBg = document.getElementById('whatsappAprobadoModalBg');
+  if(modalBg) modalBg.classList.add('show');
+}
+
+function closeWhatsAppAprobadoModal(){
+  const modalBg = document.getElementById('whatsappAprobadoModalBg');
+  if(modalBg) modalBg.classList.remove('show');
+}
+
+async function copiarMensajeWAAlPortapapeles(){
+  const txtEl = document.getElementById('waModalMensajeTexto');
+  const texto = txtEl ? txtEl.value : (currentAprobadoTallerData && currentAprobadoTallerData.texto);
+  if(!texto) return;
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    try{
+      await navigator.clipboard.writeText(texto);
+      showToast('📋 Mensaje copiado al portapapeles');
+      return;
+    }catch(e){}
+  }
+  if(txtEl){
+    txtEl.select();
+    document.execCommand('copy');
+    showToast('📋 Mensaje copiado al portapapeles');
+  }
+}
+
+function abrirFichaDesdeModalWA(){
+  if(currentAprobadoTallerData && currentAprobadoTallerData.tallerId){
+    closeWhatsAppAprobadoModal();
+    openTallerDetail(currentAprobadoTallerData.tallerId);
   }
 }
 

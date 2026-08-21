@@ -1,0 +1,31 @@
+ADMIN_PIN=
+ADMIN_TOKEN_SECRET=
+ADMIN_USER=
+ADMIN_EMAIL=
+ADMIN_PHONE=
+
+# Opción A: Gmail Directo (Contraseña de aplicación de Google)
+GMAIL_USER=
+GMAIL_APP_PASSWORD=
+
+# Opción B: Resend API (https://resend.com)
+RESEND_API_KEY=
+RESEND_FROM=
+
+# Opción C: Brevo API (https://brevo.com)
+BREVO_API_KEY=
+
+# Opción D: Servidor SMTP Personalizado
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USER=
+SMTP_PASS=
+
+# Webhook WhatsApp / SMS (Opcional)
+OTP_WEBHOOK_URL=
+WHATSAPP_WEBHOOK_URL=
+PUBLIC_APP_URL=
+
+DATABASE_URL=
+GEMINI_API_KEY=
+ANTHROPIC_API_KEY=
