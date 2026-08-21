@@ -338,3 +338,167 @@ export async function notifyAdminNewFeedback({ feedback, ip = '' }) {
     }
   }
 }
+
+/**
+ * Normaliza número de teléfono o WhatsApp a formato internacional estándar (ej: 595975635770)
+ */
+export function formatWhatsAppNumber(phone) {
+  if (!phone) return '';
+  let cleaned = String(phone).replace(/[^0-9+]/g, '');
+  if (!cleaned) return '';
+  if (cleaned.startsWith('+')) {
+    cleaned = cleaned.substring(1);
+  }
+  // Si empieza con 0 (ej. 0975123456 en Paraguay), reemplazar 0 por 595
+  if (cleaned.startsWith('0') && cleaned.length >= 9) {
+    cleaned = '595' + cleaned.substring(1);
+  }
+  // Si es de 9 dígitos y empieza con 9 (ej. 975123456), anteponer 595
+  if (cleaned.length === 9 && cleaned.startsWith('9')) {
+    cleaned = '595' + cleaned;
+  }
+  return cleaned;
+}
+
+/**
+ * Genera el texto y enlace directo de WhatsApp para felicitar y notificar al postulante
+ */
+export function buildTallerAprobadoWhatsAppMsg({ nombre, ciudad, direccion, id, codigo, appUrl }) {
+  const baseUrl = appUrl || process.env.PUBLIC_APP_URL || 'https://tallerya.com';
+  const tallerUrl = `${baseUrl.replace(/\/$/, '')}/?taller=${id}`;
+  
+  const texto = 
+`🎉 ¡Felicitaciones de parte de *TallerYa*! 🛠️🇵🇾
+
+Estimado equipo de *${nombre}*, nos complace informarle que su postulación ha sido *APROBADA* y su taller ya se encuentra *ONLINE Y PUBLICADO* en nuestra plataforma para todos los conductores y usuarios de Paraguay.
+
+📋 *Detalles de su Ficha:*
+• *Taller:* ${nombre}
+• *Ciudad:* ${ciudad || 'Paraguay'}
+• *Dirección:* ${direccion || 'Ubicación verificada'}
+${codigo ? `• *Código de Registro:* ${codigo}\n` : ''}
+🔗 *Verifique su publicación en vivo y sus datos aquí:*
+${tallerUrl}
+
+✨ *Recomendación:* Ingrese al enlace para comprobar que sus números de teléfono, horarios, servicios y fotos se muestren correctamente.
+
+¡Muchos éxitos y gracias por formar parte de la mayor red de talleres mecánicos de Paraguay! 🚗💨`;
+
+  return {
+    texto,
+    tallerUrl
+  };
+}
+
+/**
+ * Notificación automática cuando un taller es APROBADO por el administrador
+ */
+export async function notifyTallerAprobado({ taller, appUrl = '' }) {
+  const timestamp = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
+  const waTarget = formatWhatsAppNumber(taller.whatsapp || taller.telefono);
+  const targetEmail = taller.email && taller.email.includes('@') ? taller.email.trim() : null;
+  const { texto, tallerUrl } = buildTallerAprobadoWhatsAppMsg({
+    nombre: taller.nombre,
+    ciudad: taller.ciudad,
+    direccion: taller.direccion,
+    id: taller.id,
+    codigo: taller.codigo || ('TY-T-' + String(taller.folio || '').padStart(6, '0')),
+    appUrl
+  });
+
+  const waLink = waTarget ? `https://wa.me/${waTarget}?text=${encodeURIComponent(texto)}` : null;
+
+  console.log(`\n======================================================`);
+  console.log(`[🚀 TALLER APROBADO Y ONLINE — AVISO AUTOMÁTICO]`);
+  console.log(`Taller: ${taller.nombre} (ID: ${taller.id})`);
+  console.log(`WhatsApp Postulante: ${taller.whatsapp} -> Formateado: ${waTarget || 'No disponible'}`);
+  console.log(`Link WhatsApp: ${waLink || 'Sin número válido'}`);
+  console.log(`URL Ficha: ${tallerUrl}`);
+  console.log(`Hora (PY): ${timestamp}`);
+  console.log(`======================================================\n`);
+
+  let emailSent = false;
+  let webhookSent = false;
+
+  // 1. Envío de notificación por correo electrónico si el postulante registró email
+  if (targetEmail && process.env.RESEND_API_KEY) {
+    try {
+      const fromAddress = process.env.RESEND_FROM || 'TallerYa <onboarding@resend.dev>';
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY.trim()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: fromAddress,
+          to: [targetEmail],
+          subject: `🎉 ¡Tu taller "${taller.nombre}" ya está online y aprobado en TallerYa!`,
+          html: `
+            <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:560px;margin:0 auto;padding:24px;border:1px solid #E2E8F0;border-radius:14px;background:#fff;color:#1E293B;">
+              <div style="text-align:center;margin-bottom:20px;">
+                <span style="font-size:32px;">🎉🛠️</span>
+                <h2 style="color:#1E3A8A;margin:8px 0 4px;font-size:22px;">¡Tu taller ya está online en TallerYa!</h2>
+                <p style="color:#64748B;font-size:14px;margin:0;">Tu postulación ha sido aprobada con éxito</p>
+              </div>
+              <p style="font-size:15px;line-height:1.6;margin:0 0 16px;color:#334155;">
+                Hola, nos alegra informarte que <b>${taller.nombre}</b> fue aprobado por el equipo de moderación y ya está disponible en el mapa y buscador de TallerYa para todos los conductores.
+              </p>
+              <div style="background:#F8FAFC;border:1px solid #CBD5E1;border-radius:10px;padding:16px;margin-bottom:20px;">
+                <p style="margin:4px 0;"><b>Taller:</b> ${taller.nombre}</p>
+                <p style="margin:4px 0;"><b>Ciudad:</b> ${taller.ciudad}</p>
+                <p style="margin:4px 0;"><b>Dirección:</b> ${taller.direccion}</p>
+                <p style="margin:4px 0;"><b>WhatsApp de contacto:</b> ${taller.whatsapp}</p>
+              </div>
+              <div style="text-align:center;margin:24px 0;">
+                <a href="${tallerUrl}" target="_blank" style="background:#2563EB;color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15px;padding:12px 24px;border-radius:10px;display:inline-block;">
+                  🔍 Verificar mi Taller Online
+                </a>
+              </div>
+              <p style="font-size:13px;color:#64748B;margin:0;line-height:1.5;">
+                Te recomendamos ingresar a tu ficha para verificar que todos los datos, horarios e imágenes sean correctos.
+              </p>
+            </div>
+          `
+        })
+      });
+      emailSent = true;
+    } catch (err) {
+      console.error('[notifyTallerAprobado Resend Error]:', err.message);
+    }
+  }
+
+  // 2. Disparo de Webhook para Gateway de WhatsApp / SMS (Evolution API, Baileys, Z-API, Twilio, n8n, etc.)
+  const webhookUrl = process.env.WHATSAPP_WEBHOOK_URL || process.env.NOTIF_WEBHOOK_URL || process.env.OTP_WEBHOOK_URL;
+  if (webhookUrl && waTarget) {
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'taller_aprobado',
+          tallerId: taller.id,
+          tallerNombre: taller.nombre,
+          phone: waTarget,
+          rawPhone: taller.whatsapp || taller.telefono,
+          message: texto,
+          tallerUrl,
+          timestamp
+        })
+      });
+      webhookSent = true;
+    } catch (err) {
+      console.error('[notifyTallerAprobado Webhook Error]:', err.message);
+    }
+  }
+
+  return {
+    waTarget,
+    waLink,
+    tallerUrl,
+    texto,
+    emailSent,
+    webhookSent
+  };
+}
+
