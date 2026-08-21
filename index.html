@@ -4081,7 +4081,7 @@ async function renderAdmin(fetchFirst = true){
         ${fotosGalleryHTML}
       </div>
       <div class="admin-actions">
-        ${t.estado!=='aprobado' ? `<button type="button" class="abtn approve" onclick="setEstado('${t.id}','aprobado')">${ICON_CHECK} Aprobar</button>` : ''}
+        ${t.estado!=='aprobado' ? `<button type="button" class="abtn approve" onclick="setEstado('${t.id}','aprobado')">${ICON_CHECK} Aprobar</button>` : `<button type="button" class="abtn" style="background:#25D366 !important;color:#FFFFFF !important;border:1.5px solid #16A34A !important;font-weight:700;" onclick="reenviarAvisoWhatsApp('${t.id}')" title="Enviar o reenviar aviso oficial de publicación por WhatsApp al postulante">💬 Aviso WhatsApp</button>`}
         ${t.estado!=='rechazado' ? `<button type="button" class="abtn reject" onclick="setEstado('${t.id}','rechazado')">${ICON_X} Rechazar</button>` : ''}
         ${destacadoBtnHTML}
         <button type="button" class="abtn edit" onclick="openEditModal('${t.id}')">${ICON_EDIT} Editar</button>
@@ -4206,6 +4206,15 @@ async function copiarMensajeWAAlPortapapeles(){
     document.execCommand('copy');
     showToast('📋 Mensaje copiado al portapapeles');
   }
+}
+
+function reenviarAvisoWhatsApp(id){
+  const t = (talleres || []).find(x => x.id === id);
+  if(!t) {
+    showToast('Taller no encontrado');
+    return;
+  }
+  mostrarModalAvisoWhatsAppAprobado(t, null);
 }
 
 function abrirFichaDesdeModalWA(){
